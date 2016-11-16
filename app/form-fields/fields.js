@@ -13,7 +13,7 @@ Vue.component('bixie-fields', {
         title: '<h3 v-bind="attrs">{{ title }}</h3>',
         paragraph: '<p v-bind="attrs">{{ text }}</p>',
         price: '<i class="uk-icon-euro uk-margin-small-right"></i><input type="number" v-bind="attrs" v-model="value" number>',
-        multiselect: '<multiselect :values.sync="value" :options="options"></multiselect>',
+        multiselect: '<input-multiselect :value.sync="value" :options="options"></input-multiselect>',
 
         tags: '<input-tags v-bind="attrs" :tags.sync="value" :existing="options" :style="style || \'tags\'"></input-tags>',
         format: '<span v-bind="attrs">{{ value }}</span>'

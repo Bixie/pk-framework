@@ -34,7 +34,7 @@
                         <div class="uk-form-controls">
                             <i class="uk-icon-euro uk-margin-small-right"></i>
                             <input v-model="price.price" type="number" class="uk-width-8-10 uk-text-right"
-                                   step="0.01" min="0" number/>
+                                   step="0.001" min="0" number/>
                         </div>
                     </div>
                     <ul class="uk-subnav pk-subnav-icon uk-margin-small-left">

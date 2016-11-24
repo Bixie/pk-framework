@@ -3,8 +3,7 @@
     <div class="uk-form uk-form-stacked">
 
         <ul class="uk-list uk-list-line">
-            <li v-for="price in prices">
-
+            <li v-for="price in price_collection.prices">
                 <div class="uk-flex uk-flex-middle">
                     <div class="uk-width-1-5">
                         <label class="uk-form-label">{{ 'Minimum quantity' | trans }}</label>
@@ -56,28 +55,26 @@
     module.exports = {
 
         props: {
-            prices: Array,
+            price_collection: [Object],
             readonly: Boolean
         },
 
-        created: function () {
-            if (!this.prices) {
-                this.prices = [];
-            }
+        created() {
+            console.log(this.price_collection.prices);
         },
 
         methods: {
 
-            add: function () {
-                this.prices.push({
+            add() {
+                this.price_collection.prices.push({
                     min_quantity: 1,
                     max_quantity: 1,
                     price: 0,
                     currency: 'EUR'
                 });
             },
-            remove: function (price) {
-                this.prices.$remove(price);
+            remove(price) {
+                this.price_collection.prices.$remove(price);
             }
 
         }

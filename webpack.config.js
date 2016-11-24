@@ -1,6 +1,7 @@
 var glob = require("glob");
 var path = require("path");
 var fieldtypes = {};
+var assets = __dirname + "/../../../app/assets";
 
 glob.sync(path.join(__dirname, 'fieldtypes/*/*.vue')).forEach(function (file) {
     var type = path.basename(file, '.vue');
@@ -30,6 +31,11 @@ module.exports = [
         },
         output: {
             filename: "./app/bundle/[name].js"
+        },
+        resolve: {
+            alias: {
+                "md5$": assets + "/js-md5/js/md5.js"
+            }
         },
         module: {
             loaders: [

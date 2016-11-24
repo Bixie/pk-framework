@@ -10,15 +10,15 @@
             <table class="uk-table uk-table-hover uk-table-middle uk-form">
                 <thead>
                 <tr>
-                    <th class="pk-table-width-minimum"><input type="checkbox" v-check-all:selected.literal="input[name=id]" number></th>
-                    <th class="pk-table-width-minimum">{{ 'ID' | trans }}</th>
+                    <th class="pk-table-width-minimum"><input type="checkbox" v-check-all:selected.literal="input[name=id]"></th>
+                    <th class="pk-table-min-width-100">{{ 'ID' | trans }}</th>
                     <th class="pk-table-min-width-200">{{ 'Name' | trans }}</th>
                     <th v-if="extra_key" class="pk-table-min-width-100">{{ 'Extra' | trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr class="check-item" v-for="item in items" :class="{'uk-active': active(item)}">
-                    <td><input type="checkbox" name="id" :value="getIdentifier(item)" :disabled="disabled(item)" number></td>
+                    <td><input type="checkbox" name="id" :value="getIdentifier(item)" :disabled="disabled(item)"></td>
                     <td>{{ getIdentifier(item) }}</td>
                     <td>
                         <span v-if="disabled(item)" class="uk-text-muted">{{ getLabel(item) }}</span>

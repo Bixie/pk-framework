@@ -4,6 +4,7 @@ namespace Bixie\PkFramework;
 
 use Bixie\PkFramework\Helpers\ImageHelper;
 use Pagekit\Application as App;
+use Pagekit\Kernel\Exception\HttpException;
 use Pagekit\Module\Module;
 use Bixie\PkFramework\FieldType\FieldTypeBase;
 
@@ -20,10 +21,32 @@ class FrameworkModule extends Module {
 	 */
 	public function main (App $app) {
 		$app['filter']->register('bixfilesize', 'Bixie\PkFramework\Filter\FileSizeFilter');
+
         $app->on('boot', function ($event, $app) {
             $app->extend('view', function ($view) use ($app) {
                 return $view->addHelper(new ImageHelper($app));
             });
+
+//            $app->error(function (HttpException $exception) use ($app) {
+//
+//                $request = $app['router']->getRequest();
+//                $types   = $request->getAcceptableContentTypes();
+//
+//                if ('html' == $request->getFormat(array_shift($types))) {
+//                    $code =  $exception->getCode();
+//                    if (is_subclass_of($exception, 'Pagekit\Kernel\Exception\HttpException')) {
+//                        $title = $exception->getMessage();
+//                    } else {
+//                        $title = __('Whoops, looks like something went wrong.');
+//                    }
+//
+//                    $response = App::view('bixie/pk-framework/error/error.php', compact('title', 'exception', 'code'));
+//
+//                    return App::response($response, $code);
+//                }
+//
+//            }, 0);
+
         });
 	}
 

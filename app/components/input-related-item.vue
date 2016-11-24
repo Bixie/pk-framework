@@ -9,7 +9,7 @@
         </div>
 
         <p>
-            <button type="button" class="uk-button" :class="buttonClass" @click="pick">{{ 'Please select' | trans }}</button>
+            <button type="button" class="uk-button" :class="buttonClass" @click="pick">{{ buttonText | trans }}</button>
         </p>
 
         <v-modal v-ref:modal large>
@@ -51,6 +51,7 @@
             'identifier': {type: String, default: 'id'},
             'label': {type: String, default: 'title'},
             'buttonClass': {type: String, default: 'uk-button-small'},
+            'buttonText': {type: String, default: 'Please select'},
             'extra_key': {type: String, default: 'slug'},
             'onSelect': {type: Function, default: function () {_.noop()}},
             'onRemove': {type: Function, default: function () {_.noop()}}

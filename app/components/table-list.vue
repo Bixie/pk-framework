@@ -89,7 +89,7 @@
 
         methods: {
             active: function (item) {
-                return this.selected.indexOf(item[this.identifier]) != -1;
+                return this.selected.indexOf(String(item[this.identifier])) != -1;
             },
 
             disabled: function (item) {
@@ -110,8 +110,9 @@
             },
 
             select: function (item) {
-                if (this.selected.indexOf(item[this.identifier]) === -1) {
-                    this.selected.push(item[this.identifier])
+                var identifier = String(item[this.identifier]);
+                if (this.selected.indexOf(identifier) === -1) {
+                    this.selected.push(identifier)
                 }
             },
 
@@ -120,7 +121,7 @@
             },
 
             getIdentifier: function (item) {
-                return item[this.identifier] || '';
+                return String(item[this.identifier]) || '';
             },
 
             getExtraKey: function (item) {
@@ -134,7 +135,7 @@
 
             getSelected: function () {
                 return this.items.filter(function (item) {
-                    return this.selected.indexOf(item[this.identifier]) !== -1;
+                    return this.selected.indexOf(String(item[this.identifier])) !== -1;
                 }, this);
             }
 

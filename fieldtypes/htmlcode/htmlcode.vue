@@ -2,7 +2,7 @@
 
     <div :class="classes(['uk-form-row', (isAdmin ? 'uk-hidden' : '')], field.data.classSfx)">
 
-        {{{ fieldValue.formatted[0] }}}
+        {{{ html }}}
 
     </div>
 
@@ -22,6 +22,12 @@
             return {
                 fieldid: _.uniqueId('formmakerfield_')
             };
+        },
+
+        computed: {
+            html() {
+                return this.fieldValue.formatted ? this.fieldValue.formatted[0] : '';
+            }
         }
 
     };

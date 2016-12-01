@@ -80,10 +80,10 @@
 
         computed: {
             minLength: function () {
-                return this.field.data.minLength ? this.field.data.minLength : false;
+                return this.field.data.minLength && !this.isAdmin ? this.field.data.minLength : false;
             },
             maxLength: function () {
-                return this.field.data.maxLength ? this.field.data.maxLength : false;
+                return this.field.data.maxLength && !this.isAdmin ? this.field.data.maxLength : false;
             }
         }
 

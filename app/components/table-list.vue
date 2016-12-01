@@ -100,7 +100,7 @@
                 this.Resource.query(this.config).then( function (res) {
                     var data = res.data;
 
-                    this.$set('items', data[this.name]);
+                    this.$set('items', this.name ? data[this.name] : data);
                     this.$set('pages', data.pages);
                     this.$set('count', data.count);
                     this.$set('selected', []);

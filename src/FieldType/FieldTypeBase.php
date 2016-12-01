@@ -37,7 +37,21 @@ abstract class FieldTypeBase implements FieldTypeInterface, \ArrayAccess, \JsonS
 		}
 	}
 
-	/**
+    /**
+     * Call a method from the methods property
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
+    public function __call ($name, $arguments) {
+        if (isset($this->type['methods'][$name]) && is_callable($this->type['methods'][$name])) {
+            return call_user_func_array($this->type['methods'][$name], $arguments);
+        }
+        throw new \BadMethodCallException(sprintf('Method %s does not exist on %s.', $name, get_class($this)));
+    }
+
+
+    /**
 	 * @param \Pagekit\View\Asset\AssetManager $scripts
 	 */
 	public function registerScripts ($scripts) {

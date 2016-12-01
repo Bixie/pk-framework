@@ -92,6 +92,7 @@ class FrameworkModule extends Module {
 						'required' => 0,
 						'multiple' => 0,
 					],
+					'methods' => [],
 					'dependancies' => [],
 					'styles' => [],
 					'getOptions' => '',

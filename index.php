@@ -20,7 +20,8 @@ return [
         '/api/bixpkframework' => [
             'name' => '@bixpkframework/api',
             'controller' => [
-                'Bixie\\PkFramework\\Controller\\ImageApiController'
+                'Bixie\\PkFramework\\Controller\\FrameworkApiController',
+                'Bixie\\PkFramework\\Controller\\ImageApiController',
             ]
         ]
 

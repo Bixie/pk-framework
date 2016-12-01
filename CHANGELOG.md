@@ -1,5 +1,6 @@
 WIP
 
+- Added agreed fieldtype
 - Ajax function calls for fieldtypes
 
 1.0.2 (December 1, 2016)

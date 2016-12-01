@@ -4,7 +4,6 @@ module.exports = {
 
     data: function () {
         return {
-            fieldValue: {},
             inputValue: ''
         };
     },
@@ -67,7 +66,7 @@ module.exports = {
             return !!this.field.data.multiple;
         },
         fieldRequired: function () {
-            return this.field.data.required && !this.isAdmin ? true : false;
+            return !!(this.field.data.required && !this.isAdmin);
         },
         fieldRequiredMessage: function () {
             return this.field.data.requiredError || this.$trans('Please enter a value');

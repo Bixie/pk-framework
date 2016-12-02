@@ -33,6 +33,18 @@
 
     };
 
+    require(`../fieldtypes/agree/agree.vue`);
+    require(`../fieldtypes/checkbox/checkbox.vue`);
+    require(`../fieldtypes/dob/dob.vue`);
+    require(`../fieldtypes/email/email.vue`);
+    require(`../fieldtypes/htmlcode/htmlcode.vue`);
+    require(`../fieldtypes/pulldown/pulldown.vue`);
+    require(`../fieldtypes/radio/radio.vue`);
+    require(`../fieldtypes/sitelink/sitelink.vue`);
+    require(`../fieldtypes/text/text.vue`);
+    require(`../fieldtypes/textbox/textbox.vue`);
+    require(`../fieldtypes/upload/upload.vue`);
+
     Vue.component('fieldtypes', function (resolve) {
         resolve(module.exports);
     });

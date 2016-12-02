@@ -85,6 +85,7 @@ class FrameworkModule extends Module {
 					'main' => '',
 					'extensions' => $this->fieldExtensions,
 					'class' => '\Bixie\PkFramework\FieldType\FieldType',
+					'loadScript' => false,
 					'resource' => 'bixie/pk-framework:app/bundle',
 					'config' => [
 						'hasOptions' => 0,
@@ -97,7 +98,7 @@ class FrameworkModule extends Module {
 					'styles' => [],
 					'getOptions' => '',
 					'prepareValue' => '',
-					'formatValue' => ''
+					'formatValue' => '',
 				], include($p));
 				$this->registerFieldType($package);
 			}

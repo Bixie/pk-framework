@@ -55,8 +55,10 @@ abstract class FieldTypeBase implements FieldTypeInterface, \ArrayAccess, \JsonS
 	 * @param \Pagekit\View\Asset\AssetManager $scripts
 	 */
 	public function registerScripts ($scripts) {
-		$script = $this->type['resource'] . '/fieldtype-' . $this->id . '.js';
-		$scripts->register('fieldtype-' . $this->id, $script, array_merge(['~bixie-fieldtypes'], $this->type['dependancies']));
+        if ($this->type['loadScript']) {
+            $script = $this->type['resource'] . '/fieldtype-' . $this->id . '.js';
+            $scripts->register('fieldtype-' . $this->id, $script, array_merge(['~bixie-fieldtypes'], $this->type['dependancies']));
+        }
 	}
 
 	/**

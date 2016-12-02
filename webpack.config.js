@@ -1,12 +1,4 @@
-var glob = require("glob");
-var path = require("path");
-var fieldtypes = {};
 var assets = __dirname + "/../../../app/assets";
-
-glob.sync(path.join(__dirname, 'fieldtypes/*/*.vue')).forEach(function (file) {
-    var type = path.basename(file, '.vue');
-    fieldtypes['fieldtype-' + type] = './fieldtypes/' + type + '/' + type + '.vue';
-});
 
 module.exports = [
 
@@ -18,9 +10,15 @@ module.exports = [
             filename: "./app/bundle/[name].js",
             library: "BixieFieldtypes"
         },
+        resolve: {
+            alias: {
+                "md5$": assets + "/js-md5/js/md5.js"
+            }
+        },
         module: {
             loaders: [
-                { test: /\.vue$/, loader: "vue" },
+                {test: /\.vue$/, loader: "vue" },
+                {test: /\.html$/, loader: "vue-html"},
                 {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}}
             ]
         }
@@ -40,26 +38,12 @@ module.exports = [
         },
         module: {
             loaders: [
-                { test: /\.vue$/, loader: "vue" },
+                {test: /\.vue$/, loader: "vue" },
                 {test: /\.html$/, loader: "vue-html"},
                 {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}}
             ]
         }
     },
-
-    {
-        entry: fieldtypes,
-        output: {
-            filename: "./app/bundle/[name].js"
-        },
-        module: {
-            loaders: [
-                { test: /\.vue$/, loader: "vue" },
-                {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}}
-            ]
-        }
-    },
-
 
     {
         entry: {

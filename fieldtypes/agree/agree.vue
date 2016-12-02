@@ -15,8 +15,8 @@
                               v-bind:false-value="''"
                               :value="inputValue"
                               v-model="inputValue" v-validate:required="fieldRequired">
-                    {{ field.data.checkbox_label_pre }} <a
-                            @click.prevent="openConditions">{{ field.data.checkbox_label_link }}</a> {{ field.data.checkbox_label_post }}
+                    {{ field.data.checkbox_label_pre }}<a v-if="field.data.checkbox_label_link"
+                            @click.prevent="openConditions">{{ field.data.checkbox_label_link }}</a>{{ field.data.checkbox_label_post }}
                 </label>
             </p>
 

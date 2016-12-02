@@ -20,9 +20,13 @@ class FrameworkApiController
             return App::abort(400, sprintf('Fieldtype %s not found', $field_type));
         }
 
-        $action = "{$method}Action";
+        try {
 
-        return call_user_func_array([$fieldType, $action], [$data]);
+            return call_user_func_array([$fieldType, "{$method}Action"], [$data]);
+
+        } catch (\BadMethodCallException $e) {
+            return App::abort(503, $e->getMessage());
+        }
     }
 
 }

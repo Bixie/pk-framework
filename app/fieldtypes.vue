@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <component v-for="field in fields | orderBy 'priority'"
+        <component v-for="field in fields | orderBy 'priority'" track-by="id"
                    :is="field.type"
                    :field="field"
                    :model="model"

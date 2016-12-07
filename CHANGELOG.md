@@ -1,9 +1,10 @@
-WIP
+1.0.3 (December 7, 2016)
 
 - Add location fieldtype
 - Combine fieldtype scripts
 - Added agreed fieldtype
 - Ajax function calls for fieldtypes
+- Field loading optimization
 
 1.0.2 (December 1, 2016)
 

@@ -16,11 +16,14 @@ class FrameworkModule extends Module {
 
 	protected $fieldExtensions = ['bixie/formmaker', 'bixie/userprofile', 'bixie/customcontent'];
 
-	/**
-	 * {@inheritdoc}
+    protected $version_key;
+
+    /**
+     * {@inheritdoc}
 	 */
 	public function main (App $app) {
 		$app['filter']->register('bixfilesize', 'Bixie\PkFramework\Filter\FileSizeFilter');
+
 
         $app->on('boot', function ($event, $app) {
             $app->extend('view', function ($view) use ($app) {
@@ -49,6 +52,16 @@ class FrameworkModule extends Module {
 
         });
 	}
+
+    /**
+     * @param string $version
+     * @return mixed
+     */
+    public function getVersionKey ($version = '') {
+        $secret = App::system()->config('secret');
+        $version = $version ? : App::package('bixie/pk-framework')->get('version');
+        return substr(sha1(App::version() . $version . $secret), 0, 4);
+    }
 
 	/**
 	 * @param  string $type

@@ -50,10 +50,14 @@ return [
 
 	'events' => [
 		'view.scripts' => function ($event, $scripts) use ($app) {
-			$scripts->register('framework-settings', 'bixie/pk-framework:app/bundle/settings.js', '~extensions');
-			$scripts->register('bixie-pkframework', 'bixie/pk-framework:app/bundle/bixie-framework.js', ['vue']);
+            $version = $app->module('bixie/pk-framework')->getVersionKey();
+			$scripts->register('framework-settings', 'bixie/pk-framework:app/bundle/settings.js',
+                '~extensions', ['version' => $version]);
+			$scripts->register('bixie-pkframework', 'bixie/pk-framework:app/bundle/bixie-framework.js',
+                ['vue'], ['version' => $version]);
 			//register fields
-			$scripts->register('bixie-fieldtypes', 'bixie/pk-framework:app/bundle/bixie-fieldtypes.js', ['bixie-pkframework', 'uikit-tooltip']);
+			$scripts->register('bixie-fieldtypes', 'bixie/pk-framework:app/bundle/bixie-fieldtypes.js',
+                ['bixie-pkframework', 'uikit-tooltip'], ['version' => $version]);
 			foreach ($app->module('bixie/pk-framework')->getFieldTypes() as $fieldType) {
 				$fieldType->registerScripts($scripts);
 			}

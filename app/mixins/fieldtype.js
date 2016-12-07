@@ -29,10 +29,14 @@ module.exports = {
         },
         removeValue: function (value) {
             var data = {};
-            this.fieldValue.value.$remove(value);
-            this.fieldValue.value.forEach(function (value, idx) {
-                data['data' + idx] = this.getValuedata(value);
-            }.bind(this));
+            if (value) {
+                this.fieldValue.value.$remove(value);
+                this.fieldValue.value.forEach(function (value, idx) {
+                    data['data' + idx] = this.getValuedata(value);
+                }.bind(this));
+            } else {
+                this.fieldValue.value = [];
+            }
             this.fieldValue.data = data;
         },
         valuedataModel: function (idx) {

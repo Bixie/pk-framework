@@ -56,11 +56,15 @@ return [
 			$scripts->register('bixie-pkframework', 'bixie/pk-framework:app/bundle/bixie-framework.js',
                 ['vue'], ['version' => $version]);
 			//register fields
+            $dependancies = ['bixie-pkframework', 'uikit-tooltip'];
+            foreach ($app->module('bixie/pk-framework')->getFieldTypes() as $fieldType) {
+                //pick up dependancies from types
+                if ($depends = $fieldType->registerScripts($scripts)) {
+                    $dependancies = array_merge($dependancies, $depends);
+                }
+            }
 			$scripts->register('bixie-fieldtypes', 'bixie/pk-framework:app/bundle/bixie-fieldtypes.js',
-                ['bixie-pkframework', 'uikit-tooltip'], ['version' => $version]);
-			foreach ($app->module('bixie/pk-framework')->getFieldTypes() as $fieldType) {
-				$fieldType->registerScripts($scripts);
-			}
+                $dependancies, ['version' => $version]);
 		},
 
         'view.data' => function ($event, $data) use ($app) {

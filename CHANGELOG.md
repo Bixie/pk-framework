@@ -1,3 +1,8 @@
+1.0.4 (December 7, 2016)
+
+- Add version cache breaker
+- Fix loading dependancies
+
 1.0.3 (December 7, 2016)
 
 - Add location fieldtype

@@ -89,6 +89,4 @@
 
     };
 
-    window.BixieFieldtypes.components['textbox'] = module.exports;
-
 </script>

@@ -46,6 +46,4 @@
 
     };
 
-    window.BixieFieldtypes.components['text'] = module.exports;
-
 </script>

@@ -32,6 +32,4 @@
 
     };
 
-    window.BixieFieldtypes.components['htmlcode'] = module.exports;
-
 </script>

@@ -39,6 +39,4 @@
 
     };
 
-    window.BixieFieldtypes.components['radio'] = module.exports;
-
 </script>

@@ -52,6 +52,4 @@
 
     };
 
-    window.BixieFieldtypes.components['email'] = module.exports;
-
 </script>

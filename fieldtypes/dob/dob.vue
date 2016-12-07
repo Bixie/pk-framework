@@ -183,6 +183,4 @@
 
     };
 
-    window.BixieFieldtypes.components['dob'] = module.exports;
-
 </script>

@@ -214,6 +214,4 @@
 
     };
 
-    window.BixieFieldtypes.components['upload'] = module.exports;
-
 </script>

@@ -58,6 +58,4 @@
 
     };
 
-    window.BixieFieldtypes.components['pulldown'] = module.exports;
-
 </script>

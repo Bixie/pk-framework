@@ -40,6 +40,4 @@
 
     };
 
-    window.BixieFieldtypes.components['checkbox'] = module.exports;
-
 </script>

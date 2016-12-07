@@ -103,6 +103,4 @@
 
     };
 
-    window.BixieFieldtypes.components['sitelink'] = module.exports;
-
 </script>

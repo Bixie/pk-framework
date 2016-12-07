@@ -79,6 +79,4 @@
 
     };
 
-    window.BixieFieldtypes.components['agree'] = module.exports;
-
 </script>

@@ -1,5 +1,6 @@
 WIP
 
+- Add location fieldtype
 - Combine fieldtype scripts
 - Added agreed fieldtype
 - Ajax function calls for fieldtypes

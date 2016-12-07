@@ -45,6 +45,7 @@ return [
 
 	'config' => [
         'image_cache_path' => trim(str_replace(App::path(), '', App::get('path.storage') . '/bixpkframework'), '/'),
+        'google_maps_key' => '',
 	],
 
 	'events' => [
@@ -58,11 +59,18 @@ return [
 			}
 		},
 
+        'view.data' => function ($event, $data) use ($app) {
+            //todo can this be done only when framework js is loaded?
+            $data->add('$pkframework', [
+                'google_maps_key' => $app->module('bixie/pk-framework')->config('google_maps_key')
+            ]);
+        },
+
 		'console.init' => function ($event, $console) {
 
 			$console->add(new Bixie\PkFramework\Console\Commands\TranslateCommand());
 
-		}
+		},
 	]
 
 ];

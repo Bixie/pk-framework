@@ -12,6 +12,8 @@
 
             <p class="uk-form-help-block uk-text-danger" v-show="fieldInvalid(form)">{{ fieldRequiredMessage }}</p>
 
+            <p class="uk-alert uk-alert-danger" v-if="invalidKey">{{{ invalidKey }}}</p>
+
             <div v-el:control class="uk-width-2-3 uk-margin-small-top uk-position-relative">
                 <input type="text" v-el:search
                        v-model="inputValue"
@@ -76,6 +78,13 @@
         computed: {
             minHeight() {
                 return `min-height: ${this.field.data.minHeight || 500}px`;
+            },
+            invalidKey() {
+                if (this.isAdmin && !window.$pkframework.google_maps_key) {
+                    return this.$trans('Please enter your Google Maps Javascript API key in the %link% settings!' ,
+                        {'link': `<a href="${this.$url('/admin/system/package/extensions')}">Bixie Framework</a>`});
+                }
+                return false;
             },
         },
 

@@ -25,7 +25,7 @@ return [
 			$class = $field->get('href_class') ? ' class="' . $field->get('href_class') . '"' : '';
 			$link_text = !empty($site['link_text']) ? $site['link_text'] : $field->get('link_text_default', $site['value']);
 
-			return sprintf('<a href="%s"%s%s>%s</a>', $site['value'], $class, $blank, $link_text);
+			return sprintf('<a href="%s"%s%s>%s</a>', $site['value'], $class, $blank, htmlspecialchars($link_text));
 		}, $fieldValue->getValuedata());
 	}
 ];

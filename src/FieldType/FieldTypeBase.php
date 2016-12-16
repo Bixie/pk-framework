@@ -138,8 +138,10 @@ abstract class FieldTypeBase implements FieldTypeInterface, \ArrayAccess, \JsonS
 			return ['-'];
 
 		} else {
-			//check for empty and return array
-			return count($value) ? $value : ['-'];
+			//check for empty and return cleaned array
+			return count($value) ? array_map(function ($val) {
+			    return htmlspecialchars($val);
+			}, $value) : ['-'];
 		}
 	}
 

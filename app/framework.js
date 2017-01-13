@@ -2,6 +2,17 @@
 if (window.Vue) {
     //components
     Vue.component('input-category', require('./components/input-category.vue'));
+    Vue.component('input-date-bix', function (resolve, reject) {
+        Vue.asset({
+            js: [
+                'app/assets/uikit/js/components/autocomplete.min.js',
+                'app/assets/uikit/js/components/datepicker.min.js',
+                'app/assets/uikit/js/components/timepicker.min.js'
+            ]
+        }).then(function () {
+            resolve(require('./components/input-date-bix.vue'));
+        });
+    });
     Vue.component('input-tags', require('./components/input-tags.vue'));
     Vue.component('input-folder', require('./components/input-folder.vue'));
     Vue.component('input-multiselect', require('./components/input-multiselect.vue'));

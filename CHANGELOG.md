@@ -1,3 +1,7 @@
+WIP
+
+- Add datepicker
+
 1.0.4 (December 7, 2016)
 
 - Add version cache breaker

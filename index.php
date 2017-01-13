@@ -54,7 +54,7 @@ return [
 			$scripts->register('framework-settings', 'bixie/pk-framework:app/bundle/settings.js',
                 '~extensions', ['version' => $version]);
 			$scripts->register('bixie-pkframework', 'bixie/pk-framework:app/bundle/bixie-framework.js',
-                ['vue'], ['version' => $version]);
+                ['vue', 'uikit-lightbox'], ['version' => $version]);
 			//register fields
             $dependancies = ['bixie-pkframework', 'uikit-tooltip'];
             foreach ($app->module('bixie/pk-framework')->getFieldTypes() as $fieldType) {

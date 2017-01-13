@@ -1,6 +1,7 @@
 WIP
 
 - Add datepicker
+- Include lightbox by default
 
 1.0.4 (December 7, 2016)
 

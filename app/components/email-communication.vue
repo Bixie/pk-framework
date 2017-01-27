@@ -8,18 +8,24 @@
 
             <div class="uk-form-row">
                 <label for="form-template" class="uk-form-label">{{ 'Template' | trans }}</label>
-                <div class="uk-form-controls uk-flex">
-                    <select id="form-template" class="uk-flex-item-1" v-model="template">
-                        <option value="">{{ 'Select template' | trans }}</option>
-                        <option v-for="template in templates" :value="template.type">{{
-                            template.emailtype.label }}
-                        </option>
-                    </select>
-                    <button @click="mailTemplate(template)" type="button"
-                            class="uk-button uk-margin-small-left" :disabled="!template">
-                        <i v-spinner="searching" icon="magic"></i>
-                        {{ 'Create mail' | trans }}
-                    </button>
+                <div class="uk-form-controls">
+                    <div class="uk-grid uk-grid-small" data-uk-grid-margin>
+                        <div class="uk-width-8-10">
+                            <select id="form-template" v-model="template">
+                                <option value="">{{ 'Select template' | trans }}</option>
+                                <option v-for="template in templates" :value="template.id">{{
+                                    template.emailtype.label }} - {{ template.subject }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="uk-width-2-10">
+                            <button @click="mailTemplate(template)" type="button"
+                                    class="uk-button uk-margin-small-left uk-text-nowrap" :disabled="!template">
+                                <i v-spinner="searching" icon="magic"></i>
+                                {{ 'Create mail' | trans }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,10 +96,10 @@
         },
 
         methods: {
-            mailTemplate(type) {
+            mailTemplate(template_id) {
                 this.searching = true;
                 this.Mail.template({id: this.id}, {
-                    type: type,
+                    template_id,
                     data: this.emailData,
                     user_id: this.user_id,
                 }).then(res => {
@@ -113,8 +119,8 @@
 
             },
 
-            sendMail: function (type, mail) {
-                return this.Mail.sendmail({id: this.id}, {type, mail, data: this.emailData, user_id: this.user_id})
+            sendMail: function (template_id, mail) {
+                return this.Mail.sendmail({id: this.id}, {template_id, mail, data: this.emailData, user_id: this.user_id})
                         .then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
             }
         },

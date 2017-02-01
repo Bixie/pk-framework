@@ -34,6 +34,7 @@
             'checkbox': require(`../fieldtypes/checkbox/checkbox.vue`),
             'dob': require(`../fieldtypes/dob/dob.vue`),
             'email': require(`../fieldtypes/email/email.vue`),
+            'emailpulldown': require(`../fieldtypes/emailpulldown/emailpulldown.vue`),
             'htmlcode': require(`../fieldtypes/htmlcode/htmlcode.vue`),
             'map': require(`../fieldtypes/map/map.vue`),
             'pulldown': require(`../fieldtypes/pulldown/pulldown.vue`),

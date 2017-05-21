@@ -1,6 +1,6 @@
 <template>
 
-    <div class="uk-grid uk-grid-small" data-uk-grid-margin>
+    <div :class="{'uk-grid uk-grid-small': showTime}" data-uk-grid-margin>
         <div :class="{'uk-width-large-1-2': showTime}">
             <div class="uk-form-icon uk-display-block">
                 <i class="pk-icon-calendar pk-icon-muted"></i>

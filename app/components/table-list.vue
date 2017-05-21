@@ -3,7 +3,7 @@
     <div>
         <div class="uk-form uk-form-icon">
             <i class="uk-icon-search"></i>
-            <input type="search" v-model="config.filter.search" :placeholder="'Search' | trans" debounce="300">
+            <input type="search" v-model="config.filter.search" :placeholder="$trans('Search')" debounce="300">
         </div>
 
         <div class="uk-margin uk-overflow-container">

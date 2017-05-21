@@ -13,8 +13,10 @@ if (window.Vue) {
             resolve(require('./components/input-date-bix.vue'));
         });
     });
+    Vue.component('period-selection', require('./components/period-selection.vue'));
     Vue.component('input-tags', require('./components/input-tags.vue'));
     Vue.component('input-folder', require('./components/input-folder.vue'));
+    Vue.component('input-location', require('./components/input-location.vue'));
     Vue.component('input-multiselect', require('./components/input-multiselect.vue'));
     Vue.component('input-props', require('./components/input-props.vue'));
     Vue.component('selects-props', require('./components/selects-props.vue'));

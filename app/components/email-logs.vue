@@ -10,7 +10,7 @@
                 </div>
                 <div class="uk-form uk-form-icon">
                     <i class="uk-icon-search"></i>
-                    <input type="search" v-model="config.filter.search" :placeholder="'Search' | trans"
+                    <input type="search" v-model="config.filter.search" :placeholder="$trans('Search')"
                            debounce="300">
                 </div>
             </div>
@@ -46,7 +46,7 @@
         <h3 class="uk-text-muted uk-text-center"
             v-show="!loading && !logs.length">{{ 'No logs found.' | trans }}</h3>
 
-        <v-pagination :page.sync="config.page" :pages="pages" v-show="pages > 1"></v-pagination>
+        <v-pagination :page.sync="config.page" :pages="pages" v-show="pages > 1" :replace-history="false"></v-pagination>
 
         <v-modal v-ref:editmodal large>
             <div class="uk-modal-header">

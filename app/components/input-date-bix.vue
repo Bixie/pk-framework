@@ -4,13 +4,15 @@
         <div :class="{'uk-width-large-1-2': showTime}">
             <div class="uk-form-icon uk-display-block">
                 <i class="pk-icon-calendar pk-icon-muted"></i>
-                <input class="uk-width-1-1" type="text" v-el:datepicker v-model="date" v-validate:required="isRequired" lazy>
+                <input class="uk-width-1-1" type="text" v-model="date"
+                       v-el:datepicker v-validate:required="isRequired" :disabled="disabled" lazy>
             </div>
         </div>
         <div v-if="showTime" class="uk-width-large-1-2">
             <div class="uk-form-icon uk-display-block" v-el:timepicker>
                 <i class="pk-icon-time pk-icon-muted"></i>
-                <input class="uk-width-1-1" type="text" v-model="time" v-validate:required="isRequired" lazy>
+                <input class="uk-width-1-1" type="text" v-model="time"
+                       v-validate:required="isRequired" :disabled="disabled" lazy>
             </div>
         </div>
     </div>
@@ -21,13 +23,19 @@
 
     module.exports = {
 
-        props: {'datetime': [String, Date], 'required': [String, Boolean], 'showTime': {type: Boolean, default: true}},
+        props: {
+            'datetime': [String, Date],
+            'required': [String, Boolean],
+            'showTime': {type: Boolean, default: true},
+            'disabled': {type: Boolean, default: false},
+        },
 
         ready: function () {
             UIkit.datepicker(this.$els.datepicker, {format: this.dateFormat, pos: 'bottom'});
             if (this.showTime) {
                 UIkit.timepicker(this.$els.timepicker, {format: this.clockFormat});
             }
+            this.$dispatch('ready.input.date');
         },
 
         computed: {

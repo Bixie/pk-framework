@@ -46,7 +46,7 @@
 
         props: {
             'config': {type: Object, default: function () {
-                return {filter: {search: '', order: 'title asc'}};
+                return {filter: {search: '', order: 'title asc'}, page: 0};
             }},
             'resource': {type: String, default: ''},
             'excluded': {type: Array, default: function () {return [];}},

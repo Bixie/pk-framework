@@ -17,7 +17,7 @@
         <div class="uk-flex uk-flex-middle uk-margin">
             <div v-show="existing.length">
                 <div class="uk-position-relative" data-uk-dropdown="">
-                    <button type="button" class="uk-button uk-button-small">{{ 'Existing' | trans }}</button>
+                    <button type="button" class="uk-button uk-button-small">{{ buttonText | trans }}</button>
 
                     <div class="uk-dropdown uk-dropdown-small">
                         <ul class="uk-nav uk-nav-dropdown">
@@ -47,8 +47,9 @@
 
         props: {
             'tags': Array,
-            'existing': Array,
-            'style': {type: String, default: 'tags'}
+            'existing': {type: Array, default: () => {return [];}},
+            'style': {type: String, default: 'tags'},
+            'buttonText': {type: String, default: 'Existing'},
         },
 
         data: function () {
@@ -65,7 +66,7 @@
                     return;
                 }
                 this.tags.push(tag);
-                if (this.style == 'tags') {
+                if (this.style === 'tags') {
                     this.$nextTick(function () {
                         UIkit.$html.trigger('resize'); //todo why no check.display or changed.dom???
                     });

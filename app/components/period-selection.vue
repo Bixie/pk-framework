@@ -8,7 +8,7 @@
                             :class="{'uk-active': current_period.type === 'week'}">{{ 'Week' | trans }}
                     </button>
                 </div>
-                <div v-show="overviewStats.week" class="uk-flex uk-flex-center">
+                <div v-if="overviewStats.week" class="uk-flex uk-flex-center">
                     {{{ overviewStats.week }}}
                 </div>
             </div>

@@ -15,7 +15,6 @@ return [
 		'link_text_default' => '',
 		'href_class' => ''
 	],
-	'dependancies' => ['editor'],
 	'formatValue' => function (\Bixie\PkFramework\Field\FieldBase $field, \Bixie\PkFramework\FieldValue\FieldValueBase $fieldValue) {
 		return array_map(function ($site) use ($field) {
 			if (empty($site['value'])) {

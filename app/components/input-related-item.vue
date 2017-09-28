@@ -3,12 +3,14 @@
     <div>
         <div v-show="selected_identifier" class="uk-badge uk-flex uk-flex-middle">
             <em class="uk-text-small uk-margin-small-right">{{ selected_identifier }}</em>
-            <span class="uk-flex-item-1 uk-text-left">{{ selected_name }} </span>
-            <small v-if="extra_key" class="uk-margin-small-left">({{ selected_extra_key }})</small>
-            <a @click="remove" class="uk-close uk-margin-small-left"></a>
+            <span class="uk-flex uk-flex-middle uk-flex-wrap">
+               <span class="uk-flex-item-1 uk-text-left uk-margin-small-right">{{ selected_name }} </span>
+                <small v-if="extra_key" class="uk-margin-small-right">({{ selected_extra_key }})</small>
+            </span>
+            <a @click="remove" class="uk-close"></a>
         </div>
 
-        <p>
+        <p class="uk-margin-bottom-remove">
             <button type="button" class="uk-button" :class="buttonClass" @click="pick">{{ buttonText | trans }}</button>
         </p>
 
@@ -18,7 +20,7 @@
                         :resource="resource"
                         :config="config"
                         :name="name"
-                        :excluded="excluded"
+                        :excluded="excluded_ids"
                         :label="label"
                         :extra_key="extra_key"
                         :identifier="identifier"></table-list>
@@ -45,6 +47,7 @@
         props: {
             'model': {default: ''},
             'selected': {type: Object, default: function () {return {}}},
+            'excluded': {type: Array, default: function () {return [];}},
             'resource': {type: String, default: ''},
             'config': {type: Object, default: function () {return {filter: {search: '', order: 'title asc'}}}},
             'name': {type: String, default: 'items'},
@@ -67,8 +70,8 @@
             selected_extra_key: function () {
                 return this.selected ? this.selected[this.extra_key] : '';
             },
-            excluded: function () {
-                return [this.selected_identifier];
+            excluded_ids: function () {
+                return _.merge(this.excluded, [this.selected_identifier]);
             }
         },
 

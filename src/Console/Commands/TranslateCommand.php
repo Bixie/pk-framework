@@ -24,7 +24,7 @@ class TranslateCommand extends Command
 	/**
 	 * {@inheritdoc}
 	 */
-	protected $extension = 'framework';
+	protected $extension = 'pk-framework';
 
     /**
      * {@inheritdoc}

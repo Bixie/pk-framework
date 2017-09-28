@@ -6,7 +6,7 @@
                 <div class="uk-margin-right" v-show="selected.length">
                     <a class="uk-icon-trash-o uk-icon-hover" title="{{ 'Delete' | trans }}"
                        data-uk-tooltip="{delay: 500}" @click.prevent="remove"
-                       v-confirm="'Delete logs?' | trans"></a>
+                       v-if="true" v-confirm="'Delete logs?' | trans"></a>
                 </div>
                 <div class="uk-form uk-form-icon">
                     <i class="uk-icon-search"></i>
@@ -55,16 +55,16 @@
             <div class="uk-margin">
                 <dl class="uk-description-list-horizontal">
                     <dt>{{ 'To' | trans }}</dt>
-                    <dd>{{ edit_log.recipients }}</dd>
+                    <dd>{{ edit_log.recipients.length ? edit_log.recipients : '-' }}</dd>
                     <dt>{{ 'CC' | trans }}</dt>
-                    <dd>{{ edit_log.cc }}</dd>
+                    <dd>{{ edit_log.cc.length ? edit_log.cc : '-' }}</dd>
                     <dt>{{ 'BCC' | trans }}</dt>
-                    <dd>{{ edit_log.bcc }}</dd>
+                    <dd>{{ edit_log.bcc.length ? edit_log.bcc : '-' }}</dd>
                     <dt>{{ 'Subject' | trans }}</dt>
-                    <dd>{{ edit_log.subject }}</dd>
+                    <dd>{{ edit_log.subject || '-' }}</dd>
                     <dt>{{ 'Content' | trans }}</dt>
-                    <dd>{{{ edit_log.content }}}</dd>
-                    <template v-if="edit_log.data.attachments">
+                    <dd style="white-space: pre-wrap">{{{ edit_log.content || '-' }}}</dd>
+                    <template v-if="edit_log.data.attachments.length">
                         <dt>{{ 'Attachments' | trans }}</dt>
                         <dd v-for="attachment in edit_log.data.attachments">{{ attachment }}</dd>
                     </template>

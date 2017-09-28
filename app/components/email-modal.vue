@@ -5,28 +5,28 @@
             <div class="uk-form-row">
                 <label class="uk-form-label">{{ 'To' | trans }}</label>
                 <div class="uk-form-controls">
-                    <input type="text" v-model="to" class="uk-form-width-large">
+                    <input type="text" name="to" v-model="to" class="uk-form-width-large">
                 </div>
             </div>
 
             <div class="uk-form-row">
                 <label class="uk-form-label">{{ 'CC' | trans }}</label>
                 <div class="uk-form-controls">
-                    <input type="text" v-model="cc" class="uk-form-width-large">
+                    <input type="text" name="cc" v-model="cc" class="uk-form-width-large">
                 </div>
             </div>
 
             <div class="uk-form-row">
                 <label class="uk-form-label">{{ 'BCC' | trans }}</label>
                 <div class="uk-form-controls">
-                    <input type="text" v-model="bcc" class="uk-form-width-large">
+                    <input type="text" name="bcc" v-model="bcc" class="uk-form-width-large">
                 </div>
             </div>
         </div>
 
         <div class="uk-form-row uk-margin-top">
             <div class="uk-form-controls">
-                <input type="text" v-model="subject" :placeholder="'Subject' | trans" class="uk-form-large uk-width-1-1">
+                <input type="text" v-model="subject" name="subject" :placeholder="'Subject' | trans" class="uk-form-large uk-width-1-1">
             </div>
         </div>
         <div class="uk-form-row">

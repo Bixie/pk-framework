@@ -38,23 +38,30 @@
         },
 
         created() {
-            if (!_.isArray(this.props)) {
-                this.props = [];
-            }
-            if (!_.isObject(this.values)) {
-                this.values = {};
-            }
-            this.props.forEach(prop => {
-                this.values[prop.name] = _.defaults((this.values[prop.name] || {}), {
-                    option: (_.first(prop.options) || {value: ''}),
-                    prop
-                });
-                this.selected[prop.name] = this.values[prop.name].option.value;
-            });
-            this.setHash();
+            this.init();
+            this.$on('addtocart.init', this.init);
         },
 
         methods: {
+            init() {
+                var values = this.values, selected = this.selected;
+                if (!_.isArray(this.props)) {
+                    this.props = [];
+                }
+                this.values = {};
+                this.selected = {};
+                this.props.forEach(prop => {
+                    if (!_.find(prop.options, {value: selected[prop.name]})) {
+                        this.values[prop.name] = {}; //get new default
+                    }
+                    this.values[prop.name] = _.defaults((values[prop.name] || {}), {
+                        option: (_.first(prop.options) || {value: ''}),
+                        prop
+                    });
+                    this.selected[prop.name] = this.values[prop.name].option.value;
+                });
+                this.setHash();
+            },
             setValue(prop) {
                 var value = this.selected[prop.name];
                 this.values[prop.name].option = _.find(prop.options, {value});

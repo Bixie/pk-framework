@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <p>
+        <p class="uk-margin-bottom-remove">
             <button type="button" class="uk-button uk-button-small" @click="pick">{{ 'Please select' | trans }}</button>
         </p>
 
@@ -22,7 +22,7 @@
             <table-list v-ref:table-list
                         :resource="resource"
                         :config="config"
-                        :excluded="model"
+                        :excluded="excluded_ids"
                         :name="name"
                         :extra_key="extra_key"
                         :label="label"
@@ -50,6 +50,7 @@
         props: {
             'model': {type: Array, default: function () {return []}},
             'selected': {type: Array, default: function () {return {}}},
+            'excluded': {type: Array, default: function () {return [];}},
             'resource': {type: String, default: ''},
             'config': {type: Object, default: function () {return {filter: {search: '', order: 'title asc'}}}},
             'name': {type: String, default: 'items'},
@@ -65,6 +66,12 @@
                 this.model = _.map(items, function (item) {
                     return this.getIdentifier(item);
                 }, this);
+            }
+        },
+
+        computed: {
+            excluded_ids: function () {
+                return _.merge(this.excluded, this.model);
             }
         },
 

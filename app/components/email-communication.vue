@@ -6,11 +6,32 @@
 
             <h3>{{ 'Create email' | trans }}</h3>
 
+            <div v-if="sender" class="uk-form-row">
+                <label for="form-sender" class="uk-form-label">{{ 'Sender' | trans }}</label>
+                <div class="uk-form-controls">
+                    <select id="form-sender" v-model="sender" class="uk-width-1-1">
+                        <option v-for="sender in senders" :value="$key">
+                            {{ sender.name }} - {{ sender.email }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div v-if="receiver" class="uk-form-row">
+                <label for="form-receiver" class="uk-form-label">{{ 'Receiver' | trans }}</label>
+                <div class="uk-form-controls">
+                    <select id="form-receiver" v-model="receiver" class="uk-width-1-1">
+                        <option v-for="receiver in receivers" :value="$key">
+                            {{ receiver.name }} - {{ receiver.email }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
             <div class="uk-form-row">
                 <label for="form-template" class="uk-form-label">{{ 'Template' | trans }}</label>
                 <div class="uk-form-controls">
                     <div class="uk-grid uk-grid-small" data-uk-grid-margin>
-                        <div class="uk-width-8-10">
+                        <div :class="{'uk-width-8-10': !stacked,'uk-width-1-1': stacked}">
                             <select id="form-template" v-model="template">
                                 <option value="">{{ 'Select template' | trans }}</option>
                                 <option v-for="template in templates" :value="template.id">{{
@@ -18,9 +39,9 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="uk-width-2-10">
+                        <div :class="{'uk-width-2-10': !stacked,'uk-width-1-1': stacked}">
                             <button @click="mailTemplate(template)" type="button"
-                                    class="uk-button uk-margin-small-left uk-text-nowrap" :disabled="!template">
+                                    class="uk-button uk-text-nowrap" :disabled="!template">
                                 <i v-spinner="searching" icon="magic"></i>
                                 {{ 'Create mail' | trans }}
                             </button>
@@ -30,13 +51,13 @@
             </div>
         </div>
 
-        <div class="uk-margin">
+        <div v-if="showLog" class="uk-margin">
             <h3>{{ 'Communication log' | trans }}</h3>
 
             <email-logs v-ref:maillog :ext_key="ext_key"></email-logs>
         </div>
 
-        <v-modal v-ref:mailmodal>
+        <v-modal v-ref:mailmodal :options="{bgclose: false}">
             <div class="uk-modal-header">
                 <h3>{{ 'Send email' | trans }}</h3>
             </div>
@@ -64,15 +85,21 @@
             'templates': Array,
             'ext_key': String,
             'resource': {type: String, default: 'api/emailsender'},
+            'senders': {type: Object, default: () => {return {};}},
+            'receivers': {type: Object, default: () => {return {};}},
             'attachments': {type: Array, default: () => {return [];}},
             'emailData': {type: Object, default: () => {return {};}},
             'user_id': {type:  Number, default: null},
             'id': {type: [String, Number], default: null},
+            'showLog': {type: Boolean, default: true},
+            'stacked': {type: Boolean, default: false},
         },
 
         data() {
             return {
                 template: '',
+                sender: '',
+                receiver: '',
                 searching: false,
                 mail_data: {}
             }
@@ -83,12 +110,21 @@
                 'template': {method: 'post', url: `${this.resource}/template{/id}`},
                 'sendmail': {method: 'post', url: `${this.resource}/sendmail{/id}`}
             });
+            if (_.size(this.senders)) {
+                this.sender = Object.keys(this.senders)[0];
+            }
+            if (_.size(this.receivers)) {
+                this.receiver = Object.keys(this.receivers)[0];
+            }
         },
 
         events: {
             'after.email.send': function (type, mail) {
                 this.$refs.mailmodal.close();
-                this.$refs.maillog.load();
+                if (this.showLog) {
+                    this.$refs.maillog.load();
+                }
+                return true; //bubble event
             },
             'email.cancel': function (type) {
                 this.$refs.mailmodal.close();
@@ -100,7 +136,10 @@
                 this.searching = true;
                 this.Mail.template({id: this.id}, {
                     template_id,
-                    data: this.emailData,
+                    data: _.merge({
+                        sender: this.senders[this.sender] || {name: '', email: ''},
+                        receiver: this.receivers[this.receiver] || {name: '', email: ''},
+                    }, this.emailData),
                     user_id: this.user_id,
                 }).then(res => {
                     this.mail_data = _.merge({
@@ -120,7 +159,13 @@
             },
 
             sendMail: function (template_id, mail) {
-                return this.Mail.sendmail({id: this.id}, {template_id, mail, data: this.emailData, user_id: this.user_id})
+                return this.Mail.sendmail({id: this.id}, {
+                    template_id, mail,
+                    data: _.merge({
+                        sender: this.senders[this.sender],
+                        receiver: this.receivers[this.receiver],
+                    }, this.emailData),
+                    user_id: this.user_id})
                         .then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
             }
         },

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Pagekit 0.10.4 (bixie/pk-framework, messages)\n"
-"POT-Creation-Date: 2016-03-03 10:16+0000\n"
+"Project-Id-Version: Pagekit 1.0.12 (bixie/pk-framework, messages)\n"
+"POT-Creation-Date: 2017-09-21 15:05+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -9,40 +9,28 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "Page with conditions"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Enable Markdown"
+msgstr ""
+
+msgid "Open in new window"
+msgstr ""
+
+msgid "Please drop a file here or "
+msgstr ""
+
 msgid "Please enter a value"
 msgstr ""
 
 msgid "Default value"
 msgstr ""
 
-msgid "Make primary category"
-msgstr ""
-
-msgid "Please select"
-msgstr ""
-
-msgid "Existing"
-msgstr ""
-
-msgid "Label"
-msgstr ""
-
-msgid "Field required"
-msgstr ""
-
-msgid "Delete"
-msgstr ""
-
-msgid "Select file"
-msgstr ""
-
-msgid "Select one file of the following types"
-msgstr ""
-
-msgid "Cancel"
-msgstr ""
-
-msgid "Select"
+msgid "Agreed"
 msgstr ""
 
 msgid "Month"
@@ -90,16 +78,10 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-msgid "Enable Markdown"
+msgid "Please enter your Google Maps Javascript API key in the %link% settings!"
 msgstr ""
 
-msgid "Open in new window"
-msgstr ""
-
-msgid "Add value"
-msgstr ""
-
-msgid "Please drop a file here or "
+msgid "Clear"
 msgstr ""
 
 msgid "File extension not allowed."
@@ -111,10 +93,166 @@ msgstr ""
 msgid "File is too large."
 msgstr ""
 
+msgid "Make primary category"
+msgstr ""
+
+msgid "Week"
+msgstr ""
+
+msgid "Select folder"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Minimum quantity"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Please select"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "To"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Create email"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "Field required"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
 msgid "Bixie Framework Settings"
 msgstr ""
 
+msgid "Get your Google Maps Javascript API key at %link%."
+msgstr ""
+
+msgid "Sender"
+msgstr ""
+
+msgid "Receiver"
+msgstr ""
+
+msgid "Template"
+msgstr ""
+
+msgid "Select template"
+msgstr ""
+
+msgid "Create mail"
+msgstr ""
+
+msgid "Communication log"
+msgstr ""
+
+msgid "Send email"
+msgstr ""
+
+msgid "Sent"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "No logs found."
+msgstr ""
+
+msgid "View log"
+msgstr ""
+
+msgid "CC"
+msgstr ""
+
+msgid "BCC"
+msgstr ""
+
+msgid "Attachments"
+msgstr ""
+
+msgid "Select file"
+msgstr ""
+
+msgid "Select one file of the following types"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Maximum quantity"
+msgstr ""
+
+msgid "Currency"
+msgstr ""
+
+msgid "Euro"
+msgstr ""
+
+msgid "US Dollar"
+msgstr ""
+
+msgid "Price"
+msgstr ""
+
+msgid "Add price"
+msgstr ""
+
+msgid "Ordering"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Add option"
+msgstr ""
+
+msgid "Add property"
+msgstr ""
+
+msgid "Quarter"
+msgstr ""
+
+msgid "Custom period"
+msgstr ""
+
+msgid "Date from"
+msgstr ""
+
+msgid "Date to"
+msgstr ""
+
 msgid "Save"
+msgstr ""
+
+msgid "Google maps API key"
+msgstr ""
+
+msgid "Image caching folder"
+msgstr ""
+
+msgid "Extra"
+msgstr ""
+
+msgid "No items found."
 msgstr ""
 
 msgid "Hide Label"
@@ -171,6 +309,9 @@ msgstr ""
 msgid "Restrict Access"
 msgstr ""
 
+msgid "Agree checkbox"
+msgstr ""
+
 msgid "Checkboxes"
 msgstr ""
 
@@ -183,6 +324,9 @@ msgstr ""
 msgid "Html code"
 msgstr ""
 
+msgid "Location"
+msgstr ""
+
 msgid "Pulldown"
 msgstr ""
 
@@ -190,6 +334,9 @@ msgid "Radio bullets"
 msgstr ""
 
 msgid "Website link"
+msgstr ""
+
+msgid "Add value"
 msgstr ""
 
 msgid "Textfield"
@@ -217,5 +364,8 @@ msgid "Upload complete."
 msgstr ""
 
 msgid "Unable to upload."
+msgstr ""
+
+msgid "Error"
 msgstr ""
 

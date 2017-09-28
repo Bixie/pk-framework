@@ -19,7 +19,7 @@ class CurrencyHelper {
 	 * @return string
 	 */
 	public static function format ($number, $currency = 'EUR') {
-		return self::$_symbols[$currency] . number_format($number, 2, ',', '.');
+		return self::$_symbols[$currency] . number_format(floatval($number), 2, ',', '.');
 	}
 
 }

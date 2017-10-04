@@ -27,7 +27,7 @@
                 </div>
 
             </div>
-            <div class="uk-flex-item-1 uk-margin-small-left">
+            <div v-if="!readOnly" class="uk-flex-item-1 uk-margin-small-left">
                 <div class="uk-form-password">
                     <input type="text" class="uk-width-1-1" v-model="newtag">
                     <a class="uk-form-password-toggle" @click.prevent="addTag()"><i
@@ -50,6 +50,7 @@
             'existing': {type: Array, default: () => {return [];}},
             'style': {type: String, default: 'tags'},
             'buttonText': {type: String, default: 'Existing'},
+            'readOnly': {type: Boolean, default: false},
         },
 
         data: function () {
@@ -61,8 +62,8 @@
         methods: {
 
             addTag: function(tag) {
-                tag = tag || this.newtag;
-                if (this.selected(tag)) {
+                tag = tag || (this.readOnly ? '' : this.newtag);
+                if (!tag || this.selected(tag)) {
                     return;
                 }
                 this.tags.push(tag);

@@ -3,14 +3,14 @@
     <div :class="{'uk-grid uk-grid-small': showTime}" data-uk-grid-margin>
         <div :class="{'uk-width-large-1-2': showTime}">
             <div class="uk-form-icon uk-display-block">
-                <i class="pk-icon-calendar pk-icon-muted"></i>
+                <i class="pk-icon-muted" :class="iconDate"></i>
                 <input class="uk-width-1-1" type="text" v-model="date"
                        v-el:datepicker v-validate:required="isRequired" :disabled="disabled" lazy>
             </div>
         </div>
         <div v-if="showTime" class="uk-width-large-1-2">
             <div class="uk-form-icon uk-display-block" v-el:timepicker>
-                <i class="pk-icon-time pk-icon-muted"></i>
+                <i class="pk-icon-muted" :class="iconTime"></i>
                 <input class="uk-width-1-1" type="text" v-model="time"
                        v-validate:required="isRequired" :disabled="disabled" lazy>
             </div>
@@ -26,6 +26,8 @@
         props: {
             'datetime': [String, Date],
             'required': [String, Boolean],
+            'iconDate': {type: String, default: 'pk-icon-calendar'},
+            'iconTime': {type: String, default: 'pk-icon-time'},
             'showTime': {type: Boolean, default: true},
             'disabled': {type: Boolean, default: false},
         },

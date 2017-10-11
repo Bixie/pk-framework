@@ -3,6 +3,7 @@
 namespace Bixie\PkFramework;
 
 use Bixie\PkFramework\Helpers\ImageHelper;
+use Bixie\PkFramework\Plugin\WidgetLoaderPlugin;
 use Pagekit\Application as App;
 use Pagekit\Kernel\Exception\HttpException;
 use Pagekit\Module\Module;
@@ -26,6 +27,9 @@ class FrameworkModule extends Module {
 
 
         $app->on('boot', function ($event, $app) {
+
+            $app->subscribe(new WidgetLoaderPlugin());
+
             $app->extend('view', function ($view) use ($app) {
                 return $view->addHelper(new ImageHelper($app));
             });

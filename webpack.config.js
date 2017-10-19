@@ -26,6 +26,7 @@ module.exports = [
 
     {
         entry: {
+            "bixie-chartjs": "./app/chartjs.js",
             "bixie-framework": "./app/framework.js"
         },
         output: {

@@ -1,0 +1,15 @@
+{
+  "name": "pk-framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bixie/pagekit-pk-framework.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^2.4.0"
+  }
+}

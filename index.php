@@ -53,6 +53,8 @@ return [
             $version = $app->module('bixie/pk-framework')->getVersionKey();
 			$scripts->register('framework-settings', 'bixie/pk-framework:app/bundle/settings.js',
                 '~extensions', ['version' => $version]);
+			$scripts->register('bixie-chartjs', 'bixie/pk-framework:app/bundle/bixie-chartjs.js',
+                ['vue'], ['version' => $version]);
 			$scripts->register('bixie-pkframework', 'bixie/pk-framework:app/bundle/bixie-framework.js',
                 ['vue', 'uikit-lightbox'], ['version' => $version]);
 			//register fields

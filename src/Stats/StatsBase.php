@@ -78,7 +78,7 @@ class StatsBase {
      */
     public function __destruct () {
         if ($this->_cache_dirty) {
-            $this->cache->save(self::CACHE_KEY, $this->_cache);
+            $this->cache->save(static::CACHE_KEY, $this->_cache);
         }
     }
 

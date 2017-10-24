@@ -89,7 +89,7 @@
 
 <script>
 
-    var moment = UIkit.Utils.moment;
+    const moment = require('moment');
 
     module.exports = {
 
@@ -114,10 +114,10 @@
 
         methods: {
             setPeriods() {
-                var week = this.week(this.select_now);
-                var month = this.month(this.select_now);
-                var quarter = this.quarter(this.select_now);
-                var year = this.year(this.select_now);
+                const week = this.week(this.select_now);
+                const month = this.month(this.select_now);
+                const quarter = this.quarter(this.select_now);
+                const year = this.year(this.select_now);
                 this.periods = {
                     week: {
                         type: 'week',
@@ -170,26 +170,26 @@
             },
 
             week(now) {
-                var last_monday = moment(now).day(1);
+                const last_monday = moment(now).day(1);
                 return this.getFullDays(last_monday, moment(last_monday).add(6, 'days'));
             },
             month(now) {
-                var first_day = UIkit.Utils.moment(now).date(1);
-                var last_day = UIkit.Utils.moment(first_day).add(1, 'months');
+                const first_day = moment(now).date(1);
+                const last_day = moment(first_day).add(1, 'months');
                 return this.getFullDays(first_day, last_day.subtract(1, 'days'));
             },
             quarter(now) {
-                var quarter = UIkit.Utils.moment(now).quarter();
-                var first_day = UIkit.Utils.moment(now).month((quarter * 3) - 3);
+                const quarter = moment(now).quarter();
+                const first_day = moment(now).month((quarter * 3) - 3);
                 first_day.date(1);
-                var last_day = UIkit.Utils.moment(first_day).add(3, 'months');
+                const last_day = moment(first_day).add(3, 'months');
                 return this.getFullDays(first_day, last_day.subtract(1, 'days'));
             },
 
             year(now) {
-                var first_day = UIkit.Utils.moment(now).date(1);
+                const first_day = moment(now).date(1);
                 first_day.month(0);
-                var last_day = UIkit.Utils.moment(first_day).add(1, 'years');
+                const last_day = moment(first_day).add(1, 'years');
                 return this.getFullDays(first_day, last_day.subtract(1, 'days'));
             },
 
@@ -198,8 +198,8 @@
                     return [[1, 'Mon'], [2, 'Tue'], [3, 'Wed'], [4, 'Thu'], [5, 'Fri'], [6, 'Sat'], [7, 'Sun']];
                 }
                 if (period_type === 'month') {
-                    var units = [];
-                    for (var d = 1;d <= this.select_now.daysInMonth(); d+=1) {
+                    const units = [];
+                    for (let d = 1;d <= this.select_now.daysInMonth(); d+=1) {
                         units.push([d, d]);
                     }
                     return units;

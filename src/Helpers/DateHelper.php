@@ -49,7 +49,9 @@ class DateHelper {
 				$date = new \DateTime($date, new \DateTimeZone($tz));
 			}
 
-			return $date->format(static::getFormat($format));
+			$format = static::getFormat($format);
+
+			return static::translate($date->format($format), $format);
 
 		} catch (\Exception $e) {
 
@@ -58,10 +60,38 @@ class DateHelper {
 		}
 	}
 
+    /**
+     * Convert moment(like) jsformat to PHP date format
+     * @param $format
+     * @return string
+     */
 	protected static function getFormat ($format) {
 		$intl = App::module('system/intl');
 		$formats = $intl->getFormats($intl->getLocale());
 		$moment_format = isset($formats['DATETIME_FORMATS'][$format]) ? $formats['DATETIME_FORMATS'][$format] : $format;
 		return strtr($moment_format, static::$intl2php);
+	}
+
+    /**
+     * Translate dates
+     * @param $formatted_date
+     * @param $format
+     * @return string
+     */
+	protected static function translate ($formatted_date, $format) {
+	    if (!preg_match('/[F|M|l|D]/', $format)) {
+	        //bail out when no textual repres
+	        return $formatted_date;
+        }
+		$intl = App::module('system/intl');
+		$formats_us = $intl->getFormats('en_US');
+		$formats_locale = $intl->getFormats($intl->getLocale());
+        $translations = array_merge(
+            array_combine($formats_us['DATETIME_FORMATS']['MONTH'], $formats_locale['DATETIME_FORMATS']['MONTH']),
+            array_combine($formats_us['DATETIME_FORMATS']['DAY'], $formats_locale['DATETIME_FORMATS']['DAY']),
+            array_combine($formats_us['DATETIME_FORMATS']['SHORTMONTH'], $formats_locale['DATETIME_FORMATS']['SHORTMONTH']),
+            array_combine($formats_us['DATETIME_FORMATS']['SHORTDAY'], $formats_locale['DATETIME_FORMATS']['SHORTDAY'])
+        );
+		return strtr($formatted_date, $translations);
 	}
 }

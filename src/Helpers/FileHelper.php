@@ -35,6 +35,7 @@ class FileHelper
         $tokens = [];
 
         foreach ($parts as $part) {
+            $part = urlencode($part);
             if ('..' === $part) {
                 array_pop($tokens);
             } elseif ('.' !== $part) {

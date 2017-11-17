@@ -1,4 +1,3 @@
-var assets = __dirname + "/../../../app/assets";
 
 module.exports = [
 
@@ -9,11 +8,6 @@ module.exports = [
         output: {
             filename: "./app/bundle/[name].js",
             library: "BixieFieldtypes"
-        },
-        resolve: {
-            alias: {
-                "md5$": assets + "/js-md5/js/md5.js"
-            }
         },
         module: {
             loaders: [
@@ -31,11 +25,6 @@ module.exports = [
         },
         output: {
             filename: "./app/bundle/[name].js"
-        },
-        resolve: {
-            alias: {
-                "md5$": assets + "/js-md5/js/md5.js"
-            }
         },
         module: {
             loaders: [

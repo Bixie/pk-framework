@@ -10,6 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "chart.js": "^2.4.0"
+    "chart.js": "^2.4.0",
+    "js-md5": "^0.7.2"
   }
 }

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    var md5 = require('md5');
+    var md5 = require('js-md5');
 
     module.exports = {
 

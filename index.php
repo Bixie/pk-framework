@@ -53,6 +53,9 @@ return [
             $version = $app->module('bixie/pk-framework')->getVersionKey();
 			$scripts->register('framework-settings', 'bixie/pk-framework:app/bundle/settings.js',
                 '~extensions', ['version' => $version]);
+            $scripts->register('typeahead-bundle', 'bixie/pk-framework:app/assets/typeahead/dist/typeahead.bundle.min.js', ['jquery']);
+            $scripts->register('bixie-typeahead', 'bixie/pk-framework:app/bundle/bixie-typeahead.js',
+                ['vue', 'typeahead-bundle'], ['version' => $version]);
 			$scripts->register('bixie-chartjs', 'bixie/pk-framework:app/bundle/bixie-chartjs.js',
                 ['vue'], ['version' => $version]);
 			$scripts->register('bixie-pkframework', 'bixie/pk-framework:app/bundle/bixie-framework.js',

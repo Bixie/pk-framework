@@ -20,6 +20,7 @@ module.exports = [
 
     {
         entry: {
+            "bixie-typeahead": "./app/typeahead.js",
             "bixie-chartjs": "./app/chartjs.js",
             "bixie-framework": "./app/framework.js"
         },
@@ -30,7 +31,7 @@ module.exports = [
             loaders: [
                 {test: /\.vue$/, loader: "vue" },
                 {test: /\.html$/, loader: "vue-html"},
-                {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}}
+                {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}},
             ]
         }
     },

@@ -1,0 +1,14 @@
+{
+  "name": "pk-framework",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Matthijs Alles <admin@bixie.nl>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Bixie/pk-framework",
+  "dependencies": {
+    "typeahead": "https://github.com/sirianni/typeahead.js.git#master"
+  },
+  "private": true
+}

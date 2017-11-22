@@ -30,13 +30,28 @@
             <div class="uk-form-row">
                 <label for="form-template" class="uk-form-label">{{ 'Template' | trans }}</label>
                 <div class="uk-form-controls">
+
                     <div class="uk-grid uk-grid-small" data-uk-grid-margin>
                         <div :class="{'uk-width-8-10': !stacked,'uk-width-1-1': stacked}">
-                            <select id="form-template" v-model="template">
+
+                            <input-typeahead v-if="useTypeahead" v-ref:typeahead class="uk-width-1-1"
+                                             :search="template_search"
+                                             :datasets="datasets"
+                                             :on-select="onSelectTypeahead"></input-typeahead>
+
+                            <small v-if="useTypeahead">
+                                <a @click="showAllTemplates = !showAllTemplates">
+                                    {{showAllTemplates ? 'Hide all templates' : 'Show all templates' | trans }}
+                                </a>
+                            </small>
+
+                            <select id="form-template" v-model="template" v-show="showSelect" class="uk-width-1-1">
                                 <option value="">{{ 'Select template' | trans }}</option>
-                                <option v-for="template in templates" :value="template.id">{{
-                                    template.emailtype.label }} - {{ template.subject }}
-                                </option>
+                                <optgroup v-for="templates in groupedTemplates" :label="$key">
+                                    <option v-for="template in templates" :value="template.id">
+                                        {{ template.subject }}
+                                    </option>
+                                </optgroup>
                             </select>
                         </div>
                         <div :class="{'uk-width-2-10': !stacked,'uk-width-1-1': stacked}">
@@ -97,15 +112,31 @@
 
         data() {
             return {
+                template_search: '',
                 template: '',
                 sender: '',
                 receiver: '',
+                showAllTemplates: false,
                 searching: false,
+                datasets: {},
                 mail_data: {}
             }
         },
 
         created() {
+            if (this.useTypeahead) {
+                this.datasets.emailtemplates =  new BloodhoundDataset(this, 'emailtemplates', {
+                    keys: {
+                        label: 'type_label',
+                        subtitle: 'subject',
+                        extra_search: 'subject',
+                    },
+                    display(obj) {
+                        return `${obj.type_label} - ${obj.subject}`;
+                    },
+                });
+            }
+
             this.Mail = this.$resource(this.resource, {}, {
                 'template': {method: 'post', url: `${this.resource}/template{/id}`},
                 'sendmail': {method: 'post', url: `${this.resource}/sendmail{/id}`}
@@ -115,6 +146,12 @@
             }
             if (_.size(this.receivers)) {
                 this.receiver = Object.keys(this.receivers)[0];
+            }
+        },
+
+        compiled() {
+            if (this.useTypeahead) {
+                this.$refs.typeahead.initDatasets({emailtemplates: this.templates});
             }
         },
 
@@ -131,7 +168,22 @@
             }
         },
 
+        computed: {
+            useTypeahead() {
+                return window.Bloodhound !== undefined;
+            },
+            showSelect() {
+                return !this.useTypeahead || this.showAllTemplates;
+            },
+            groupedTemplates() {
+                return _.groupBy(this.templates, 'type_label');
+            },
+        },
+
         methods: {
+            onSelectTypeahead(template) {
+                this.template = template.id;
+            },
             mailTemplate(template_id) {
                 this.searching = true;
                 this.Mail.template({id: this.id}, {

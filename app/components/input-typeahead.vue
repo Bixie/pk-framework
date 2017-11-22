@@ -1,0 +1,58 @@
+<template>
+    <input type="text" v-model="search_text" @keyup.enter.stop="search"/>
+</template>
+<script>
+
+    module.exports = {
+        name: 'input-typeahead',
+        props: {
+            search_text: String,
+            datasets: Object,
+            onSelect: {type: Function, default: _.noop},
+            onActive: {type: Function, default: _.noop},
+            onSearch: {type: Function, default: _.noop},
+        },
+        data() {
+            return {
+                $input: null,
+            };
+        },
+        created() {
+        },
+        methods: {
+            initDatasets(datasets_data) {
+                const pr = [];
+                _.forEach(this.datasets, dataset => {
+                    pr.push(dataset.init(datasets_data[dataset.name]));
+                });
+                Vue.Promise.all(pr).then(datasets => {
+                        this.$input = jQuery(this.$el).typeahead({
+                            minLength: 0,
+                            highlight: true
+                        },
+                        datasets
+                    ).bind('typeahead:select', this.onSelectTypeahead)
+                        .bind('typeahead:active', this.onActive)
+                        .bind('typeahead:autocomplete', this.onSelectTypeahead);
+                    this.$dispatch('typeahead.ready', this);
+                }, e => this.$notify('Error in loading typeahead: ' + e, 'danger'));
+
+            },
+            search() {
+                this.$input.typeahead('close');
+                this.onSearch();
+            },
+            onSelectTypeahead(e, suggestion) {
+                console.log(suggestion);
+                //blur element to trigger change event
+                this.$el.blur();
+                if (suggestion.type && this.datasets[suggestion.type]) {
+                    this.datasets[suggestion.type].onSelect(suggestion)
+                        .then((suggestion) => this.onSelect(suggestion));
+                } else {
+                    this.onSelect(suggestion)
+                }
+            },
+        }
+    };
+</script>

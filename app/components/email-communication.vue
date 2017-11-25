@@ -35,7 +35,7 @@
                         <div :class="{'uk-width-8-10': !stacked,'uk-width-1-1': stacked}">
 
                             <input-typeahead v-if="useTypeahead" v-ref:typeahead class="uk-width-1-1"
-                                             :search="template_search"
+                                             :search_text="template_search"
                                              :datasets="datasets"
                                              :on-select="onSelectTypeahead"></input-typeahead>
 
@@ -77,14 +77,14 @@
                 <h3>{{ 'Send email' | trans }}</h3>
             </div>
             <email-modal :type="template"
-                        :ext_key="ext_key"
-                        :to="mail_data.to"
-                        :cc="mail_data.cc"
-                        :bcc="mail_data.bcc"
-                        :subject="mail_data.subject"
-                        :content="mail_data.content"
-                        :attachments="attachments"
-                        :send-action="sendMail"></email-modal>
+                         :ext_key="ext_key"
+                         :to="mail_data.to"
+                         :cc="mail_data.cc"
+                         :bcc="mail_data.bcc"
+                         :subject="mail_data.subject"
+                         :content="mail_data.content"
+                         :attachments="attachments"
+                         :send-action="sendMail"></email-modal>
         </v-modal>
 
     </div>
@@ -125,7 +125,7 @@
 
         created() {
             if (this.useTypeahead) {
-                this.datasets.emailtemplates =  new BloodhoundDataset(this, 'emailtemplates', {
+                this.datasets.emailtemplates = new BloodhoundDataset(this, 'emailtemplates', {
                     keys: {
                         label: 'type_label',
                         subtitle: 'subject',

@@ -17,8 +17,6 @@
                 $input: null,
             };
         },
-        created() {
-        },
         methods: {
             initDatasets(datasets_data) {
                 const pr = [];

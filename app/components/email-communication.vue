@@ -35,7 +35,7 @@
                         <div :class="{'uk-width-8-10': !stacked,'uk-width-1-1': stacked}">
 
                             <input-typeahead v-if="useTypeahead" v-ref:typeahead class="uk-width-1-1"
-                                             :search_text="template_search"
+                                             :search_text.sync="template_search"
                                              :datasets="datasets"
                                              :on-select="onSelectTypeahead"></input-typeahead>
 
@@ -202,6 +202,7 @@
                         content: ''
                     }, res.data.mail);
                     this.searching = false;
+                    this.template_search = '';
                     this.$refs.mailmodal.open();
                 }, res => {
                     this.$notify(res.data, 'danger');

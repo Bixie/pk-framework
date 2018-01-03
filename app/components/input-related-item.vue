@@ -3,7 +3,7 @@
     <div>
         <div v-show="selected_identifier" class="uk-badge uk-flex uk-flex-middle">
             <em class="uk-text-small uk-margin-small-right">{{ selected_identifier }}</em>
-            <span class="uk-flex uk-flex-middle uk-flex-wrap">
+            <span class="uk-flex uk-flex-middle uk-flex-wrap uk-flex-item-1">
                <span class="uk-flex-item-1 uk-text-left uk-margin-small-right">{{ selected_name }} </span>
                 <small v-if="extra_key" class="uk-margin-small-right">({{ selected_extra_key }})</small>
             </span>

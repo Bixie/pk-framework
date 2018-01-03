@@ -6,8 +6,10 @@
                 <div class="uk-badge uk-flex uk-flex-middle uk-margin-small-bottom"
                      track-by="$index">
                     <em class="uk-text-small uk-margin-small-right">{{ getIdentifier(item) }}</em>
-                    <span class="uk-flex-item-1 uk-text-left">{{ getLabel(item) }} </span>
-                    <small v-if="extra_key" class="uk-margin-small-left">({{ getExtraKey(item) }})</small>
+                    <div class="uk-flex uk-flex-middle uk-flex-wrap uk-flex-item-1">
+                        <span class="uk-flex-item-1 uk-text-left">{{ getLabel(item) }} </span>
+                        <small v-if="extra_key" class="uk-margin-small-left">({{ getExtraKey(item) }})</small>
+                    </div>
                     <a @click="remove(item)" class="uk-close uk-margin-small-left"></a>
                 </div>
             </div>

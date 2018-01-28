@@ -89,25 +89,23 @@
 
 <script>
 
-    const moment = require('moment');
+    import moment from 'moment';
 
-    module.exports = {
+    export default {
 
-        name: 'period-selection',
+        name: 'PeriodSelection',
 
         props: {
             'current_period': Object,
             'overviewStats': Object,
         },
 
-        data: function () {
-            return {
-                select_now: '',
-                periods: {},
-            }
-        },
+        data: () => ({
+            select_now: '',
+            periods: {},
+        }),
 
-        created: function () {
+        created() {
             this.select_now = moment(this.current_period.select_now);
             this.setPeriod(this.current_period.type || 'week');
         },
@@ -195,7 +193,7 @@
 
             getGraphUnits(period_type) {
                 if (period_type === 'week') {
-                    return [[1, 'Mon'], [2, 'Tue'], [3, 'Wed'], [4, 'Thu'], [5, 'Fri'], [6, 'Sat'], [7, 'Sun']];
+                    return [[1, 'Mon',], [2, 'Tue',], [3, 'Wed',], [4, 'Thu',], [5, 'Fri',], [6, 'Sat',], [7, 'Sun',]];
                 }
                 if (period_type === 'month') {
                     const units = [];
@@ -206,15 +204,15 @@
                 }
                 if (period_type === 'quarter') {
                     return {
-                        1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                        2: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26],
-                        3: [27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40],
-                        4: [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53],
+                        1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,],
+                        2: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,],
+                        3: [27, 28, 29, 30, 31, 32, 33, 34, 35, 37, 38, 39, 40,],
+                        4: [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53,],
                     }[this.select_now.quarter()].map(wk => [wk,  `Week ${wk}`]);
                 }
                 if (period_type === 'year') {
-                    return [[1, 'Jan'], [2, 'Feb'], [3, 'Mar'], [4, 'Apr'], [5, 'May'], [6, 'Jun'],
-                        [7, 'Jul'], [8, 'Aug'], [9, 'Sep'], [10, 'Oct'], [11, 'Nov'], [12, 'Dec']];
+                    return [[1, 'Jan',], [2, 'Feb',], [3, 'Mar',], [4, 'Apr',], [5, 'May',], [6, 'Jun',],
+                        [7, 'Jul',], [8, 'Aug',], [9, 'Sep',], [10, 'Oct',], [11, 'Nov',], [12, 'Dec',]];
                 }
 
             },

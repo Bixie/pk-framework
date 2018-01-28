@@ -7,21 +7,34 @@
 </template>
 <script>
 
-    var Chart = require('chart.js');
+    import Chart from 'chart.js';
 
-    module.exports = {
+    export default {
 
         name: 'chart-js',
 
         props: {
             'data': Object,
-            'config': {Object},
+            'config': Object,
         },
 
-        data() {
-            return {
-                chart: {},
-            };
+        data: () => ({
+            chart: {},
+        }),
+
+        events: {
+            'chart.update': function () {
+                this.$nextTick(() => {
+                    this.chart.data.labels = this.data.labels;
+                    this.chart.data.datasets = this.data.datasets;
+                    //hack to force update
+                    this.chart.chart.width -= 1;
+                    this.chart.chart.height -= 1;
+                    this.$nextTick(() => {
+                        this.chart.resize();
+                    });
+                });
+            },
         },
 
         created() {
@@ -45,20 +58,6 @@
             });
         },
 
-        events: {
-            'chart.update': function () {
-                this.$nextTick(() => {
-                    this.chart.data.labels = this.data.labels;
-                    this.chart.data.datasets = this.data.datasets
-                    //hack to force update
-                    this.chart.chart.width -= 1;
-                    this.chart.chart.height -= 1;
-                    this.$nextTick(() => {
-                        this.chart.resize();
-                    });
-                });
-            }
-        },
     };
 
 

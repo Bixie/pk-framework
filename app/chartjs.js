@@ -1,6 +1,7 @@
+import ChartJs from './components/chart-js.vue';
 
 if (window.Vue) {
 
-    Vue.component('chart-js', require('./components/chart-js.vue'));
+    window.Vue.component('chart-js', ChartJs);
 
 }

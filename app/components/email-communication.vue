@@ -93,35 +93,40 @@
 </template>
 
 <script>
+    import EmailModal from './email-modal.vue';
+    import EmailLogs from './email-logs.vue';
 
-    module.exports = {
+    export default {
+
+        components: {
+            'email-modal': EmailModal,
+            'email-logs': EmailLogs,
+        },
 
         props: {
             'templates': Array,
             'ext_key': String,
-            'resource': {type: String, default: 'api/emailsender'},
-            'senders': {type: Object, default: () => {return {};}},
-            'receivers': {type: Object, default: () => {return {};}},
-            'attachments': {type: Array, default: () => {return [];}},
-            'emailData': {type: Object, default: () => {return {};}},
-            'user_id': {type:  Number, default: null},
-            'id': {type: [String, Number], default: null},
-            'showLog': {type: Boolean, default: true},
-            'stacked': {type: Boolean, default: false},
+            'resource': {type: String, default: 'api/emailsender',},
+            'senders': {type: Object, default: () => ({}),},
+            'receivers': {type: Object, default: () => ({}),},
+            'attachments': {type: Array, default: () => ([]),},
+            'emailData': {type: Object, default: () => ({}),},
+            'user_id': {type:  Number, default: null,},
+            'id': {type: [String, Number], default: null,},
+            'showLog': {type: Boolean, default: true,},
+            'stacked': {type: Boolean, default: false,},
         },
 
-        data() {
-            return {
-                template_search: '',
-                template: '',
-                sender: '',
-                receiver: '',
-                showAllTemplates: false,
-                searching: false,
-                datasets: {},
-                mail_data: {}
-            }
-        },
+        data: () => ({
+            template_search: '',
+            template: '',
+            sender: '',
+            receiver: '',
+            showAllTemplates: false,
+            searching: false,
+            datasets: {},
+            mail_data: {},
+        }),
 
         created() {
             if (this.useTypeahead) {
@@ -138,8 +143,8 @@
             }
 
             this.Mail = this.$resource(this.resource, {}, {
-                'template': {method: 'post', url: `${this.resource}/template{/id}`},
-                'sendmail': {method: 'post', url: `${this.resource}/sendmail{/id}`}
+                'template': {method: 'post', url: `${this.resource}/template{/id}`,},
+                'sendmail': {method: 'post', url: `${this.resource}/sendmail{/id}`,},
             });
             if (_.size(this.senders)) {
                 this.sender = Object.keys(this.senders)[0];
@@ -165,7 +170,7 @@
             },
             'email.cancel': function (type) {
                 this.$refs.mailmodal.close();
-            }
+            },
         },
 
         computed: {
@@ -186,7 +191,7 @@
             },
             mailTemplate(template_id) {
                 this.searching = true;
-                this.Mail.template({id: this.id}, {
+                this.Mail.template({id: this.id,}, {
                     template_id,
                     data: _.merge({
                         sender: this.senders[this.sender] || {name: '', email: ''},
@@ -199,7 +204,7 @@
                         cc: '',
                         bcc: '',
                         subject: '',
-                        content: ''
+                        content: '',
                     }, res.data.mail);
                     this.searching = false;
                     this.template_search = '';
@@ -211,23 +216,18 @@
 
             },
 
-            sendMail: function (template_id, mail) {
-                return this.Mail.sendmail({id: this.id}, {
+            sendMail(template_id, mail) {
+                return this.Mail.sendmail({id: this.id,}, {
                     template_id, mail,
                     data: _.merge({
                         sender: this.senders[this.sender],
                         receiver: this.receivers[this.receiver],
                     }, this.emailData),
-                    user_id: this.user_id})
+                    user_id: this.user_id,})
                         .then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
-            }
+            },
         },
 
-        components: {
-            'email-modal': require('./email-modal.vue'),
-            'email-logs': require('./email-logs.vue'),
-
-        }
     };
 
 </script>

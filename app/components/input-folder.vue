@@ -25,50 +25,42 @@
 
 <script>
 
-    module.exports = {
+    export default {
 
-        props: ['folder', 'class'],
+        name: 'InputFolder',
 
-        data: function () {
-            return $pagekit;
+        props: {
+            'folder': {type: String, default: '',},
+            'class': {type: String, default: '',}
         },
+
+        data: () => _.merge({}, window.$pagekit),
 
         methods: {
 
-            pick: function() {
+            pick() {
                 this.$refs.modal.open();
             },
 
-            select: function() {
+            select() {
                 this.folder = this.$refs.finder.getSelected()[0];
                 this.$dispatch('folder-selected', this.folder);
                 this.$refs.finder.removeSelection();
                 this.$refs.modal.close();
             },
 
-            remove: function(e) {
+            remove(e) {
                 e.stopPropagation();
                 this.folder = ''
             },
 
-            hasSelection: function() {
-                var selected = this.$refs.finder.getSelected();
+            hasSelection() {
+                const selected = this.$refs.finder.getSelected();
                 return selected.length === 1 && !selected[0].match(/\.(.+)$/i);
-            }
+            },
 
-        }
+        },
 
     };
-
-    Vue.component('input-folder', function (resolve, reject) {
-        Vue.asset({
-            js: [
-                'app/assets/uikit/js/components/upload.min.js',
-                'app/system/modules/finder/app/bundle/panel-finder.js'
-            ]
-        }).then(function () {
-            resolve(module.exports);
-        })
-    });
 
 </script>

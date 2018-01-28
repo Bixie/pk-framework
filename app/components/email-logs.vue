@@ -82,11 +82,11 @@
 
 <script>
 
-    module.exports = {
+    export default {
 
-        name: 'mail-log',
+        name: 'EmailLogs',
 
-        props: ['ext_key'],
+        props: {'ext_key': String,},
 
         data() {
             return {
@@ -97,33 +97,33 @@
                 selected: [],
                 loading: false,
                 saving: false,
-                config: {filter: {search: '', ext_key: this.ext_key, order: 'sent desc'}},
+                config: {filter: {search: '', ext_key: this.ext_key, order: 'sent desc',},},
                 tfhConfig: _.merge({}, window.$data.tfhConfig),
-                editlogform: {}
-            }
-        },
-
-        created() {
-            this.resource = this.$resource('api/emailsender/log{/id}');
-            this.$watch('config.page', this.load, {immediate: true});
+                editlogform: {},
+            };
         },
 
         watch: {
             'config.filter': {
-                handler: function (filter) {
+                handler: function () {
                     if (this.config.page) {
                         this.config.page = 0;
                     } else {
                         this.load();
                     }
                 },
-                deep: true
-            }
+                deep: true,
+            },
+        },
+
+        created() {
+            this.resource = this.$resource('api/emailsender/log{/id}');
+            this.$watch('config.page', this.load, {immediate: true,});
         },
 
         methods: {
             active(log) {
-                return this.selected.indexOf(log.id) != -1;
+                return this.selected.indexOf(log.id) !== -1;
             },
             select(log) {
                 if (_.isFunction(this.selectlog)) {
@@ -148,7 +148,7 @@
             load() {
                 this.loading = true;
                 this.resource.query({filter: this.config.filter, page: this.config.page}).then(res => {
-                    var data = res.data;
+                    const data = res.data;
                     this.$set('logs', data.logs);
                     this.$set('pages', data.pages);
                     this.$set('count', data.count);
@@ -167,12 +167,12 @@
                 return this.logs.filter(log => this.selected.indexOf(log.id) !== -1);
             },
             cleanHtml(string, length) {
-                var div = document.createElement("div");
+                const div = document.createElement("div");
                 div.innerHTML = string;
-                var text = (div.textContent || div.innerText || "");
+                const text = (div.textContent || div.innerText || "");
                 return length ? text.substr(0, length) : text;
             },
-        }
+        },
     };
 
 </script>

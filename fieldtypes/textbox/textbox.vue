@@ -33,42 +33,51 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypeTextbox',
+
+        mixins: [BixieFieldtypeMixin,],
 
         settings: {
             'placeholder': {
                 type: 'text',
                 label: 'Placeholder',
-                attrs: {'class': 'uk-form-width-large'}
+                attrs: {'class': 'uk-form-width-large',},
             },
             'minLength': {
                 type: 'number',
                 label: 'Min length input',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0}
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0,},
             },
             'maxLength': {
                 type: 'number',
                 label: 'Max length input',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0}
-            }
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0,},
+            },
         },
 
         appearance: {
             'rows': {
                 type: 'number',
                 label: 'Rows textarea',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0}
-            }
-
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0,},
+            },
         },
 
-        data: function () {
-            return {
-                fieldid: _.uniqueId('formmakerfield_')
-            };
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+        }),
+
+        computed: {
+            minLength: function () {
+                return this.field.data.minLength && !this.isAdmin ? this.field.data.minLength : false;
+            },
+            maxLength: function () {
+                return this.field.data.maxLength && !this.isAdmin ? this.field.data.maxLength : false;
+            },
         },
 
         created: function () {
@@ -77,15 +86,6 @@
             this.field.data.minLength = this.field.data.minLength || 0;
             this.field.data.maxLength = this.field.data.maxLength || 0;
         },
-
-        computed: {
-            minLength: function () {
-                return this.field.data.minLength && !this.isAdmin ? this.field.data.minLength : false;
-            },
-            maxLength: function () {
-                return this.field.data.maxLength && !this.isAdmin ? this.field.data.maxLength : false;
-            }
-        }
 
     };
 

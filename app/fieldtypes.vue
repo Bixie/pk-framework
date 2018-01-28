@@ -13,42 +13,58 @@
 
 <script>
 
-    window.BixieFieldtypeMixin = require('./mixins/fieldtype');
-    window.BixieFieldtypes = module.exports = {
+    import BixieFieldtypeMixin from './mixins/fieldtype';
+    import FieldtypeAgree from '../fieldtypes/agree/agree.vue';
+    import FieldtypeCheckbox from '../fieldtypes/checkbox/checkbox.vue';
+    import FieldtypeDob from '../fieldtypes/dob/dob.vue';
+    import FieldtypeEmail from '../fieldtypes/email/email.vue';
+    import FieldtypeHtmlcode from '../fieldtypes/htmlcode/htmlcode.vue';
+    import FieldtypeMap from '../fieldtypes/map/map.vue';
+    import FieldtypePulldown from '../fieldtypes/pulldown/pulldown.vue';
+    import FieldtypeRadio from '../fieldtypes/radio/radio.vue';
+    import FieldtypeSitelink from '../fieldtypes/sitelink/sitelink.vue';
+    import FieldtypeText from '../fieldtypes/text/text.vue';
+    import FieldtypeTextbox from '../fieldtypes/textbox/textbox.vue';
+    import FieldtypeUpload from '../fieldtypes/upload/upload.vue';
+
+    const BixieFieldtypes = {
+
+        components: {
+            'agree': FieldtypeAgree,
+            'checkbox': FieldtypeCheckbox,
+            'dob': FieldtypeDob,
+            'email': FieldtypeEmail,
+            'htmlcode': FieldtypeHtmlcode,
+            'map': FieldtypeMap,
+            'pulldown': FieldtypePulldown,
+            'radio': FieldtypeRadio,
+            'sitelink': FieldtypeSitelink,
+            'text': FieldtypeText,
+            'textbox': FieldtypeTextbox,
+            'upload': FieldtypeUpload,
+        },
 
         props: {
-            'fields': {type: Array, default: function () { return [];}},
-            'model': {type: Object, default: function () { return {};}},
+            'fields': {type: Array, default: () => ([]),},
+            'model': {type: Object, default: () => ({}),},
             'editType': {type: String, default: ''},
-            'form': {default: function () { return {};}}
+            'form': {type: Object, default: () => ({}),},
         },
 
         computed: {
-            isAdmin: function () {
+            isAdmin() {
                 return !!this.editType
             }
         },
 
-        components: {
-            'agree': require(`../fieldtypes/agree/agree.vue`),
-            'checkbox': require(`../fieldtypes/checkbox/checkbox.vue`),
-            'dob': require(`../fieldtypes/dob/dob.vue`),
-            'email': require(`../fieldtypes/email/email.vue`),
-            'htmlcode': require(`../fieldtypes/htmlcode/htmlcode.vue`),
-            'map': require(`../fieldtypes/map/map.vue`),
-            'pulldown': require(`../fieldtypes/pulldown/pulldown.vue`),
-            'radio': require(`../fieldtypes/radio/radio.vue`),
-            'sitelink': require(`../fieldtypes/sitelink/sitelink.vue`),
-            'text': require(`../fieldtypes/text/text.vue`),
-            'textbox': require(`../fieldtypes/textbox/textbox.vue`),
-            'upload': require(`../fieldtypes/upload/upload.vue`),
-        }
-
     };
 
-    Vue.component('fieldtypes', function (resolve) {
-        resolve(module.exports);
-    });
+    Vue.component('fieldtypes', BixieFieldtypes);
+    //expose to external fields
+    window.BixieFieldtypes = BixieFieldtypes;
+    window.BixieFieldtypeMixin = BixieFieldtypeMixin;
+
+    export default BixieFieldtypes;
 
 </script>
 

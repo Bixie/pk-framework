@@ -43,25 +43,25 @@
 
 <script>
 
-    module.exports = {
+    export default {
+
+        name: 'InputTags',
 
         props: {
             'tags': Array,
-            'existing': {type: Array, default: () => {return [];}},
-            'style': {type: String, default: 'tags'},
-            'buttonText': {type: String, default: 'Existing'},
-            'readOnly': {type: Boolean, default: false},
+            'existing': {type: Array, default: () => ([]),},
+            'style': {type: String, default: 'tags',},
+            'buttonText': {type: String, default: 'Existing',},
+            'readOnly': {type: Boolean, default: false,},
         },
 
-        data: function () {
-            return {
-                'newtag': ''
-            };
-        },
+        data: () => ({
+            newtag: '',
+        }),
 
         methods: {
 
-            addTag: function(tag) {
+            addTag(tag) {
                 tag = tag || (this.readOnly ? '' : this.newtag);
                 if (!tag || this.selected(tag)) {
                     return;
@@ -75,15 +75,15 @@
                 this.newtag = '';
             },
 
-            removeTag: function(tag) {
+            removeTag(tag) {
                 this.tags.$remove(tag)
             },
 
-            selected: function (tag) {
+            selected(tag) {
                 return this.tags.indexOf(tag) > -1;
-            }
+            },
 
-        }
+        },
 
     };
 

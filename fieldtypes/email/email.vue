@@ -23,32 +23,33 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypeEmail',
+
+        mixins: [BixieFieldtypeMixin,],
 
         settings: {
             'placeholder': {
                 type: 'text',
                 label: 'Placeholder',
-                attrs: {'class': 'uk-form-width-large'}
+                attrs: {'class': 'uk-form-width-large',},
             }
         },
 
         appearance: {},
 
-        data: function () {
-            return {
-                fieldid: _.uniqueId('formmakerfield_')
-            };
-        },
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+        }),
 
         watch: {
-            'field.data.user_email': function (value) {
+            'field.data.user_email'(value) {
                 this.formitem.data.user_email_field = value ? this.field.slug: false;
-            }
-        }
+            },
+        },
 
     };
 

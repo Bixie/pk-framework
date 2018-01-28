@@ -3,59 +3,59 @@ module.exports = [
 
     {
         entry: {
-            "bixie-fieldtypes": "./app/fieldtypes.vue"
+            'bixie-fieldtypes': './app/fieldtypes.vue',
         },
         output: {
-            filename: "./app/bundle/[name].js",
-            library: "BixieFieldtypes"
+            filename: './app/bundle/[name].js',
+            library: 'BixieFieldtypes',
         },
         module: {
             loaders: [
-                {test: /\.vue$/, loader: "vue" },
-                {test: /\.html$/, loader: "vue-html"},
-                {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}}
-            ]
-        }
+                {test: /\.vue$/, loader: 'vue',},
+                {test: /\.html$/, loader: 'vue-html',},
+                {test: /\.js/, loader: 'babel', query: {presets: ['es2015',],},},
+            ],
+        },
     },
 
     {
         entry: {
-            "bixie-typeahead": "./app/typeahead.js",
-            "bixie-chartjs": "./app/chartjs.js",
-            "bixie-framework": "./app/framework.js"
+            'bixie-typeahead': './app/typeahead.js',
+            'bixie-chartjs': './app/chartjs.js',
+            'bixie-framework': './app/framework.js',
         },
         output: {
-            filename: "./app/bundle/[name].js"
+            filename: './app/bundle/[name].js',
         },
         module: {
             loaders: [
-                {test: /\.vue$/, loader: "vue" },
-                {test: /\.html$/, loader: "vue-html"},
-                {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}},
-            ]
-        }
+                {test: /\.vue$/, loader: 'vue',},
+                {test: /\.html$/, loader: 'vue-html',},
+                {test: /\.js/, loader: 'babel', query: {presets: ['es2015',],},},
+            ],
+        },
     },
 
     {
         entry: {
             /*pagekit addons*/
-            "settings": "./app/components/settings.vue"
+            'settings': './app/components/settings.vue',
         },
         output: {
-            filename: "./app/bundle/[name].js"
+            filename: './app/bundle/[name].js',
         },
         externals: {
-            "lodash": "_",
-            "jquery": "jQuery",
-            "uikit": "UIkit",
-            "vue": "Vue"
+            'lodash': '_',
+            'jquery': 'jQuery',
+            'uikit': 'UIkit',
+            'vue': 'Vue',
         },
         module: {
             loaders: [
-                {test: /\.vue$/, loader: "vue"},
-                {test: /\.js/, loader: 'babel', query: {presets: ['es2015']}}
-            ]
-        }
-    }
+                {test: /\.vue$/, loader: 'vue',},
+                {test: /\.js/, loader: 'babel', query: {presets: ['es2015',],},},
+            ],
+        },
+    },
 
 ];

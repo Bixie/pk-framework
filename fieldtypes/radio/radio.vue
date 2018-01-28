@@ -22,20 +22,21 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypeRadio',
+
+        mixins: [BixieFieldtypeMixin,],
 
         settings: {},
 
         appearance: {},
 
-        data: function () {
-            return {
-                fieldid: _.uniqueId('formmakerfield_')
-            };
-        }
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+        }),
 
     };
 

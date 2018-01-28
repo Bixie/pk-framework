@@ -16,23 +16,18 @@
 
 <script>
 
-    module.exports = {
+    export default {
+
+        name: 'InputMultiselect',
 
         props: {
             'value': Array,
-            'options': [Array, Object]
+            'options': [Array, Object],
         },
 
-        data() {
-            return {
-                selected: []
-            }
-        },
-
-        created() {
-            this.selected = this.value;
-            this.$watch('selected', this.setValue);
-        },
+        data: () => ({
+            selected: [],
+        }),
 
         computed: {
             selectOptions() {
@@ -44,7 +39,12 @@
                     return options;
                 }
                 return this.options;
-            }
+            },
+        },
+
+        created() {
+            this.selected = this.value;
+            this.$watch('selected', this.setValue);
         },
 
         methods: {
@@ -69,9 +69,9 @@
                         this.value.push(value);
                     }
                 });
-            }
+            },
 
-        }
+        },
 
     };
 

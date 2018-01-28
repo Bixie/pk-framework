@@ -31,12 +31,14 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+    import GmapsMixin from '../../app/mixins/gmaps';
 
-    var GmapsMixin = require('../../app/mixins/gmaps');
+    export default {
 
-    module.exports = {
+        name: 'FieldtypeMap',
 
-        mixins: [BixieFieldtypeMixin, GmapsMixin],
+        mixins: [BixieFieldtypeMixin, GmapsMixin,],
 
         settings: {
         },
@@ -45,35 +47,29 @@
             'minHeight': {
                 type: 'number',
                 label: 'Minimum height map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0}
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0,},
             },
             'default_lat': {
                 type: 'number',
                 label: 'Default latitude for map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001}
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001,},
             },
             'default_lng': {
                 type: 'number',
                 label: 'Default longitude for map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001}
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001,},
             },
             'default_zoom': {
                 type: 'number',
                 label: 'Default zoom for map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'max': 18}
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'max': 18,},
             },
         },
 
-        data() {
-            return {
-                fieldid: _.uniqueId('bixiefieldtype_'),
-                inited: false,
-            };
-        },
-
-        events: {
-            'google.map.ready': 'initMap',
-        },
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+            inited: false,
+        }),
 
         computed: {
             minHeight() {
@@ -82,15 +78,19 @@
             invalidKey() {
                 if (this.isAdmin && !window.$pkframework.google_maps_key) {
                     return this.$trans('Please enter your Google Maps Javascript API key in the %link% settings!' ,
-                        {'link': `<a href="${this.$url('/admin/system/package/extensions')}">Bixie Framework</a>`});
+                        {'link': `<a href="${this.$url('/admin/system/package/extensions')}">Bixie Framework</a>`,});
                 }
                 return false;
             },
         },
 
+        events: {
+            'google.map.ready': 'initMap',
+        },
+
         methods: {
             initMap() {
-                var map = new google.maps.Map(this.$els.map, {
+                const map = new google.maps.Map(this.$els.map, {
                     center: {
                         lat: this.field.data.default_lat || 20,
                         lng: this.field.data.default_lng || 0
@@ -100,11 +100,11 @@
 
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.$els.control);
 
-                var autocomplete = new google.maps.places.Autocomplete(this.$els.search);
+                const autocomplete = new google.maps.places.Autocomplete(this.$els.search);
                 autocomplete.bindTo('bounds', map);
 
-                var infowindow = new google.maps.InfoWindow();
-                var marker = new google.maps.Marker({
+                const infowindow = new google.maps.InfoWindow();
+                const marker = new google.maps.Marker({
                     map: map,
                     anchorPoint: new google.maps.Point(0, 0)
                 });
@@ -120,7 +120,7 @@
                 autocomplete.addListener('place_changed',() => {
                     infowindow.close();
                     marker.setVisible(false);
-                    var place = autocomplete.getPlace();
+                    const place = autocomplete.getPlace();
                     if (!place.geometry) {
                         // User entered the name of a Place that was not suggested and
                         // pressed the Enter key, or the Place Details request failed.
@@ -145,7 +145,7 @@
                     marker.setPosition(place.geometry.location);
                     marker.setVisible(true);
 
-                    var address = '';
+                    let address = '';
                     if (place.address_components) {
                         address = [
                             (place.address_components[0] && place.address_components[0].short_name || ''),
@@ -172,7 +172,7 @@
                 this.inputValue = place.formatted_address;
                 this.addValue(place.formatted_address, {
                     lat: place.geometry.location.lat(),
-                    lng: place.geometry.location.lng()
+                    lng: place.geometry.location.lng(),
                 });
                 this.$dispatch('gmaps.location.picked', place.formatted_address);
             },

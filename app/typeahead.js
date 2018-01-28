@@ -1,7 +1,9 @@
+import InputTypeahead from './components/input-typeahead.vue';
+import BloodhoundDataset from './lib/bloodhound-dataset';
 
 if (window.Vue) {
 
-    Vue.component('input-typeahead', require('./components/input-typeahead.vue'));
-    window.BloodhoundDataset = require('./lib/bloodhound-dataset');
+    window.Vue.component('input-typeahead', InputTypeahead);
+    window.BloodhoundDataset = BloodhoundDataset;
 
 }

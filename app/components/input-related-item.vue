@@ -40,69 +40,69 @@
 
 <script>
 
-    module.exports = {
+    export default {
 
-        name: 'input-related-item',
+        name: 'InputRelatedItem',
 
         props: {
-            'model': {default: ''},
-            'selected': {type: Object, default: function () {return {}}},
-            'excluded': {type: Array, default: function () {return [];}},
-            'resource': {type: String, default: ''},
-            'config': {type: Object, default: function () {return {filter: {search: '', order: 'title asc'}}}},
-            'name': {type: String, default: 'items'},
-            'identifier': {type: String, default: 'id'},
-            'label': {type: String, default: 'title'},
-            'buttonClass': {type: String, default: 'uk-button-small'},
-            'buttonText': {type: String, default: 'Please select'},
-            'extra_key': {type: String, default: 'slug'},
-            'onSelect': {type: Function, default: function () {_.noop()}},
-            'onRemove': {type: Function, default: function () {_.noop()}}
+            'model': {default: '',},
+            'selected': {type: Object, default: () => ({}),},
+            'excluded': {type: Array, default: () => ([]),},
+            'resource': {type: String, default: '',},
+            'config': {type: Object, default: () => ({filter: {search: '', order: 'title asc',},}),},
+            'name': {type: String, default: 'items',},
+            'identifier': {type: String, default: 'id',},
+            'label': {type: String, default: 'title',},
+            'buttonClass': {type: String, default: 'uk-button-small',},
+            'buttonText': {type: String, default: 'Please select',},
+            'extra_key': {type: String, default: 'slug',},
+            'onSelect': {type: Function, default: _.noop,},
+            'onRemove': {type: Function, default: _.noop,},
         },
 
         computed: {
-            selected_identifier: function () {
+            selected_identifier() {
                 return this.selected ? this.selected[this.identifier] : '';
             },
-            selected_name: function () {
+            selected_name() {
                 return this.selected ? this.selected[this.label] : '';
             },
-            selected_extra_key: function () {
+            selected_extra_key() {
                 return this.selected ? this.selected[this.extra_key] : '';
             },
-            excluded_ids: function () {
-                return _.merge(this.excluded, [this.selected_identifier]);
-            }
+            excluded_ids() {
+                return _.merge(this.excluded, [this.selected_identifier,]);
+            },
         },
 
         methods: {
 
-            pick: function () {
+            pick() {
                 this.$refs.modal.open();
             },
 
-            select: function() {
+            select() {
                 this.selected = _.first(this.$refs.tableList.getSelected());
                 this.model = this.selected[this.identifier];
                 this.onSelect(this.selected);
                 this.$refs.modal.close();
             },
 
-            remove: function() {
+            remove() {
                 this.selected = {};
                 this.model = '';
                 this.onRemove();
             },
 
-            hasSelection: function () {
-                return this.$refs.tableList.nrSelected() == 1;
+            hasSelection() {
+                return this.$refs.tableList.nrSelected() === 1;
             },
 
-            isSelected: function (item) {
+            isSelected(item) {
                 return this.selected === item;
-            }
+            },
 
-        }
+        },
 
     };
 

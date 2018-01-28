@@ -23,20 +23,21 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypeCheckbox',
+
+        mixins: [BixieFieldtypeMixin,],
 
         settings: {},
 
         appearance: {},
 
-        data: function () {
-            return {
-                fieldid: _.uniqueId('bixiefieldtype_')
-            };
-        }
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+        }),
 
     };
 

@@ -45,30 +45,32 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+    import FieldtypeAgreeSettings from './components/settings.vue';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypeAgree',
 
-        settings: require('./components/settings.vue'),
+        mixins: [BixieFieldtypeMixin,],
+
+        settings: FieldtypeAgreeSettings,
 
         appearance: {},
 
-        data() {
-            return {
-                fieldid: _.uniqueId('bixiefieldtype_'),
-                content: ''
-            };
-        },
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+            content: '',
+        }),
 
         methods: {
             openConditions() {
-                var data = {id: this.field.data.text_page_id};
+                const data = {id: this.field.data.text_page_id,};
                 if (!this.content) {
                     this.$http.post(`/api/bixpkframework/agree/page`, {data})
                         .then(res => this.content = res.data.content, res => this.$notify(res.data));
                 }
-                var modal = UIkit.modal(this.$els.termsmodal, {
+                const modal = UIkit.modal(this.$els.termsmodal, {
                     modal: false,
                 });
                 modal.on('show.uk.modal', () => UIkit.$(this.$els.termsmodal).appendTo(UIkit.$body));

@@ -1,34 +1,34 @@
 <template>
 
-    <div :class="classes(['uk-form-row', (isAdmin ? 'uk-hidden' : '')], field.data.classSfx)">
-
-        {{{ html }}}
-
+    <div :class="classes(['uk-form-row', (isAdmin ? 'uk-hidden' : '')], field.data.classSfx)"
+         v-html="html">
     </div>
 
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+    import FieldtypeHtmlcodeSettings from './components/settings.vue';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypeHtmlcode',
 
-        settings: require('./components/settings.vue'),
+        mixins: [BixieFieldtypeMixin,],
+
+        settings: FieldtypeHtmlcodeSettings,
 
         appearance: {},
 
-        data: function () {
-            return {
-                fieldid: _.uniqueId('formmakerfield_')
-            };
-        },
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+        }),
 
         computed: {
             html() {
                 return this.fieldValue.formatted ? this.fieldValue.formatted[0] : '';
-            }
-        }
+            },
+        },
 
     };
 

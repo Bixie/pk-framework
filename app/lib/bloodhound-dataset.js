@@ -5,7 +5,7 @@
  * @return {*}
  * @constructor
  */
-'use strict';
+/*globals _, Promise*/
 
 //add nearby search suggestions
 const parentSearch = window.SearchIndex.prototype.search;
@@ -45,7 +45,7 @@ function BloodhoundDataset($vm, name, dataset_options) {
         'o': /[ôöóò]/gi,
         'oe': /[œ]/gi,
         'u': /[üû]/gi,
-        'n': /[ñ]/gi
+        'n': /[ñ]/gi,
     };
 
     const normalize = function (str) {
@@ -87,12 +87,12 @@ function BloodhoundDataset($vm, name, dataset_options) {
             return ``;
         },
         pending(result) {
-            const message = $vm.$trans('Searching for %query%.', {query: result.query});
+            const message = $vm.$trans('Searching for %query%.', {query: result.query,});
             return `<div>${message}</div>`;
         },
         header(result) {
             const count = result.suggestions.length;
-            const title = $vm.$transChoice(dataset_options.results_title, count, {count});
+            const title = $vm.$transChoice(dataset_options.results_title, count, {count,});
             return `<small class="tt-dataset-header">${title}</small>`;
         },
         footer(result) {
@@ -122,7 +122,7 @@ function BloodhoundDataset($vm, name, dataset_options) {
             identify,
             sorter,
             queryTokenizer,
-            datumTokenizer
+            datumTokenizer,
         };
         if (prefetch) {
             opts.prefetch = prefetch;
@@ -159,4 +159,4 @@ function BloodhoundDataset($vm, name, dataset_options) {
     };
 }
 
-module.exports = BloodhoundDataset;
+export default BloodhoundDataset;

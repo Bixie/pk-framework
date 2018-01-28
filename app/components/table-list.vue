@@ -40,106 +40,98 @@
 
 <script>
 
-    module.exports = {
+    export default {
 
-        name: 'table-list',
+        name: 'TableList',
 
         props: {
-            'config': {type: Object, default: function () {
-                return {filter: {search: '', order: 'title asc'}, page: 0};
-            }},
-            'resource': {type: String, default: ''},
-            'excluded': {type: Array, default: function () {return [];}},
-            'identifier': {type: String, default: 'id'},
-            'name': {type: String, default: 'items'},
-            'extra_key': {type: String, default: 'slug'},
-            'limit': {type: Number, default: 10},
-            'label': {type: String, default: 'title'}
+            'config': {type: Object, default: () => ({filter: {search: '', order: 'title asc'}, page: 0,}),},
+            'resource': {type: String, default: '',},
+            'excluded': {type: Array, default: () => ([]),},
+            'identifier': {type: String, default: 'id',},
+            'name': {type: String, default: 'items',},
+            'extra_key': {type: String, default: 'slug',},
+            'limit': {type: Number, default: 10,},
+            'label': {type: String, default: 'title',},
         },
 
-        data: function () {
-            return {
-                items: false,
-                pages: 0,
-                count: '',
-                selected: []
-            }
-        },
-
-        created: function () {
-            this.Resource = this.$resource(this.resource);
-            this.config.filter.limit = this.limit;
-            this.$watch('config.page', this.load, {immediate: true});
-        },
+        data: () => ({
+            items: false,
+            pages: 0,
+            count: '',
+            selected: [],
+        }),
 
         watch: {
-
             'config.filter': {
-                handler: function (filter) {
+                handler: function () {
                     if (this.config.page) {
                         this.config.page = 0;
                     } else {
                         this.load();
                     }
                 },
-                deep: true
-            }
+                deep: true,
+            },
+        },
 
+        created() {
+            this.Resource = this.$resource(this.resource);
+            this.config.filter.limit = this.limit;
+            this.$watch('config.page', this.load, {immediate: true,});
         },
 
         methods: {
-            active: function (item) {
-                return this.selected.indexOf(String(item[this.identifier])) != -1;
+            active(item) {
+                return this.selected.indexOf(String(item[this.identifier])) !== -1;
             },
 
-            disabled: function (item) {
-                return this.excluded.indexOf(item[this.identifier]) != -1;
+            disabled(item) {
+                return this.excluded.indexOf(item[this.identifier]) !== -1;
             },
 
-            load: function () {
-                this.Resource.query(this.config).then( function (res) {
-                    var data = res.data;
+            load() {
+                this.Resource.query(this.config).then(res => {
+                    const data = res.data;
 
                     this.$set('items', this.name ? data[this.name] : data);
                     this.$set('pages', data.pages);
                     this.$set('count', data.count);
                     this.$set('selected', []);
-                }, function () {
-                    this.$notify('Loading failed.', 'danger');
-                });
+                }, () => this.$notify('Loading failed.', 'danger'));
             },
 
-            select: function (item) {
-                var identifier = String(item[this.identifier]);
+            select(item) {
+                const identifier = String(item[this.identifier]);
                 if (this.selected.indexOf(identifier) === -1) {
                     this.selected.push(identifier)
                 }
             },
 
-            getLabel: function (item) {
+            getLabel(item) {
                 return item[this.label] || '';
             },
 
-            getIdentifier: function (item) {
+            getIdentifier(item) {
                 return String(item[this.identifier]) || '';
             },
 
-            getExtraKey: function (item) {
-                if (!this.extra_key) return '';
+            getExtraKey(item) {
+                if (!this.extra_key) {
+                    return '';
+                }
                 return item[this.extra_key] || '';
             },
 
-            nrSelected: function () {
+            nrSelected() {
                 return this.selected.length;
             },
 
-            getSelected: function () {
-                return this.items.filter(function (item) {
-                    return this.selected.indexOf(String(item[this.identifier])) !== -1;
-                }, this);
-            }
+            getSelected() {
+                return this.items.filter(item => this.selected.indexOf(String(item[this.identifier])) !== -1)
+            },
 
-        }
+        },
     };
 
 </script>

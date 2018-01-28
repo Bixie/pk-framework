@@ -21,28 +21,22 @@
 
 <script>
 
-    module.exports = {
+    export default {
+
+        name: 'InputDateBix',
 
         props: {
-            'datetime': [String, Date],
-            'required': [String, Boolean],
-            'iconDate': {type: String, default: 'pk-icon-calendar'},
-            'iconTime': {type: String, default: 'pk-icon-time'},
-            'showTime': {type: Boolean, default: true},
-            'disabled': {type: Boolean, default: false},
-        },
-
-        ready: function () {
-            UIkit.datepicker(this.$els.datepicker, {format: this.dateFormat, pos: 'bottom'});
-            if (this.showTime) {
-                UIkit.timepicker(this.$els.timepicker, {format: this.clockFormat});
-            }
-            this.$dispatch('ready.input.date');
+            'datetime': [String, Date,],
+            'required': [String, Boolean,],
+            'iconDate': {type: String, default: 'pk-icon-calendar',},
+            'iconTime': {type: String, default: 'pk-icon-time',},
+            'showTime': {type: Boolean, default: true,},
+            'disabled': {type: Boolean, default: false,},
         },
 
         computed: {
 
-            dateFormat: function () {
+            dateFormat() {
                 return window.$locale.DATETIME_FORMATS.shortDate
                     .replace(/\bd\b/i, 'DD')
                     .replace(/\bm\b/i, 'MM')
@@ -50,50 +44,58 @@
                     .toUpperCase();
             },
 
-            timeFormat: function () {
+            timeFormat() {
                 return window.$locale.DATETIME_FORMATS.shortTime.replace(/\bh\b/i, 'hh');
             },
 
-            clockFormat: function () {
+            clockFormat() {
                 return this.timeFormat.match(/a/) ? '12h' : '24h';
             },
 
             date: {
 
-                get: function () {
+                get() {
                     return UIkit.Utils.moment(this.datetime).format(this.dateFormat);
                 },
 
-                set: function (date) {
-                    var prev = new Date(this.datetime);
+                set(date) {
+                    const prev = new Date(this.datetime);
                     date = UIkit.Utils.moment(date, this.dateFormat);
                     date.hours(prev.getHours());
                     date.minutes(prev.getMinutes());
                     this.$set('datetime', date.utc().format());
-                }
+                },
 
             },
 
             time: {
 
-                get: function () {
+                get() {
                     return UIkit.Utils.moment(this.datetime).format(this.timeFormat);
                 },
 
-                set: function (time) {
-                    var date = new Date(this.datetime);
+                set(time) {
+                    const date = new Date(this.datetime);
                     time = UIkit.Utils.moment(time, this.timeFormat);
                     date.setHours(time.hours(), time.minutes());
                     this.$set('datetime', date.toISOString());
-                }
+                },
 
             },
 
-            isRequired: function () {
+            isRequired() {
                 return this.required !== undefined;
-            }
+            },
 
-        }
+        },
+
+        ready() {
+            UIkit.datepicker(this.$els.datepicker, {format: this.dateFormat, pos: 'bottom'});
+            if (this.showTime) {
+                UIkit.timepicker(this.$els.timepicker, {format: this.clockFormat});
+            }
+            this.$dispatch('ready.input.date');
+        },
 
     };
 

@@ -53,27 +53,30 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypeSitelink',
+
+        mixins: [BixieFieldtypeMixin,],
 
         settings: {
             'placeholder': {
                 type: 'text',
                 label: 'Placeholder',
-                attrs: {'class': 'uk-form-width-large'}
+                attrs: {'class': 'uk-form-width-large',},
             },
             'blank_default': {
                 type: 'checkbox',
                 label: 'Default new window',
                 optionlabel: 'Open in new window',
-                attrs: {}
+                attrs: {},
             },
             'link_text_default': {
                 type: 'text',
                 label: 'Default link text',
-                attrs: {'class': 'uk-form-width-large'}
+                attrs: {'class': 'uk-form-width-large',},
             }
         },
 
@@ -81,25 +84,23 @@
             'href_class': {
                 type: 'text',
                 label: 'Link class',
-                attrs: {'class': 'uk-form-width-large'}
-            }
+                attrs: {'class': 'uk-form-width-large',},
+            },
         },
 
-        data: function () {
-            return {
-                fieldid: _.uniqueId('formmakerfield_')
-            };
-        },
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+        }),
 
         created: function () {
-            if (this.fieldValue.value.length == 0) {
+            if (this.fieldValue.value.length === 0) {
                 this.addValue('', {
                     value: '',
                     link_text: this.field.data.link_text_default,
-                    blank:  this.field.data.blank_default
+                    blank: this.field.data.blank_default,
                 });
             }
-        }
+        },
 
     };
 

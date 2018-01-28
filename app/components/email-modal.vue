@@ -58,15 +58,39 @@
 
 <script>
 
-    module.exports = {
+    export default {
 
-        props: ['type', 'ext_key', 'to', 'cc', 'bcc', 'subject', 'content', 'sendAction', 'attachments'],
+        name: 'EmailModal',
 
-        data() {
-            return {
-                emailing: false,
-                files: []
-            }
+        props: {
+            'type': Object,
+            'ext_key': String,
+            'to': [String, Array,],
+            'cc': [String, Array,],
+            'bcc': [String, Array,],
+            'subject': String,
+            'content': String,
+            'sendAction': Function,
+            'attachments': Array,
+        },
+
+        data: () => ({
+            emailing: false,
+            files: [],
+        }),
+
+        computed: {
+            email() {
+                return {
+                    ext_key: this.ext_key,
+                    to: this.to,
+                    cc: this.cc,
+                    bcc: this.bcc,
+                    subject: this.subject,
+                    content: this.content,
+                    files: this.files
+                };
+            },
         },
 
         created() {
@@ -88,23 +112,10 @@
                 });
             },
             cancel() {
-                this.$dispatch('email.cancel', this.type)
-            }
+                this.$dispatch('email.cancel', this.type);
+            },
         },
 
-        computed: {
-            email() {
-                return {
-                    ext_key: this.ext_key,
-                    to: this.to,
-                    cc: this.cc,
-                    bcc: this.bcc,
-                    subject: this.subject,
-                    content: this.content,
-                    files: this.files
-                };
-            }
-        }
     };
 
 </script>

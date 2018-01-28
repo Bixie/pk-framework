@@ -52,15 +52,13 @@
 
 <script>
 
-    module.exports = {
+    export default {
+
+        name: 'InputPrices',
 
         props: {
-            price_collection: [Object],
-            readonly: Boolean
-        },
-
-        created() {
-            console.log(this.price_collection.prices);
+            price_collection: Object,
+            readonly: Boolean,
         },
 
         methods: {
@@ -73,11 +71,12 @@
                     currency: 'EUR'
                 });
             },
+
             remove(price) {
                 this.price_collection.prices.$remove(price);
-            }
+            },
 
-        }
+        },
 
     };
 

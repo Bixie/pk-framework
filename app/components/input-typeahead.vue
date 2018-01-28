@@ -3,20 +3,22 @@
 </template>
 <script>
 
-    module.exports = {
-        name: 'input-typeahead',
+    export default {
+
+        name: 'InputTypeahead',
+
         props: {
             search_text: String,
             datasets: Object,
-            onSelect: {type: Function, default: _.noop},
-            onActive: {type: Function, default: _.noop},
-            onSearch: {type: Function, default: _.noop},
+            onSelect: {type: Function, default: _.noop,},
+            onActive: {type: Function, default: _.noop,},
+            onSearch: {type: Function, default: _.noop,},
         },
-        data() {
-            return {
-                $input: null,
-            };
-        },
+
+        data: () => ({
+            $input: null,
+        }),
+
         methods: {
             initDatasets(datasets_data) {
                 const pr = [];

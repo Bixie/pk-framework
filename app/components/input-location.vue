@@ -23,37 +23,31 @@
 
 <script>
 
+    import GmapsMixin from '../../app/mixins/gmaps';
 
-    var GmapsMixin = require('../../app/mixins/gmaps');
+    export default {
 
-    module.exports = {
+        name: 'InputLocation',
 
-        mixins: [GmapsMixin],
+        mixins: [GmapsMixin,],
 
         props: {
-            'location': {type: String, default: ''},
-            'lat': {type: [Number, String], default: 0},
-            'lng': {type: [Number, String], default: 0},
-            'required': {type: Boolean, default: false},
-            'minHeight': {type: Number, default: 500},
-            'defaultLat': {type: Number, default: 52},
-            'defaultLng': {type: Number, default: 5},
-            'defaultZoom': {type: Number, default: 2},
-            'requiredMessage': {type: String, default: 'Please select a location'},
+            'location': {type: String, default: '',},
+            'lat': {type: [Number, String], default: 0,},
+            'lng': {type: [Number, String], default: 0,},
+            'required': {type: Boolean, default: false,},
+            'minHeight': {type: Number, default: 500,},
+            'defaultLat': {type: Number, default: 52,},
+            'defaultLng': {type: Number, default: 5,},
+            'defaultZoom': {type: Number, default: 2,},
+            'requiredMessage': {type: String, default: 'Please select a location',},
         },
 
-        data() {
-            return {
-                fieldid: _.uniqueId('location_'),
-                map: {},
-                inited: false,
-            };
-        },
-
-        created() {
-            this.lat = Number(this.lat);
-            this.lng = Number(this.lng);
-        },
+        data: () => ({
+            fieldid: _.uniqueId('location_'),
+            map: {},
+            inited: false,
+        }),
 
         events: {
             'google.map.ready': 'initMap',
@@ -75,9 +69,14 @@
             },
         },
 
+        created() {
+            this.lat = Number(this.lat);
+            this.lng = Number(this.lng);
+        },
+
         methods: {
             initMap() {
-                var map = new google.maps.Map(this.$els.map, {
+                const map = new google.maps.Map(this.$els.map, {
                     center: {
                         lat: this.defaultLat || 20,
                         lng: this.defaultLng || 0
@@ -88,11 +87,11 @@
 
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.$els.control);
 
-                var autocomplete = new google.maps.places.Autocomplete(this.$els.search);
+                const autocomplete = new google.maps.places.Autocomplete(this.$els.search);
                 autocomplete.bindTo('bounds', map);
 
-                var infowindow = new google.maps.InfoWindow();
-                var marker = new google.maps.Marker({
+                const infowindow = new google.maps.InfoWindow();
+                const marker = new google.maps.Marker({
                     map: map,
                     anchorPoint: new google.maps.Point(0, 0)
                 });
@@ -104,7 +103,7 @@
                 autocomplete.addListener('place_changed',() => {
                     infowindow.close();
                     marker.setVisible(false);
-                    var place = autocomplete.getPlace();
+                    const place = autocomplete.getPlace();
                     if (!place.geometry) {
                         // User entered the name of a Place that was not suggested and
                         // pressed the Enter key, or the Place Details request failed.
@@ -129,7 +128,7 @@
                     marker.setPosition(place.geometry.location);
                     marker.setVisible(true);
 
-                    var address = '';
+                    let address = '';
                     if (place.address_components) {
                         address = [
                             (place.address_components[0] && place.address_components[0].short_name || ''),

@@ -35,10 +35,13 @@
 </template>
 
 <script>
+    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-    module.exports = {
+    export default {
 
-        mixins: [BixieFieldtypeMixin],
+        name: 'FieldtypePulldown',
+
+        mixins: [BixieFieldtypeMixin,],
 
         settings: {},
 
@@ -46,15 +49,13 @@
             'size': {
                 type: 'number',
                 label: 'Size',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 1}
-            }
+                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 1,},
+            },
         },
 
-        data: function () {
-            return {
-                fieldid: _.uniqueId('formmakerfield_')
-            };
-        }
+        data: () => ({
+            fieldid: _.uniqueId('bixiefieldtype_'),
+        }),
 
     };
 

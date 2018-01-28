@@ -26,73 +26,61 @@
 
 <script>
 
-    module.exports = {
+    export default {
+
+        name: 'InputFile',
 
         props: {
-            'file': {default: ''},
-            'ext': {type: Array, default: []},
-            'multiple': {type: Boolean, default: false},
-            'root': {default: 'storage'},
-            'class': {default: ''}
+            'file': {type: String, default: '',},
+            'ext': {type: Array, default: () => ([]),},
+            'multiple': {type: Boolean, default: false,},
+            'root': {type: String, default: 'storage',},
+            'class': {type: String, default: '',},
         },
 
-        data: function () {
-            return _.merge({}, $pagekit);
-        },
+        data: () => _.merge({}, window.$pagekit),
 
         computed: {
-            fileName: function () {
+            fileName() {
                 return this.file.split('/').pop();
-            }
+            },
         },
 
         methods: {
 
-            pick: function() {
+            pick() {
                 this.$refs.modal.open();
             },
 
-            select: function() {
+            select() {
                 this.$set('file', this.root + this.getSelected()[0]);
                 this.$dispatch('file-selected', this.file);
                 this.$refs.finder.removeSelection();
                 this.$refs.modal.close();
             },
 
-            remove: function(e) {
+            remove(e) {
                 e.stopPropagation();
-                this.file = ''
+                this.file = '';
             },
 
             //get path instead of url from selected
-            getSelected: function () {
-                return this.$refs.finder.selected.map(function (name) {
-                    return _.find(this.$refs.finder.items, 'name', name).path;
-                }, this);
+            getSelected() {
+                return this.$refs.finder.selected.map(name => _.find(this.$refs.finder.items, 'name', name).path);
             },
 
-            hasSelection: function() {
-                var selected = this.$refs.finder.getSelected();
+            hasSelection() {
+                const selected = this.$refs.finder.getSelected();
                 if (!this.multiple && !(selected.length === 1)) {
                     return false;
                 }
                 //todo there must be a prettier way
                 return selected[0].match(new RegExp('\.(?:' + (this.ext).join('|') + ')$', 'i'));
-            }
+            },
 
-        }
+        },
 
     };
 
-    Vue.component('input-file', function (resolve, reject) {
-        Vue.asset({
-            js: [
-                'app/assets/uikit/js/components/upload.min.js',
-                'app/system/modules/finder/app/bundle/panel-finder.js'
-            ]
-        }).then(function () {
-            resolve(module.exports);
-        });
-    });
 
 </script>

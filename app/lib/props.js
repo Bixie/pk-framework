@@ -1,9 +1,9 @@
+/*globals _*/
 
-
-module.exports = function (Vue) {
+export default Vue => {
 
     Vue.filter('propsToString', props => {
-        var values = [];
+        const values = [];
         _.forIn(props, propValue => {
             values.push(`${propValue.prop.label}: ${propValue.option.text}`);
         });

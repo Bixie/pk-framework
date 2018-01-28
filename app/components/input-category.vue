@@ -38,21 +38,57 @@
 
 <script>
 
-    module.exports = {
+    export default {
+
+        name: 'InputCategory',
+
+        components: {
+
+            'category-item': {
+
+                name: 'CategoryItem',
+
+                props: {'category': Object, 'tree': Object,},
+
+                methods: {
+                    isSelected() {
+                        this.getBase().isSelected(this.category.id);
+                    },
+                    addCategory() {
+                        this.getBase().addCategory(this.category.id);
+                    },
+                    getBase() {
+                        let base = this.$parent;
+                        do {
+
+                            if (base.$options.name === 'input-category') {
+                                return base;
+                            }
+
+                            base = base.$parent;
+
+                        } while (base);
+
+                    }
+                },
+
+                template: '<li :class="{\'uk-parent\': tree[category.id]}">\n    <a @click.prevent="addCategory()" :class="{\'uk-text-primary\': isSelected()}">{{ category.title }}</a>\n    <ul class="uk-nav-sub" v-if="tree[category.id]">\n        <category-item v-for="category in tree[category.id]" :category="category" :tree="tree"></category-item>\n    </ul>\n</li>',
+
+            },
+
+        },
 
         props: {
-            'values': {default: []},
-            'primary': {default: 0},
-            'categories': {default: []}
+            'values': {type: Array, default: () => ([]),},
+            'primary': {type: Number, default: 0,},
+            'categories': {type: Array, default: () => ([]),}
         },
 
-        data: function () {
-            return {
-                'tree': {}
-            };
-        },
+        data: () => ({
+            'tree': {},
+        }),
 
-        created: function () {
+        created() {
             this.tree = _(this.categories).sortBy('priority').groupBy('parent_id').value();
         },
 
@@ -79,47 +115,12 @@
             },
 
             checkPrimary: function () {
-                if (this.values.length && this.values.indexOf(this.primary) == -1) {
+                if (this.values.length && this.values.indexOf(this.primary) === -1) {
                     this.primary = this.values[0];
                 }
-            }
+            },
 
         },
-
-        components: {
-
-            categoryItem: {
-
-                name: 'categoryItem',
-
-                props: ['category', 'tree'],
-
-                template: '<li :class="{\'uk-parent\': tree[category.id]}">\n    <a @click.prevent="addCategory()" :class="{\'uk-text-primary\': isSelected()}">{{ category.title }}</a>\n    <ul class="uk-nav-sub" v-if="tree[category.id]">\n        <category-item v-for="category in tree[category.id]" :category="category" :tree="tree"></category-item>\n    </ul>\n</li>',
-
-                methods: {
-                    isSelected: function () {
-                        this.getBase().isSelected(this.category.id);
-                    },
-                    addCategory: function () {
-                        this.getBase().addCategory(this.category.id);
-                    },
-                    getBase: function () {
-                        var base = this.$parent;
-                        do {
-
-                            if (base.$options.name == 'input-category') {
-                                return base;
-                            }
-
-                            base = base.$parent;
-
-                        } while (base);
-
-                    }
-                }
-            }
-
-        }
 
     };
 

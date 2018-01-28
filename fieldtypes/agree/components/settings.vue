@@ -20,27 +20,25 @@
 
 <script>
 
-    module.exports = {
+    export default {
 
         fields: {
             'checkbox_label_pre': {
                 type: 'text',
                 label: 'Checkbox label before link',
-                attrs: {'class': 'uk-form-width-medium'}
+                attrs: {'class': 'uk-form-width-medium',},
             },
             'checkbox_label_link': {
                 type: 'text',
                 label: 'Checkbox label link',
-                attrs: {'class': 'uk-form-width-medium'}
+                attrs: {'class': 'uk-form-width-medium',},
             },
             'checkbox_label_post': {
                 type: 'text',
                 label: 'Checkbox label after link',
-                attrs: {'class': 'uk-form-width-medium'}
+                attrs: {'class': 'uk-form-width-medium',},
             },
         },
-
-
 
     };
 

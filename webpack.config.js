@@ -1,13 +1,12 @@
 
-module.exports = [
+export default [
 
     {
         entry: {
-            'bixie-fieldtypes': './app/fieldtypes.vue',
+            'bixie-fieldtypes': './app/fieldtypes.js',
         },
         output: {
             filename: './app/bundle/[name].js',
-            library: 'BixieFieldtypes',
         },
         module: {
             loaders: [

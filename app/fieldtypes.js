@@ -49,9 +49,8 @@ const BixieFieldtypes = {
 
     template: BixieFieldtypeTemplate,
 };
-
+//add to vue asynchronously, so other components can register
+Vue.component('fieldtypes', resolve => resolve(BixieFieldtypes));
 //expose to external fields
 window.BixieFieldtypes = BixieFieldtypes;
 window.BixieFieldtypeMixin = BixieFieldtypeMixin;
-//add to vue
-Vue.component('fieldtypes', BixieFieldtypes);

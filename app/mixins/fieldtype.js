@@ -28,7 +28,7 @@ module.exports = {
             return !!this.field.data.multiple;
         },
         fieldRequired() {
-            return (this.field.data.required && !this.isAdmin);
+            return (!!this.field.data.required && !this.isAdmin);
         },
         fieldRequiredMessage() {
             return this.field.data.requiredError || this.$trans('Please enter a value');

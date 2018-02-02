@@ -12,15 +12,16 @@
 </template>
 
 <script>
+/*global _ */
 
-    export default {
+export default {
 
-        created() {
-            this.field.data = _.merge({
-                'markdown': false
-            }, this.field.data);
-        },
+    created() {
+        this.field.data = _.merge({
+            'markdown': false,
+        }, this.field.data);
+    },
 
-    };
+};
 
 </script>

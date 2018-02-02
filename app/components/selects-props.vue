@@ -19,60 +19,62 @@
 </template>
 
 <script>
-    import md5 from 'js-md5';
+/*global _ */
 
-    export default {
+import md5 from 'js-md5';
 
-        name: 'SelectProps',
+export default {
 
-        props: {
-            props: [Array, Object,],
-            values: [Array, Object,],
-            hash: {type: String, default: '',},
-            attrs: {type: Object, default: () => ({}),},
-            inputAttrs: {type: Object, default: () => ({class: 'uk-form-width-medium'}),}
-        },
+    name: 'SelectProps',
 
-        data: () => ({
-            selected: {},
-        }),
+    props: {
+        props: [Array, Object,],
+        values: [Array, Object,],
+        hash: {type: String, default: '',},
+        attrs: {type: Object, default: () => ({}),},
+        inputAttrs: {type: Object, default: () => ({class: 'uk-form-width-medium',}),},
+    },
 
-        created() {
-            this.init();
-            this.$on('addtocart.init', this.init);
-        },
+    data: () => ({
+        selected: {},
+    }),
 
-        methods: {
-            init() {
-                const values = this.values;
-                const selected = this.selected;
-                if (!_.isArray(this.props)) {
-                    this.props = [];
+    created() {
+        this.init();
+        this.$on('addtocart.init', this.init);
+    },
+
+    methods: {
+        init() {
+            const values = this.values;
+            const selected = this.selected;
+            if (!_.isArray(this.props)) {
+                this.props = [];
+            }
+            this.values = {};
+            this.selected = {};
+            this.props.forEach(prop => {
+                if (!_.find(prop.options, {value: selected[prop.name],})) {
+                    this.values[prop.name] = {}; //get new default
                 }
-                this.values = {};
-                this.selected = {};
-                this.props.forEach(prop => {
-                    if (!_.find(prop.options, {value: selected[prop.name],})) {
-                        this.values[prop.name] = {}; //get new default
-                    }
-                    this.values[prop.name] = _.defaults((values[prop.name] || {}), {
-                        option: (_.first(prop.options) || {value: '',}),
-                        prop,
-                    });
-                    this.selected[prop.name] = this.values[prop.name].option.value;
+                this.values[prop.name] = _.defaults((values[prop.name] || {}), {
+                    option: (_.first(prop.options) || {value: '',}),
+                    prop,
                 });
-                this.setHash();
-            },
-            setValue(prop) {
-                const value = this.selected[prop.name];
-                this.values[prop.name].option = _.find(prop.options, {value,});
-                this.setHash();
-            },
-            setHash() {
-                this.hash = md5(JSON.stringify(this.selected));
-            },
+                this.selected[prop.name] = this.values[prop.name].option.value;
+            });
+            this.setHash();
         },
+        setValue(prop) {
+            const value = this.selected[prop.name];
+            this.values[prop.name].option = _.find(prop.options, {value,});
+            this.setHash();
+        },
+        setHash() {
+            this.hash = md5(JSON.stringify(this.selected));
+        },
+    },
 
-    };
+};
 
 </script>

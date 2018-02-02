@@ -32,14 +32,14 @@
             <div v-show="allowedUploads" class="uk-placeholder">
                 <i class="uk-icon-cloud-upload uk-margin-small-right"></i>
                 {{ 'Please drop a file here or ' | trans }}<a class="uk-form-file">{{ 'select a file' | trans }}<input
-                    type="file" name="files[]" multiple="multiple"></a>.
+                type="file" name="files[]" multiple="multiple"></a>.
             </div>
 
             <div class="uk-progress uk-progress-mini uk-margin-remove" v-show="upload.running">
                 <div class="uk-progress-bar" :style="{width: upload.progress + '%'}"></div>
             </div>
 
-            <p v-if="field.data.help_text && field.data.help_show == 'block'"
+            <p v-if="field.data.help_text && field.data.help_show === 'block'"
                class="uk-form-help-block">{{{field.data.help_text}}}</p>
 
         </div>
@@ -49,171 +49,169 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+/*global _, UIkit */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-        name: 'FieldtypeUpload',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypeUpload',
 
-        settings: {
-            'path': {
-                type: 'text',
-                label: 'Upload folder',
-                tip: 'Folder will be a subfolder of Pagekit storage',
-                attrs: {'class': 'uk-form-width-large',},
-            },
-            'text1': {
-                type: 'paragraph',
-                text: 'To enable uploads, make sure to allow uploading in the usergroups permissions (section bixie/pk-framework)',
-                attrs: {'class': 'uk-text-small',},
-            },
-            'allowed': {
-                type: 'tags',
-                label: 'Allowed extensions',
-                options: ['png', 'jpg', 'jpeg', 'gif', 'svg', 'csv', 'xlsx', 'pdf', 'zip', 'gz',],
-                attrs: {'class': 'uk-form-width-large',},
-            },
-            'max_size': {
-                type: 'number',
-                label: 'Max file size (Mb)',
-                attrs: {'class': 'uk-form-width-medium uk-text-right', 'min': 0,},
-            },
-            'max_files': {
-                type: 'number',
-                label: 'Max files (0 is unlimited)',
-                attrs: {'class': 'uk-form-width-medium uk-text-right', 'min': 0,},
-            },
+    filters: {
+        fileSize: function (size) {
+            const i = Math.floor( Math.log(size) / Math.log(1024) );
+            return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB',][i];
         },
+    },
 
-        appearance: {},
+    mixins: [BixieFieldtypeMixin,],
 
-        filters: {
-            fileSize: function (size) {
-                const i = Math.floor( Math.log(size) / Math.log(1024) );
-                return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+    settings: {
+        'path': {
+            type: 'text',
+            label: 'Upload folder',
+            tip: 'Folder will be a subfolder of Pagekit storage',
+            attrs: {'class': 'uk-form-width-large',},
+        },
+        'text1': {
+            type: 'paragraph',
+            text: 'To enable uploads, make sure to allow uploading in the usergroups permissions (section bixie/pk-framework)',
+            attrs: {'class': 'uk-text-small',},
+        },
+        'allowed': {
+            type: 'tags',
+            label: 'Allowed extensions',
+            options: ['png', 'jpg', 'jpeg', 'gif', 'svg', 'csv', 'xlsx', 'pdf', 'zip', 'gz',],
+            attrs: {'class': 'uk-form-width-large',},
+        },
+        'max_size': {
+            type: 'number',
+            label: 'Max file size (Mb)',
+            attrs: {'class': 'uk-form-width-medium uk-text-right', 'min': 0,},
+        },
+        'max_files': {
+            type: 'number',
+            label: 'Max files (0 is unlimited)',
+            attrs: {'class': 'uk-form-width-medium uk-text-right', 'min': 0,},
+        },
+    },
+
+    appearance: {},
+
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+        action: window.$fieldtypes.ajax_url,
+        path: 'uploads',
+        upload: {},
+        selected: [],
+        message: {
+            message: '',
+            msg_class: '',
+        },
+    }),
+
+    computed: {
+        allowedUploads() {
+            if (this.field.data.max_files >= 1) {
+                return this.field.data.max_files - this.fieldValue.value.length;
             }
+            return true;
+        },
+    },
+
+    events: {
+        'hook:ready'() {
+
+            const uploader = this;
+            const settings = {
+
+                action: this.$url.route(uploader.action),
+
+                single: false,
+
+                allow: '*.(' + uploader.field.data.allowed.join('|') + ')',
+
+                notallowed() {
+                    uploader.setMessage(uploader.$trans('File extension not allowed.'));
+                },
+
+                before(options, files) {
+
+                    if (uploader.allowedUploads !== true && uploader.allowedUploads < files.length) {
+                        uploader.setMessage(uploader.$trans('Maximum number of files reached.'));
+                        return false;
+                    }
+
+                    if (uploader.field.data.max_size > 0) {
+                        if (_.filter(files, function (file) {
+                            return file.size > (uploader.field.data.max_size * 1024 * 1024);
+                        }).length) {
+                            uploader.setMessage(uploader.$trans('File is too large.'));
+                            return false;
+                        }
+                    }
+
+                    _.assign(options.params, {
+                        field_id: uploader.field.id,
+                        action: 'uploadAction',
+                        path: uploader.path,
+                        _csrf: window.$pagekit.csrf,
+                    });
+                },
+
+                loadstart() {
+                    uploader.clearMessage();
+                    uploader.$set('upload.running', true);
+                    uploader.$set('upload.progress', 0);
+                },
+
+                progress(percent) {
+                    uploader.$set('upload.progress', Math.ceil(percent));
+                },
+
+                allcomplete(response) {
+
+                    const data = JSON.parse(response);
+
+                    uploader.setMessage(data.message, data.error ? 'danger' : 'success');
+
+                    if (data.files) {
+                        data.files.forEach(file => uploader.addValue(file.name, file));
+                        uploader.$dispatch('upload.success');
+                    }
+
+                    uploader.$set('upload.progress', 100);
+
+                    setTimeout(() => uploader.$set('upload.running', false), 1500);
+                },
+
+            };
+
+            UIkit.uploadSelect(this.$el.querySelector('.uk-form-file > input'), settings);
+            UIkit.uploadDrop(this.$el.querySelector('.uk-placeholder'), settings);
         },
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-            action: window.$fieldtypes.ajax_url,
-            path: 'uploads',
-            upload: {},
-            selected: [],
-            message: {
-                message: '',
-                msg_class: '',
-            },
-        }),
+    },
 
-        computed: {
-            allowedUploads() {
-                if (this.field.data.max_files >= 1) {
-                    return this.field.data.max_files - this.fieldValue.value.length;
-                }
-                return true;
-            }
+    created() {
+        if (this.field.data.path) {
+            this.$set('path', this.field.data.path);
+        }
+    },
+
+    methods: {
+        isImage: function (url) {
+            return url.match(/\.(?:gif|jpe?g|png|svg|ico)$/i);
         },
-
-        events: {
-            'hook:ready'() {
-
-                const uploader = this;
-                const settings = {
-
-                        action: this.$url.route(uploader.action),
-
-                        single: false,
-
-                        allow: '*.(' + uploader.field.data.allowed.join('|') + ')',
-
-                        notallowed: function (file, settings) {
-                            uploader.setMessage(uploader.$trans('File extension not allowed.'));
-                        },
-
-                        before: function (options, files) {
-
-                            if (uploader.allowedUploads !== true && uploader.allowedUploads < files.length) {
-                                uploader.setMessage(uploader.$trans('Maximum number of files reached.'));
-                                return false;
-                            }
-
-                            if (uploader.field.data.max_size > 0) {
-                                if (_.filter(files, function (file) {
-                                        return file.size > (uploader.field.data.max_size * 1024 * 1024);
-                                    }).length) {
-                                    uploader.setMessage(uploader.$trans('File is too large.'));
-                                    return false;
-                                }
-                            }
-
-                            _.assign(options.params, {
-                                field_id: uploader.field.id,
-                                action: 'uploadAction',
-                                path: uploader.path,
-                                _csrf: $pagekit.csrf,
-                            });
-                        },
-
-                        loadstart: function () {
-                            uploader.clearMessage();
-                            uploader.$set('upload.running', true);
-                            uploader.$set('upload.progress', 0);
-                        },
-
-                        progress: function (percent) {
-                            uploader.$set('upload.progress', Math.ceil(percent));
-                        },
-
-                        allcomplete: function (response) {
-
-                            const data = $.parseJSON(response);
-
-                            uploader.setMessage(data.message, data.error ? 'danger' : 'success');
-
-                            if (data.files) {
-                                data.files.forEach(function (file) {
-                                    uploader.addValue(file.name, file);
-                                });
-                                uploader.$dispatch('upload.success');
-                            }
-
-                            uploader.$set('upload.progress', 100);
-
-                            setTimeout(function () {
-                                uploader.$set('upload.running', false);
-                            }, 1500);
-                        },
-
-                    };
-
-                UIkit.uploadSelect(this.$el.querySelector('.uk-form-file > input'), settings);
-                UIkit.uploadDrop(this.$el.querySelector('.uk-placeholder'), settings);
-            },
-
+        clearMessage: function () {
+            this.$set('message.message', '');
         },
-
-        created() {
-            if (this.field.data.path) {
-                this.$set('path', this.field.data.path);
-            }
+        setMessage: function (message, msg_class) {
+            this.$set('message.message', message);
+            this.$set('message.msg_class', 'uk-alert-' + (msg_class || 'danger'));
         },
+    },
 
-        methods: {
-            isImage: function (url) {
-                return url.match(/\.(?:gif|jpe?g|png|svg|ico)$/i);
-            },
-            clearMessage: function () {
-                this.$set('message.message', '');
-            },
-            setMessage: function (message, msg_class) {
-                this.$set('message.message', message);
-                this.$set('message.msg_class', 'uk-alert-' + (msg_class || 'danger'));
-            },
-        },
-
-    };
+};
 
 </script>

@@ -11,12 +11,12 @@
             <p class="uk-form-controls-condensed">
                 <label><input type="checkbox" class="uk-margin-small-right"
                               :name="fieldid" :id="fieldid"
-                              v-bind:true-value="$trans('Agreed')"
-                              v-bind:false-value="''"
+                              :true-value="$trans('Agreed')"
+                              :false-value="''"
                               :value="inputValue"
                               v-model="inputValue" v-validate:required="fieldRequired">
                     {{ field.data.checkbox_label_pre }}<a v-if="field.data.checkbox_label_link"
-                            @click.prevent="openConditions">{{ field.data.checkbox_label_link }}</a>{{ field.data.checkbox_label_post }}
+                                                          @click.prevent="openConditions">{{ field.data.checkbox_label_link }}</a>{{ field.data.checkbox_label_post }}
                 </label>
             </p>
 
@@ -45,40 +45,42 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
-    import FieldtypeAgreeSettings from './components/settings.vue';
+/*global _, UIkit */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+import FieldtypeAgreeSettings from './components/settings.vue';
 
-        name: 'FieldtypeAgree',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypeAgree',
 
-        settings: FieldtypeAgreeSettings,
+    mixins: [BixieFieldtypeMixin,],
 
-        appearance: {},
+    settings: FieldtypeAgreeSettings,
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-            content: '',
-        }),
+    appearance: {},
 
-        methods: {
-            openConditions() {
-                const data = {id: this.field.data.text_page_id,};
-                if (!this.content) {
-                    this.$http.post(`/api/bixpkframework/agree/page`, {data})
-                        .then(res => this.content = res.data.content, res => this.$notify(res.data));
-                }
-                const modal = UIkit.modal(this.$els.termsmodal, {
-                    modal: false,
-                });
-                modal.on('show.uk.modal', () => UIkit.$(this.$els.termsmodal).appendTo(UIkit.$body));
-                modal.on('hide.uk.modal', e => e.stopPropagation()); //prevent closing main modal
-                modal.show();
-            },
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+        content: '',
+    }),
+
+    methods: {
+        openConditions() {
+            const data = {id: this.field.data.text_page_id,};
+            if (!this.content) {
+                this.$http.post('/api/bixpkframework/agree/page', {data,})
+                    .then(res => this.content = res.data.content, res => this.$notify(res.data));
+            }
+            const modal = UIkit.modal(this.$els.termsmodal, {
+                modal: false,
+            });
+            modal.on('show.uk.modal', () => UIkit.$(this.$els.termsmodal).appendTo(UIkit.$body));
+            modal.on('hide.uk.modal', e => e.stopPropagation()); //prevent closing main modal
+            modal.show();
         },
+    },
 
-    };
+};
 
 </script>

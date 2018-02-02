@@ -31,7 +31,7 @@
                 <div class="uk-form-password">
                     <input type="text" class="uk-width-1-1" v-model="newtag">
                     <a class="uk-form-password-toggle" @click.prevent="addTag()"><i
-                            class="uk-icon-check uk-icon-hover"></i></a>
+                    class="uk-icon-check uk-icon-hover"></i></a>
                 </div>
             </div>
 
@@ -42,49 +42,50 @@
 </template>
 
 <script>
+/*global UIkit */
 
-    export default {
+export default {
 
-        name: 'InputTags',
+    name: 'InputTags',
 
-        props: {
-            'tags': Array,
-            'existing': {type: Array, default: () => ([]),},
-            'style': {type: String, default: 'tags',},
-            'buttonText': {type: String, default: 'Existing',},
-            'readOnly': {type: Boolean, default: false,},
+    props: {
+        'tags': Array,
+        'existing': {type: Array, default: () => ([]),},
+        'style': {type: String, default: 'tags',},
+        'buttonText': {type: String, default: 'Existing',},
+        'readOnly': {type: Boolean, default: false,},
+    },
+
+    data: () => ({
+        newtag: '',
+    }),
+
+    methods: {
+
+        addTag(tag) {
+            tag = tag || (this.readOnly ? '' : this.newtag);
+            if (!tag || this.selected(tag)) {
+                return;
+            }
+            this.tags.push(tag);
+            if (this.style === 'tags') {
+                this.$nextTick(function () {
+                    UIkit.$html.trigger('resize'); //todo why no check.display or changed.dom???
+                });
+            }
+            this.newtag = '';
         },
 
-        data: () => ({
-            newtag: '',
-        }),
-
-        methods: {
-
-            addTag(tag) {
-                tag = tag || (this.readOnly ? '' : this.newtag);
-                if (!tag || this.selected(tag)) {
-                    return;
-                }
-                this.tags.push(tag);
-                if (this.style === 'tags') {
-                    this.$nextTick(function () {
-                        UIkit.$html.trigger('resize'); //todo why no check.display or changed.dom???
-                    });
-                }
-                this.newtag = '';
-            },
-
-            removeTag(tag) {
-                this.tags.$remove(tag)
-            },
-
-            selected(tag) {
-                return this.tags.indexOf(tag) > -1;
-            },
-
+        removeTag(tag) {
+            this.tags.$remove(tag)
         },
 
-    };
+        selected(tag) {
+            return this.tags.indexOf(tag) > -1;
+        },
+
+    },
+
+};
 
 </script>

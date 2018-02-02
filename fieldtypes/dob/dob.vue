@@ -49,140 +49,144 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+/*global _, UIkit */
 
-    const numbersList = function (start, end, first) {
-        const nrs = {};
-        if (first) nrs[first] = '';
-        for (let i = start; i <= end ; i++) nrs[String(i)] = i;
-        return nrs;
-    };
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-    export default {
+const numbersList = function (start, end, first) {
+    const nrs = {};
+    if (first) {nrs[first] = '';}
+    for (let i = start; i <= end ; i++) {nrs[String(i)] = i;}
+    return nrs;
+};
 
-        name: 'FieldtypeDob',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypeDob',
 
-        settings: {
-            'minAge': {
-                type: 'select',
-                label: 'Minimum age',
-                options: numbersList(1,120),
-                attrs: {'class': 'uk-form-width-medium',},
-            },
-            'maxAge': {
-                type: 'select',
-                label: 'Maximum age',
-                options: numbersList(1,120),
-                attrs: {'class': 'uk-form-width-medium',},
-            },
+    mixins: [BixieFieldtypeMixin,],
+
+    settings: {
+        'minAge': {
+            type: 'select',
+            label: 'Minimum age',
+            options: numbersList(1,120),
+            attrs: {'class': 'uk-form-width-medium',},
         },
-
-        appearance: {
-            'dateFormat': {
-                type: 'select',
-                label: 'Date format',
-                options: {
-                    'MM-DD-YYYY': 'MM-DD-YYYY',
-                    'DD-MM-YYYY': 'DD-MM-YYYY',
-                },
-                attrs: {'class': 'uk-form-width-medium'},
-            },
+        'maxAge': {
+            type: 'select',
+            label: 'Maximum age',
+            options: numbersList(1,120),
+            attrs: {'class': 'uk-form-width-medium',},
         },
+    },
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-            dobDate: false,
-            day: '',
-            month: '',
-            year: '',
-        }),
+    appearance: {
+        'dateFormat': {
+            type: 'select',
+            label: 'Date format',
+            options: {
+                'MM-DD-YYYY': 'MM-DD-YYYY',
+                'DD-MM-YYYY': 'DD-MM-YYYY',
+            },
+            attrs: {'class': 'uk-form-width-medium',},
+        },
+    },
 
-        computed: {
-            months() {
-                return [
-                    {value: '', text: this.$trans('Month')},
-                    {value: '0', text: this.$trans('January')},
-                    {value: '1', text: this.$trans('February')},
-                    {value: '2', text: this.$trans('March')},
-                    {value: '3', text: this.$trans('April')},
-                    {value: '4', text: this.$trans('May')},
-                    {value: '5', text: this.$trans('June')},
-                    {value: '6', text: this.$trans('July')},
-                    {value: '7', text: this.$trans('August')},
-                    {value: '8', text: this.$trans('September')},
-                    {value: '9', text: this.$trans('October')},
-                    {value: '10', text: this.$trans('November')},
-                    {value: '11', text: this.$trans('December')},
-                ];
-            },
-            days() {
-                return numbersList(1,31, this.$trans('Day'));
-            },
-            years() {
-                const now = UIkit.Utils.moment();
-                return numbersList(now.year() - this.field.data.maxAge, now.year() - this.field.data.minAge, this.$trans('Year'));
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+        dobDate: false,
+        day: '',
+        month: '',
+        year: '',
+    }),
+
+    computed: {
+        months() {
+            return [
+                {value: '', text: this.$trans('Month'),},
+                {value: '0', text: this.$trans('January'),},
+                {value: '1', text: this.$trans('February'),},
+                {value: '2', text: this.$trans('March'),},
+                {value: '3', text: this.$trans('April'),},
+                {value: '4', text: this.$trans('May'),},
+                {value: '5', text: this.$trans('June'),},
+                {value: '6', text: this.$trans('July'),},
+                {value: '7', text: this.$trans('August'),},
+                {value: '8', text: this.$trans('September'),},
+                {value: '9', text: this.$trans('October'),},
+                {value: '10', text: this.$trans('November'),},
+                {value: '11', text: this.$trans('December'),},
+            ];
+        },
+        days() {
+            return numbersList(1,31, this.$trans('Day'));
+        },
+        years() {
+            const now = UIkit.Utils.moment();
+            return numbersList(now.year() - this.field.data.maxAge, now.year() - this.field.data.minAge, this.$trans('Year'));
+        },
+    },
+
+    watch: {
+        day: function (value) {
+            if (value !== '') {
+                this.dobDate.date(parseInt(value, 10));
+            }
+            this.updateDate();
+        },
+        month: function (value) {
+            if (value !== '') {
+                this.dobDate.month(parseInt(value, 10));
+            }
+            this.updateDate();
+        },
+        year: function (value) {
+            if (value !== '') {
+                this.dobDate.year(parseInt(value, 10));
+            }
+            this.updateDate();
+        },
+    },
+
+    created() {
+        //value dob
+        if (this.fieldValue.value.length) {
+            this.setDate(this.fieldValue.value[0]);
+        } else {
+            this.dobDate = UIkit.Utils.moment();
+        }
+        //defaults admin
+        this.field.data.minAge = this.field.data.minAge || 1;
+        this.field.data.maxAge = this.field.data.maxAge || 120;
+        this.field.data.dateFormat = this.field.data.dateFormat || 'MM-DD-YYYY';
+    },
+
+    ready() {
+        UIkit.init(this.$els.dob);
+    },
+
+    methods: {
+        setDate: function (strDate) {
+            try {
+                this.dobDate = UIkit.Utils.moment(strDate);
+                this.day = this.dobDate.date();
+                this.month = this.dobDate.month();
+                this.year = this.dobDate.year();
+
+            } catch (e) {
+                _.noop(e);
             }
         },
-
-        watch: {
-            day: function (value) {
-                if (value !== '') {
-                    this.dobDate.date(parseInt(value, 10));
-                }
-                this.updateDate();
-            },
-            month: function (value) {
-                if (value !== '') {
-                    this.dobDate.month(parseInt(value, 10));
-                }
-                this.updateDate();
-            },
-            year: function (value) {
-                if (value !== '') {
-                    this.dobDate.year(parseInt(value, 10));
-                }
-                this.updateDate();
-            }
-        },
-
-        created() {
-            //value dob
-            if (this.fieldValue.value.length) {
-                this.setDate(this.fieldValue.value[0]);
+        updateDate: function () {
+            if (this.day && this.month && this.year) {
+                this.fieldValue.value = [this.dobDate.format('YYYY-MM-DD'),];
             } else {
-                this.dobDate = UIkit.Utils.moment();
+                this.fieldValue.value = [];
             }
-            //defaults admin
-            this.field.data.minAge = this.field.data.minAge || 1;
-            this.field.data.maxAge = this.field.data.maxAge || 120;
-            this.field.data.dateFormat = this.field.data.dateFormat || 'MM-DD-YYYY';
         },
+    },
 
-        ready() {
-            UIkit.init(this.$els.dob);
-        },
-
-        methods: {
-            setDate: function (strDate) {
-                try {
-                    this.dobDate = UIkit.Utils.moment(strDate);
-                    this.day = this.dobDate.date();
-                    this.month = this.dobDate.month();
-                    this.year = this.dobDate.year();
-
-                } catch (e) {}
-            },
-            updateDate: function () {
-                if (this.day && this.month && this.year) {
-                    this.fieldValue.value = [this.dobDate.format('YYYY-MM-DD')];
-                } else {
-                    this.fieldValue.value = [];
-                }
-            },
-        },
-
-    };
+};
 
 </script>

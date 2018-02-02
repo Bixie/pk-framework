@@ -23,28 +23,30 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+/*global _ */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-        name: 'FieldtypeText',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypeText',
 
-        settings: {
-            'placeholder': {
-                type: 'text',
-                label: 'Placeholder',
-                attrs: {'class': 'uk-form-width-large',},
-            },
+    mixins: [BixieFieldtypeMixin,],
+
+    settings: {
+        'placeholder': {
+            type: 'text',
+            label: 'Placeholder',
+            attrs: {'class': 'uk-form-width-large',},
         },
+    },
 
-        appearance: {},
+    appearance: {},
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-        }),
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+    }),
 
-    };
+};
 
 </script>

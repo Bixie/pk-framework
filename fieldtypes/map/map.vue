@@ -31,153 +31,155 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
-    import GmapsMixin from '../../app/mixins/gmaps';
+/*global _, google */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+import GmapsMixin from '../../app/mixins/gmaps';
 
-        name: 'FieldtypeMap',
+export default {
 
-        mixins: [BixieFieldtypeMixin, GmapsMixin,],
+    name: 'FieldtypeMap',
 
-        settings: {
+    mixins: [BixieFieldtypeMixin, GmapsMixin,],
+
+    settings: {
+    },
+
+    appearance: {
+        'minHeight': {
+            type: 'number',
+            label: 'Minimum height map',
+            attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0,},
         },
-
-        appearance: {
-            'minHeight': {
-                type: 'number',
-                label: 'Minimum height map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0,},
-            },
-            'default_lat': {
-                type: 'number',
-                label: 'Default latitude for map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001,},
-            },
-            'default_lng': {
-                type: 'number',
-                label: 'Default longitude for map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001,},
-            },
-            'default_zoom': {
-                type: 'number',
-                label: 'Default zoom for map',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'max': 18,},
-            },
+        'default_lat': {
+            type: 'number',
+            label: 'Default latitude for map',
+            attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001,},
         },
+        'default_lng': {
+            type: 'number',
+            label: 'Default longitude for map',
+            attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'step': 0.0001,},
+        },
+        'default_zoom': {
+            type: 'number',
+            label: 'Default zoom for map',
+            attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 0, 'max': 18,},
+        },
+    },
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-            inited: false,
-        }),
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+        inited: false,
+    }),
 
-        computed: {
-            minHeight() {
-                return `min-height: ${this.field.data.minHeight || 500}px`;
-            },
-            invalidKey() {
-                if (this.isAdmin && !window.$pkframework.google_maps_key) {
-                    return this.$trans('Please enter your Google Maps Javascript API key in the %link% settings!' ,
-                        {'link': `<a href="${this.$url('/admin/system/package/extensions')}">Bixie Framework</a>`,});
+    computed: {
+        minHeight() {
+            return `min-height: ${this.field.data.minHeight || 500}px`;
+        },
+        invalidKey() {
+            if (this.isAdmin && !window.$pkframework.google_maps_key) {
+                return this.$trans('Please enter your Google Maps Javascript API key in the %link% settings!' ,
+                    {'link': `<a href="${this.$url('/admin/system/package/extensions')}">Bixie Framework</a>`,});
+            }
+            return false;
+        },
+    },
+
+    events: {
+        'google.map.ready': 'initMap',
+    },
+
+    methods: {
+        initMap() {
+            const map = new google.maps.Map(this.$els.map, {
+                center: {
+                    lat: this.field.data.default_lat || 20,
+                    lng: this.field.data.default_lng || 0,
+                },
+                zoom: this.field.data.default_zoom || 2,
+            });
+
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.$els.control);
+
+            const autocomplete = new google.maps.places.Autocomplete(this.$els.search);
+            autocomplete.bindTo('bounds', map);
+
+            const infowindow = new google.maps.InfoWindow();
+            const marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, 0),
+            });
+
+            if (this.valuedata.length && this.valuedata[0].lat && this.valuedata[0].lng) {
+                map.setCenter({
+                    lat: this.valuedata[0].lat,
+                    lng: this.valuedata[0].lng,
+                });
+                map.setZoom(15);
+            }
+
+            autocomplete.addListener('place_changed',() => {
+                infowindow.close();
+                marker.setVisible(false);
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    // User entered the name of a Place that was not suggested and
+                    // pressed the Enter key, or the Place Details request failed.
+                    this.$notify(`No details available for input: '${place.name}'`);
+                    return;
                 }
-                return false;
-            },
-        },
 
-        events: {
-            'google.map.ready': 'initMap',
-        },
-
-        methods: {
-            initMap() {
-                const map = new google.maps.Map(this.$els.map, {
-                    center: {
-                        lat: this.field.data.default_lat || 20,
-                        lng: this.field.data.default_lng || 0
-                    },
-                    zoom: this.field.data.default_zoom || 2
-                });
-
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.$els.control);
-
-                const autocomplete = new google.maps.places.Autocomplete(this.$els.search);
-                autocomplete.bindTo('bounds', map);
-
-                const infowindow = new google.maps.InfoWindow();
-                const marker = new google.maps.Marker({
-                    map: map,
-                    anchorPoint: new google.maps.Point(0, 0)
-                });
-
-                if (this.valuedata.length && this.valuedata[0].lat && this.valuedata[0].lng) {
-                    map.setCenter({
-                        lat: this.valuedata[0].lat,
-                        lng: this.valuedata[0].lng
-                    });
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
                     map.setZoom(15);
                 }
+                marker.setIcon(/** @type {google.maps.Icon} */({
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(35, 35),
+                }));
+                marker.setPosition(place.geometry.location);
+                marker.setVisible(true);
 
-                autocomplete.addListener('place_changed',() => {
-                    infowindow.close();
-                    marker.setVisible(false);
-                    const place = autocomplete.getPlace();
-                    if (!place.geometry) {
-                        // User entered the name of a Place that was not suggested and
-                        // pressed the Enter key, or the Place Details request failed.
-                        this.$notify(`No details available for input: '${place.name}'`);
-                        return;
-                    }
+                let address = '';
+                if (place.address_components) {
+                    address = [
+                        (place.address_components[0] && place.address_components[0].short_name || ''),
+                        (place.address_components[1] && place.address_components[1].short_name || ''),
+                        (place.address_components[2] && place.address_components[2].short_name || ''),
+                    ].join(' ');
+                }
 
-                    // If the place has a geometry, then present it on a map.
-                    if (place.geometry.viewport) {
-                        map.fitBounds(place.geometry.viewport);
-                    } else {
-                        map.setCenter(place.geometry.location);
-                        map.setZoom(15);
-                    }
-                    marker.setIcon(/** @type {google.maps.Icon} */({
-                        url: place.icon,
-                        size: new google.maps.Size(71, 71),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(17, 34),
-                        scaledSize: new google.maps.Size(35, 35)
-                    }));
-                    marker.setPosition(place.geometry.location);
-                    marker.setVisible(true);
-
-                    let address = '';
-                    if (place.address_components) {
-                        address = [
-                            (place.address_components[0] && place.address_components[0].short_name || ''),
-                            (place.address_components[1] && place.address_components[1].short_name || ''),
-                            (place.address_components[2] && place.address_components[2].short_name || '')
-                        ].join(' ');
-                    }
-
-                    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-                    infowindow.open(map, marker);
-                    this.setLocation(place);
-                });
-                this.inited = true;
-            },
-
-            clearLocation() {
-                this.removeValue();
-                this.inputValue = '';
-                this.$dispatch('gmaps.location.picked', '');
-            },
-
-            setLocation(place) {
-                this.removeValue();
-                this.inputValue = place.formatted_address;
-                this.addValue(place.formatted_address, {
-                    lat: place.geometry.location.lat(),
-                    lng: place.geometry.location.lng(),
-                });
-                this.$dispatch('gmaps.location.picked', place.formatted_address);
-            },
+                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                infowindow.open(map, marker);
+                this.setLocation(place);
+            });
+            this.inited = true;
         },
 
-    };
+        clearLocation() {
+            this.removeValue();
+            this.inputValue = '';
+            this.$dispatch('gmaps.location.picked', '');
+        },
+
+        setLocation(place) {
+            this.removeValue();
+            this.inputValue = place.formatted_address;
+            this.addValue(place.formatted_address, {
+                lat: place.geometry.location.lat(),
+                lng: place.geometry.location.lng(),
+            });
+            this.$dispatch('gmaps.location.picked', place.formatted_address);
+        },
+    },
+
+};
 
 </script>

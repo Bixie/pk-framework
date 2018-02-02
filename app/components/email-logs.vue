@@ -19,26 +19,26 @@
         <div class="uk-margin uk-overflow-container">
             <table class="uk-table uk-table-hover uk-table-middle uk-form">
                 <thead>
-                <tr>
-                    <th v-if="!readonly" class="pk-table-width-minimum"><input type="checkbox" v-check-all:selected.literal="input[name=id]" number></th>
-                    <th class="pk-table-max-width-100" v-order:sent="config.filter.order">{{ 'Sent' | trans }}</th>
-                    <th class="pk-table-max-width-150">{{ 'Subject' | trans }}</th>
-                    <th class="pk-table-max-width-150">{{ 'Content' | trans }}</th>
-                </tr>
+                    <tr>
+                        <th v-if="!readonly" class="pk-table-width-minimum"><input type="checkbox" v-check-all:selected.literal="input[name=id]" number></th>
+                        <th class="pk-table-max-width-100" v-order:sent="config.filter.order">{{ 'Sent' | trans }}</th>
+                        <th class="pk-table-max-width-150">{{ 'Subject' | trans }}</th>
+                        <th class="pk-table-max-width-150">{{ 'Content' | trans }}</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr class="check-item" v-for="log in logs" :class="{'uk-active': active(log)}">
-                    <td v-if="!readonly"><input type="checkbox" name="id" value="{{ log.id }}" number></td>
-                    <td>
-                        <a @click="select(log)">{{ log.sent | date 'medium' }}</a>
-                    </td>
-                    <td class="pk-table-max-width-150">
-                        <div class="uk-text-truncate">{{ log.subject  }}</div>
-                    </td>
-                    <td class="pk-table-max-width-150">
-                        <div class="uk-text-truncate" :title="cleanHtml(log.content)">{{ cleanHtml(log.content, 100) }}</div>
-                    </td>
-                </tr>
+                    <tr class="check-item" v-for="log in logs" :class="{'uk-active': active(log)}">
+                        <td v-if="!readonly"><input type="checkbox" name="id" value="{{ log.id }}" number></td>
+                        <td>
+                            <a @click="select(log)">{{ log.sent | date 'medium' }}</a>
+                        </td>
+                        <td class="pk-table-max-width-150">
+                            <div class="uk-text-truncate">{{ log.subject }}</div>
+                        </td>
+                        <td class="pk-table-max-width-150">
+                            <div class="uk-text-truncate" :title="cleanHtml(log.content)">{{ cleanHtml(log.content, 100) }}</div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -81,98 +81,99 @@
 </template>
 
 <script>
+/*global _ */
 
-    export default {
+export default {
 
-        name: 'EmailLogs',
+    name: 'EmailLogs',
 
-        props: {'ext_key': String,},
+    props: {'ext_key': String,},
 
-        data() {
-            return {
-                edit_log: {},
-                logs: [],
-                pages: 0,
-                count: '',
-                selected: [],
-                loading: false,
-                saving: false,
-                config: {filter: {search: '', ext_key: this.ext_key, order: 'sent desc',},},
-                tfhConfig: _.merge({}, window.$data.tfhConfig),
-                editlogform: {},
-            };
-        },
+    data() {
+        return {
+            edit_log: {},
+            logs: [],
+            pages: 0,
+            count: '',
+            selected: [],
+            loading: false,
+            saving: false,
+            config: {filter: {search: '', ext_key: this.ext_key, order: 'sent desc',},},
+            tfhConfig: _.merge({}, window.$data.tfhConfig),
+            editlogform: {},
+        };
+    },
 
-        watch: {
-            'config.filter': {
-                handler: function () {
-                    if (this.config.page) {
-                        this.config.page = 0;
-                    } else {
-                        this.load();
-                    }
-                },
-                deep: true,
-            },
-        },
-
-        created() {
-            this.resource = this.$resource('api/emailsender/log{/id}');
-            this.$watch('config.page', this.load, {immediate: true,});
-        },
-
-        methods: {
-            active(log) {
-                return this.selected.indexOf(log.id) !== -1;
-            },
-            select(log) {
-                if (_.isFunction(this.selectlog)) {
-                    this.selectlog(log);
+    watch: {
+        'config.filter': {
+            handler: function () {
+                if (this.config.page) {
+                    this.config.page = 0;
                 } else {
-                    this.open(log);
+                    this.load();
                 }
             },
-            open(log) {
-                this.edit_log = log;
-                this.$refs.editmodal.open();
-            },
-            remove() {
-                this.resource.delete({id: 'bulk'}, {ids: this.selected}).then(() => {
-                    this.load();
-                    this.$notify('Logs deleted.', 'success');
-                }, res => {
-                    this.load();
-                    this.$notify(res.data, 'danger');
-                });
-            },
-            load() {
-                this.loading = true;
-                this.resource.query({filter: this.config.filter, page: this.config.page}).then(res => {
-                    const data = res.data;
-                    this.$set('logs', data.logs);
-                    this.$set('pages', data.pages);
-                    this.$set('count', data.count);
-                    this.$set('selected', []);
-                    this.loading = false;
-                }, () => {
-                    this.$notify('Loading failed.', 'danger');
-                    this.loading = false;
-                });
-            },
-            cancel() {
-                this.$refs.editmodal.close();
-                this.edit_log = {};
-            },
-            getSelected() {
-                return this.logs.filter(log => this.selected.indexOf(log.id) !== -1);
-            },
-            cleanHtml(string, length) {
-                const div = document.createElement("div");
-                div.innerHTML = string;
-                const text = (div.textContent || div.innerText || "");
-                return length ? text.substr(0, length) : text;
-            },
+            deep: true,
         },
-    };
+    },
+
+    created() {
+        this.resource = this.$resource('api/emailsender/log{/id}');
+        this.$watch('config.page', this.load, {immediate: true,});
+    },
+
+    methods: {
+        active(log) {
+            return this.selected.indexOf(log.id) !== -1;
+        },
+        select(log) {
+            if (_.isFunction(this.selectlog)) {
+                this.selectlog(log);
+            } else {
+                this.open(log);
+            }
+        },
+        open(log) {
+            this.edit_log = log;
+            this.$refs.editmodal.open();
+        },
+        remove() {
+            this.resource.delete({id: 'bulk',}, {ids: this.selected,}).then(() => {
+                this.load();
+                this.$notify('Logs deleted.', 'success');
+            }, res => {
+                this.load();
+                this.$notify(res.data, 'danger');
+            });
+        },
+        load() {
+            this.loading = true;
+            this.resource.query({filter: this.config.filter, page: this.config.page,}).then(res => {
+                const data = res.data;
+                this.$set('logs', data.logs);
+                this.$set('pages', data.pages);
+                this.$set('count', data.count);
+                this.$set('selected', []);
+                this.loading = false;
+            }, () => {
+                this.$notify('Loading failed.', 'danger');
+                this.loading = false;
+            });
+        },
+        cancel() {
+            this.$refs.editmodal.close();
+            this.edit_log = {};
+        },
+        getSelected() {
+            return this.logs.filter(log => this.selected.indexOf(log.id) !== -1);
+        },
+        cleanHtml(string, length) {
+            const div = document.createElement('div');
+            div.innerHTML = string;
+            const text = (div.textContent || div.innerText || '');
+            return length ? text.substr(0, length) : text;
+        },
+    },
+};
 
 </script>

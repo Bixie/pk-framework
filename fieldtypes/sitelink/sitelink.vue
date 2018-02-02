@@ -26,14 +26,16 @@
 
 
                     <p class="uk-form-help-block uk-text-danger" v-show="fieldInvalid(form, $index)">{{ field.data.requiredError ||
-                        'Please enter a valid url' | trans }}</p>
+                    'Please enter a valid url' | trans }}</p>
 
                     <div v-if="field.data.controls" class="uk-margin-small-top uk-flex uk-flex-middle uk-flex-space-between">
 
                         <input type="text" class="uk-form-width-medium" :placeholder="'Link text' | trans"
                                v-model="site.link_text"/>
-                        <label><input type="checkbox" :true-value="1" :false-value="0" class="uk-margin-small-right"
-                                      v-model="site.blank" number/>{{ 'Open in new window' | trans }}</label>
+                        <label><input type="checkbox" class="uk-margin-small-right"
+                                      v-model="site.blank"
+                                      :true-value="1" :false-value="0"
+                                      number/>{{ 'Open in new window' | trans }}</label>
                     </div>
 
                 </li>
@@ -41,7 +43,7 @@
 
             <div v-if="allowNewValue" class="uk-margin-small-top">
                 <a @click="addValue('', {value: '', link_text: field.data.link_text_default, blank: field.data.blank_default})">
-                    <i class="uk-icon-hover uk-icon-plus uk-margin-small-right"></i>{{ 'Add value' | trans }}</a>
+                <i class="uk-icon-hover uk-icon-plus uk-margin-small-right"></i>{{ 'Add value' | trans }}</a>
             </div>
 
             <p v-if="field.data.help_text && field.data.help_show == 'block'"
@@ -53,55 +55,57 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+/*global _ */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-        name: 'FieldtypeSitelink',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypeSitelink',
 
-        settings: {
-            'placeholder': {
-                type: 'text',
-                label: 'Placeholder',
-                attrs: {'class': 'uk-form-width-large',},
-            },
-            'blank_default': {
-                type: 'checkbox',
-                label: 'Default new window',
-                optionlabel: 'Open in new window',
-                attrs: {},
-            },
-            'link_text_default': {
-                type: 'text',
-                label: 'Default link text',
-                attrs: {'class': 'uk-form-width-large',},
-            }
+    mixins: [BixieFieldtypeMixin,],
+
+    settings: {
+        'placeholder': {
+            type: 'text',
+            label: 'Placeholder',
+            attrs: {'class': 'uk-form-width-large',},
         },
-
-        appearance: {
-            'href_class': {
-                type: 'text',
-                label: 'Link class',
-                attrs: {'class': 'uk-form-width-large',},
-            },
+        'blank_default': {
+            type: 'checkbox',
+            label: 'Default new window',
+            optionlabel: 'Open in new window',
+            attrs: {},
         },
-
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-        }),
-
-        created: function () {
-            if (this.fieldValue.value.length === 0) {
-                this.addValue('', {
-                    value: '',
-                    link_text: this.field.data.link_text_default,
-                    blank: this.field.data.blank_default,
-                });
-            }
+        'link_text_default': {
+            type: 'text',
+            label: 'Default link text',
+            attrs: {'class': 'uk-form-width-large',},
         },
+    },
 
-    };
+    appearance: {
+        'href_class': {
+            type: 'text',
+            label: 'Link class',
+            attrs: {'class': 'uk-form-width-large',},
+        },
+    },
+
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+    }),
+
+    created: function () {
+        if (this.fieldValue.value.length === 0) {
+            this.addValue('', {
+                value: '',
+                link_text: this.field.data.link_text_default,
+                blank: this.field.data.blank_default,
+            });
+        }
+    },
+
+};
 
 </script>

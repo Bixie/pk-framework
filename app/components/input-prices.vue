@@ -37,7 +37,7 @@
                         </div>
                     </div>
                     <ul class="uk-subnav pk-subnav-icon uk-margin-small-left">
-                        <li><a class="pk-icon-delete pk-icon-hover"  @click="remove(price)"
+                        <li><a class="pk-icon-delete pk-icon-hover" @click="remove(price)"
                                :title="'Delete' | trans" data-uk-tooltip="{delay: 500}"></a></li>
                     </ul>
                 </div>
@@ -52,32 +52,32 @@
 
 <script>
 
-    export default {
+export default {
 
-        name: 'InputPrices',
+    name: 'InputPrices',
 
-        props: {
-            price_collection: Object,
-            readonly: Boolean,
+    props: {
+        price_collection: Object,
+        readonly: Boolean,
+    },
+
+    methods: {
+
+        add() {
+            this.price_collection.prices.push({
+                min_quantity: 1,
+                max_quantity: 1,
+                price: 0,
+                currency: 'EUR',
+            });
         },
 
-        methods: {
-
-            add() {
-                this.price_collection.prices.push({
-                    min_quantity: 1,
-                    max_quantity: 1,
-                    price: 0,
-                    currency: 'EUR'
-                });
-            },
-
-            remove(price) {
-                this.price_collection.prices.$remove(price);
-            },
-
+        remove(price) {
+            this.price_collection.prices.$remove(price);
         },
 
-    };
+    },
+
+};
 
 </script>

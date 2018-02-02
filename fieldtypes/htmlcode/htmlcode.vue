@@ -7,29 +7,31 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
-    import FieldtypeHtmlcodeSettings from './components/settings.vue';
+/*global _ */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+import FieldtypeHtmlcodeSettings from './components/settings.vue';
 
-        name: 'FieldtypeHtmlcode',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypeHtmlcode',
 
-        settings: FieldtypeHtmlcodeSettings,
+    mixins: [BixieFieldtypeMixin,],
 
-        appearance: {},
+    settings: FieldtypeHtmlcodeSettings,
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-        }),
+    appearance: {},
 
-        computed: {
-            html() {
-                return this.fieldValue.formatted ? this.fieldValue.formatted[0] : '';
-            },
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+    }),
+
+    computed: {
+        html() {
+            return this.fieldValue.formatted ? this.fieldValue.formatted[0] : '';
         },
+    },
 
-    };
+};
 
 </script>

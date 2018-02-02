@@ -22,22 +22,24 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+/*global _ */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-        name: 'FieldtypeRadio',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypeRadio',
 
-        settings: {},
+    mixins: [BixieFieldtypeMixin,],
 
-        appearance: {},
+    settings: {},
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-        }),
+    appearance: {},
 
-    };
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+    }),
+
+};
 
 </script>

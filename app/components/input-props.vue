@@ -12,7 +12,7 @@
                             <div class="uk-form-conrols uk-flex uk-flex-middle">
                                 <input type="text" v-model="prop.name" class="uk-flex-item-1"/>
                                 <ul class="uk-subnav pk-subnav-icon uk-margin-small-left">
-                                    <li><a class="pk-icon-delete pk-icon-hover"  @click="remove(prop)"
+                                    <li><a class="pk-icon-delete pk-icon-hover" @click="remove(prop)"
                                            :title="'Delete' | trans" data-uk-tooltip="{delay: 500}"></a></li>
                                 </ul>
                             </div>
@@ -27,7 +27,7 @@
                             <label class="uk-form-label">{{ 'Ordering' | trans }}</label>
                             <div class="uk-form-conrols">
                                 <input type="number" v-model="prop.ordering"
-                                              class="uk-form-width-small uk-text-right" number/>
+                                       class="uk-form-width-small uk-text-right" number/>
                             </div>
                         </div>
                         <bixie-fields :config="$options.fields" :values.sync="prop.config"></bixie-fields>
@@ -58,105 +58,106 @@
 </template>
 
 <script>
+/*global _, UIkit */
 
-    export default {
+export default {
 
-        name: 'InputProps',
+    name: 'InputProps',
 
-        components: {
-
-            'select-option': {
-
-                name: 'SelectOption',
-
-                props: {'selectoption': Object, 'prop': Object, 'readOnly': {type: Boolean, default: false,}},
-
-                watch: {
-                    'selectoption.text'(value) {
-                        if (this.selectoption.attachValue) {
-                            this.selectoption.value = _.escape(_.snakeCase(value));
-                        }
-                        this.$parent.checkDuplicates(this.prop);
-                    },
-                },
-
-                methods: {
-                    safeValue(checkDups) {
-                        this.selectoption.value = _.escape(_.snakeCase(this.selectoption.value));
-                        if (checkDups) {
-                            this.$parent.checkDuplicates();
-                        }
-                    },
-                },
-
-                template: '<div>\n    <div v-if="!readOnly" class="uk-visible-hover uk-form uk-flex uk-flex-middle">\n        <div class="uk-flex-item-1">\n            <div class="uk-grid uk-grid-small">\n                <div class="uk-width-2-6">\n                    <small class="uk-form-label uk-text-muted uk-text-truncate" style="text-transform: none"\n                           v-show="selectoption.attachValue"\n                           :class="{\'uk-text-danger\': selectoption.invalid}">{{ selectoption.value }}</small>\n                    <span class="uk-form-label" v-show="!selectoption.attachValue">\n                    <input type="text" class="uk-form-small"\n                           @keyup="safeValue(true)"\n                           :class="{\'uk-text-danger\': selectoption.invalid}"\n                           v-model="selectoption.value"/></span>\n                </div>\n                <div class="uk-width-3-6">\n                    <div class="uk-form-controls">\n                        <input type="text" class="uk-form-width-large" v-model="selectoption.text"/>\n                    </div>\n                    <p class="uk-form-help-block uk-text-danger" v-show="selectoption.invalid">{{ selectoption.invalid | trans }}</p>\n                </div>\n                <div class="uk-width-1-6 uk-flex-center">\n                    <ul class="uk-subnav pk-subnav-icon">\n                        <li><a class="uk-icon uk-margin-small-top pk-icon-hover uk-invisible"\n                               data-uk-tooltip="{delay: 500}" :title="\'Link/Unlink value from label\' | trans"\n                               :class="{\'uk-icon-link\': !selectoption.attachValue, \'uk-icon-chain-broken\': selectoption.attachValue}"\n                               @click.prevent="selectoption.attachValue = !selectoption.attachValue"></a></li>\n                        <li><a class="pk-icon-delete pk-icon-hover uk-invisible" @click="$parent.deleteOption(prop, selectoption)"></a></li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div v-else>\n        {{ selectoption.text }}\n    </div>\n</div>   \n',
-
-            },
-
+    fields: {
+        'price_prop': {
+            type: 'checkbox',
+            label: 'Price property',
+            optionlabel: 'This property changes the price',
         },
+    },
 
-        props: {
-            props: [Array, Object],
-            readonly: Boolean,
-        },
+    components: {
 
-        created() {
-            if (!_.isArray(this.props)) {
-                this.props = [];
-            }
-        },
+        'select-option': {
 
-        methods: {
+            name: 'SelectOption',
 
-            add() {
-                this.props.push({
-                    name: '',
-                    label: '',
-                    options: [],
-                    config: {
-                        price_prop: true,
-                    },
-                    ordering: (this.props.length + 1),
-                });
-            },
-            remove(prop) {
-                this.props.$remove(prop);
-            },
-            addOption(prop) {
-                prop.options.push({
-                    value: '',
-                    text: '',
-                    attachValue: true,
-                    invalid: false,
-                });
-                this.$nextTick(() => $(this.$el).find('input:last:visible').focus());
-            },
-            deleteOption(prop, option) {
-                prop.options.$remove(option);
-                this.checkDuplicates(prop);
-            },
-            checkDuplicates(prop) {
-                let current;
-                const dups = [];
-                _.sortBy(prop.options, 'value').forEach(option => {
-                    if (current && current === option.value) {
-                        dups.push(option.value);
+            props: {'selectoption': Object, 'prop': Object, 'readOnly': {type: Boolean, default: false,},},
+
+            watch: {
+                'selectoption.text'(value) {
+                    if (this.selectoption.attachValue) {
+                        this.selectoption.value = _.escape(_.snakeCase(value));
                     }
-                    current = option.value;
-                });
-                prop.options.forEach(option => option.invalid = dups.indexOf(option.value) > -1 ? 'Duplicate value' : false);
+                    this.$parent.checkDuplicates(this.prop);
+                },
             },
+
+            methods: {
+                safeValue(checkDups) {
+                    this.selectoption.value = _.escape(_.snakeCase(this.selectoption.value));
+                    if (checkDups) {
+                        this.$parent.checkDuplicates();
+                    }
+                },
+            },
+
+            template: '<div>\n    <div v-if="!readOnly" class="uk-visible-hover uk-form uk-flex uk-flex-middle">\n        <div class="uk-flex-item-1">\n            <div class="uk-grid uk-grid-small">\n                <div class="uk-width-2-6">\n                    <small class="uk-form-label uk-text-muted uk-text-truncate" style="text-transform: none"\n                           v-show="selectoption.attachValue"\n                           :class="{\'uk-text-danger\': selectoption.invalid}">{{ selectoption.value }}</small>\n                    <span class="uk-form-label" v-show="!selectoption.attachValue">\n                    <input type="text" class="uk-form-small"\n                           @keyup="safeValue(true)"\n                           :class="{\'uk-text-danger\': selectoption.invalid}"\n                           v-model="selectoption.value"/></span>\n                </div>\n                <div class="uk-width-3-6">\n                    <div class="uk-form-controls">\n                        <input type="text" class="uk-form-width-large" v-model="selectoption.text"/>\n                    </div>\n                    <p class="uk-form-help-block uk-text-danger" v-show="selectoption.invalid">{{ selectoption.invalid | trans }}</p>\n                </div>\n                <div class="uk-width-1-6 uk-flex-center">\n                    <ul class="uk-subnav pk-subnav-icon">\n                        <li><a class="uk-icon uk-margin-small-top pk-icon-hover uk-invisible"\n                               data-uk-tooltip="{delay: 500}" :title="\'Link/Unlink value from label\' | trans"\n                               :class="{\'uk-icon-link\': !selectoption.attachValue, \'uk-icon-chain-broken\': selectoption.attachValue}"\n                               @click.prevent="selectoption.attachValue = !selectoption.attachValue"></a></li>\n                        <li><a class="pk-icon-delete pk-icon-hover uk-invisible" @click="$parent.deleteOption(prop, selectoption)"></a></li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div v-else>\n        {{ selectoption.text }}\n    </div>\n</div>   \n',
 
         },
 
-        fields: {
-            'price_prop': {
-                type: 'checkbox',
-                label: 'Price property',
-                optionlabel: 'This property changes the price',
-            },
+    },
+
+    props: {
+        props: [Array, Object,],
+        readonly: Boolean,
+    },
+
+    created() {
+        if (!_.isArray(this.props)) {
+            this.props = [];
+        }
+    },
+
+    methods: {
+
+        add() {
+            this.props.push({
+                name: '',
+                label: '',
+                options: [],
+                config: {
+                    price_prop: true,
+                },
+                ordering: (this.props.length + 1),
+            });
+        },
+        remove(prop) {
+            this.props.$remove(prop);
+        },
+        addOption(prop) {
+            prop.options.push({
+                value: '',
+                text: '',
+                attachValue: true,
+                invalid: false,
+            });
+            this.$nextTick(() => UIkit.$(this.$el).find('input:last:visible').focus());
+        },
+        deleteOption(prop, option) {
+            prop.options.$remove(option);
+            this.checkDuplicates(prop);
+        },
+        checkDuplicates(prop) {
+            let current;
+            const dups = [];
+            _.sortBy(prop.options, 'value').forEach(option => {
+                if (current && current === option.value) {
+                    dups.push(option.value);
+                }
+                current = option.value;
+            });
+            prop.options.forEach(option => option.invalid = dups.indexOf(option.value) > -1 ? 'Duplicate value' : false);
         },
 
-    };
+    },
+
+};
 
 </script>

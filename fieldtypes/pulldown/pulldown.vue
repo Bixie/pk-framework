@@ -35,28 +35,30 @@
 </template>
 
 <script>
-    import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
+/*global _ */
 
-    export default {
+import BixieFieldtypeMixin from '../../app/mixins/fieldtype';
 
-        name: 'FieldtypePulldown',
+export default {
 
-        mixins: [BixieFieldtypeMixin,],
+    name: 'FieldtypePulldown',
 
-        settings: {},
+    mixins: [BixieFieldtypeMixin,],
 
-        appearance: {
-            'size': {
-                type: 'number',
-                label: 'Size',
-                attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 1,},
-            },
+    settings: {},
+
+    appearance: {
+        'size': {
+            type: 'number',
+            label: 'Size',
+            attrs: {'class': 'uk-form-width-small uk-text-right', 'min': 1,},
         },
+    },
 
-        data: () => ({
-            fieldid: _.uniqueId('bixiefieldtype_'),
-        }),
+    data: () => ({
+        fieldid: _.uniqueId('bixiefieldtype_'),
+    }),
 
-    };
+};
 
 </script>

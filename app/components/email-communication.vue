@@ -41,7 +41,7 @@
 
                             <small v-if="useTypeahead">
                                 <a @click="showAllTemplates = !showAllTemplates">
-                                    {{showAllTemplates ? 'Hide all templates' : 'Show all templates' | trans }}
+                                    {{ showAllTemplates ? 'Hide all templates' : 'Show all templates' | trans }}
                                 </a>
                             </small>
 
@@ -93,141 +93,143 @@
 </template>
 
 <script>
-    import EmailModal from './email-modal.vue';
-    import EmailLogs from './email-logs.vue';
+/*global _, BloodhoundDataset */
 
-    export default {
+import EmailModal from './email-modal.vue';
+import EmailLogs from './email-logs.vue';
 
-        components: {
-            'email-modal': EmailModal,
-            'email-logs': EmailLogs,
+export default {
+
+    components: {
+        'email-modal': EmailModal,
+        'email-logs': EmailLogs,
+    },
+
+    props: {
+        'templates': Array,
+        'ext_key': String,
+        'resource': {type: String, default: 'api/emailsender',},
+        'senders': {type: Object, default: () => ({}),},
+        'receivers': {type: Object, default: () => ({}),},
+        'attachments': {type: Array, default: () => ([]),},
+        'emailData': {type: Object, default: () => ({}),},
+        'user_id': {type: Number, default: null,},
+        'id': {type: [String, Number,], default: null,},
+        'showLog': {type: Boolean, default: true,},
+        'stacked': {type: Boolean, default: false,},
+    },
+
+    data: () => ({
+        template_search: '',
+        template: '',
+        sender: '',
+        receiver: '',
+        showAllTemplates: false,
+        searching: false,
+        datasets: {},
+        mail_data: {},
+    }),
+
+    computed: {
+        useTypeahead() {
+            return window.Bloodhound !== undefined;
         },
-
-        props: {
-            'templates': Array,
-            'ext_key': String,
-            'resource': {type: String, default: 'api/emailsender',},
-            'senders': {type: Object, default: () => ({}),},
-            'receivers': {type: Object, default: () => ({}),},
-            'attachments': {type: Array, default: () => ([]),},
-            'emailData': {type: Object, default: () => ({}),},
-            'user_id': {type:  Number, default: null,},
-            'id': {type: [String, Number], default: null,},
-            'showLog': {type: Boolean, default: true,},
-            'stacked': {type: Boolean, default: false,},
+        showSelect() {
+            return !this.useTypeahead || this.showAllTemplates;
         },
+        groupedTemplates() {
+            return _.groupBy(this.templates, 'type_label');
+        },
+    },
 
-        data: () => ({
-            template_search: '',
-            template: '',
-            sender: '',
-            receiver: '',
-            showAllTemplates: false,
-            searching: false,
-            datasets: {},
-            mail_data: {},
-        }),
-
-        created() {
-            if (this.useTypeahead) {
-                this.datasets.emailtemplates = new BloodhoundDataset(this, 'emailtemplates', {
-                    keys: {
-                        label: 'type_label',
-                        subtitle: 'subject',
-                        extra_search: 'subject',
-                    },
-                    display(obj) {
-                        return `${obj.type_label} - ${obj.subject}`;
-                    },
-                });
+    events: {
+        'after.email.send'() {
+            this.$refs.mailmodal.close();
+            if (this.showLog) {
+                this.$refs.maillog.load();
             }
+            return true; //bubble event
+        },
+        'email.cancel'() {
+            this.$refs.mailmodal.close();
+        },
+    },
 
-            this.Mail = this.$resource(this.resource, {}, {
-                'template': {method: 'post', url: `${this.resource}/template{/id}`,},
-                'sendmail': {method: 'post', url: `${this.resource}/sendmail{/id}`,},
+    created() {
+        if (this.useTypeahead) {
+            this.datasets.emailtemplates = new BloodhoundDataset(this, 'emailtemplates', {
+                keys: {
+                    label: 'type_label',
+                    subtitle: 'subject',
+                    extra_search: 'subject',
+                },
+                display(obj) {
+                    return `${obj.type_label} - ${obj.subject}`;
+                },
             });
-            if (_.size(this.senders)) {
-                this.sender = Object.keys(this.senders)[0];
-            }
-            if (_.size(this.receivers)) {
-                this.receiver = Object.keys(this.receivers)[0];
-            }
+        }
+
+        this.Mail = this.$resource(this.resource, {}, {
+            'template': {method: 'post', url: `${this.resource}/template{/id}`,},
+            'sendmail': {method: 'post', url: `${this.resource}/sendmail{/id}`,},
+        });
+        if (_.size(this.senders)) {
+            this.sender = Object.keys(this.senders)[0];
+        }
+        if (_.size(this.receivers)) {
+            this.receiver = Object.keys(this.receivers)[0];
+        }
+    },
+
+    compiled() {
+        if (this.useTypeahead) {
+            this.$refs.typeahead.initDatasets({emailtemplates: this.templates,});
+        }
+    },
+
+    methods: {
+        onSelectTypeahead(template) {
+            this.template = template.id;
+        },
+        mailTemplate(template_id) {
+            this.searching = true;
+            this.Mail.template({id: this.id,}, {
+                template_id,
+                data: _.merge({
+                    sender: this.senders[this.sender] || {name: '', email: '',},
+                    receiver: this.receivers[this.receiver] || {name: '', email: '',},
+                }, this.emailData),
+                user_id: this.user_id,
+            }).then(res => {
+                this.mail_data = _.merge({
+                    to: '',
+                    cc: '',
+                    bcc: '',
+                    subject: '',
+                    content: '',
+                }, res.data.mail);
+                this.searching = false;
+                this.template_search = '';
+                this.$refs.mailmodal.open();
+            }, res => {
+                this.$notify(res.data, 'danger');
+                this.searching = false;
+            });
+
         },
 
-        compiled() {
-            if (this.useTypeahead) {
-                this.$refs.typeahead.initDatasets({emailtemplates: this.templates});
-            }
+        sendMail(template_id, mail) {
+            return this.Mail.sendmail({id: this.id,}, {
+                template_id, mail,
+                data: _.merge({
+                    sender: this.senders[this.sender],
+                    receiver: this.receivers[this.receiver],
+                }, this.emailData),
+                user_id: this.user_id,})
+                .then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
         },
+    },
 
-        events: {
-            'after.email.send': function (type, mail) {
-                this.$refs.mailmodal.close();
-                if (this.showLog) {
-                    this.$refs.maillog.load();
-                }
-                return true; //bubble event
-            },
-            'email.cancel': function (type) {
-                this.$refs.mailmodal.close();
-            },
-        },
-
-        computed: {
-            useTypeahead() {
-                return window.Bloodhound !== undefined;
-            },
-            showSelect() {
-                return !this.useTypeahead || this.showAllTemplates;
-            },
-            groupedTemplates() {
-                return _.groupBy(this.templates, 'type_label');
-            },
-        },
-
-        methods: {
-            onSelectTypeahead(template) {
-                this.template = template.id;
-            },
-            mailTemplate(template_id) {
-                this.searching = true;
-                this.Mail.template({id: this.id,}, {
-                    template_id,
-                    data: _.merge({
-                        sender: this.senders[this.sender] || {name: '', email: ''},
-                        receiver: this.receivers[this.receiver] || {name: '', email: ''},
-                    }, this.emailData),
-                    user_id: this.user_id,
-                }).then(res => {
-                    this.mail_data = _.merge({
-                        to: '',
-                        cc: '',
-                        bcc: '',
-                        subject: '',
-                        content: '',
-                    }, res.data.mail);
-                    this.searching = false;
-                    this.template_search = '';
-                    this.$refs.mailmodal.open();
-                }, res => {
-                    this.$notify(res.data, 'danger');
-                    this.searching = false;
-                });
-
-            },
-
-            sendMail(template_id, mail) {
-                return this.Mail.sendmail({id: this.id,}, {
-                    template_id, mail,
-                    data: _.merge({
-                        sender: this.senders[this.sender],
-                        receiver: this.receivers[this.receiver],
-                    }, this.emailData),
-                    user_id: this.user_id,})
-                        .then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
-            },
-        },
-
-    };
+};
 
 </script>

@@ -49,34 +49,34 @@
 
 <script>
 
-    const PkFrameworkSettings = {
+const PkFrameworkSettings = {
 
-        name: 'PkFrameworkSettings',
+    name: 'PkFrameworkSettings',
 
-        props: {'package': Object,},
+    props: {'package': Object,},
 
-        settings: true,
+    settings: true,
 
-        computed: {
-            googleHelp() {
-                return this.$trans('Get your Google Maps Javascript API key at %link%.', {
-                    'link': '<a href="https://developers.google.com/maps/web/" target="_blank">Google Developers</a>'
-                });
-            },
+    computed: {
+        googleHelp() {
+            return this.$trans('Get your Google Maps Javascript API key at %link%.', {
+                'link': '<a href="https://developers.google.com/maps/web/" target="_blank">Google Developers</a>',
+            });
+        },
+    },
+
+    methods: {
+
+        save(config) {
+            this.$http.post('admin/system/settings/config', {name: 'bixie/pk-framework', config,})
+                .then(() => this.$notify('Settings saved.', ''), res => this.$notify(res.data, 'danger'))
+                .finally(() => this.$parent.close());
         },
 
-        methods: {
+    },
 
-            save(config) {
-                this.$http.post('admin/system/settings/config', {name: 'bixie/pk-framework', config,})
-                    .then(() => this.$notify('Settings saved.', ''), res => this.$notify(res.data, 'danger'))
-                    .finally(() => this.$parent.close());
-            },
+};
 
-        },
-
-    };
-
-    window.Extensions.components['settings-bixpkframework'] = PkFrameworkSettings;
-    export default PkFrameworkSettings;
+window.Extensions.components['settings-bixpkframework'] = PkFrameworkSettings;
+export default PkFrameworkSettings;
 </script>

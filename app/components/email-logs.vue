@@ -49,11 +49,12 @@
         <v-pagination :page.sync="config.page" :pages="pages" v-show="pages > 1" :replace-history="false"></v-pagination>
 
         <v-modal v-ref:editmodal large>
-            <div class="uk-modal-header">
-                <h3>{{ 'View log' | trans }}</h3>
+            <div class="uk-modal-header uk-flex uk-flex-space-between">
+                <h3 class="uk-margin-remove">{{ 'View log' | trans }}</h3>
+                <button @click="cancel" class="uk-button">{{ 'Close' | trans }}</button>
             </div>
             <div class="uk-margin">
-                <dl class="uk-description-list-horizontal">
+                <dl v-if="edit_log" class="uk-description-list-horizontal">
                     <dt>{{ 'To' | trans }}</dt>
                     <dd>{{ edit_log.recipients.length ? edit_log.recipients : '-' }}</dd>
                     <dt>{{ 'CC' | trans }}</dt>
@@ -70,9 +71,6 @@
                     </template>
                 </dl>
 
-            </div>
-            <div class="uk-modal-footer uk-text-right">
-                <button @click="cancel" class="uk-button uk-margin-small-right">{{ 'Close' | trans }}</button>
             </div>
 
         </v-modal>

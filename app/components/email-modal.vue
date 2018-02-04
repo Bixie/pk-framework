@@ -67,7 +67,7 @@ export default {
     name: 'EmailModal',
 
     props: {
-        'type': Object,
+        'type': [Number, String,],
         'ext_key': String,
         'to': [String, Array,],
         'cc': [String, Array,],

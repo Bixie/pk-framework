@@ -127,6 +127,8 @@ export default {
 
                 action: this.$url.route(uploader.action),
 
+                headers: {'X-Requested-With': 'XMLHttpRequest',},
+
                 single: false,
 
                 allow: '*.(' + uploader.field.data.allowed.join('|') + ')',

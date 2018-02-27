@@ -16,6 +16,7 @@ import EmailCommunication from './components/email-communication.vue';
 import InputFile from './components/input-file.vue';
 //directives
 import Spinner from './directives/spinner';
+import Phone from './directives/phone';
 //partials
 import FieldtypeBasic from './templates/fieldtype-basic.html';
 import FieldtypeSettings from './templates/fieldtype-settings.html';
@@ -67,6 +68,7 @@ if (window.Vue) {
     window.Vue.component('email-communication', EmailCommunication);
     //directives
     window.Vue.directive('spinner', Spinner);
+    window.Vue.directive('phone', Phone);
     //partials
     window.Vue.partial('fieldtype-basic', FieldtypeBasic);
     window.Vue.partial('fieldtype-settings', FieldtypeSettings);

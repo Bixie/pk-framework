@@ -1,7 +1,5 @@
 export default {
 
-    params: ['icon',],
-
     update(value) {
         if (value) {
             if (this.el.href !== undefined) {

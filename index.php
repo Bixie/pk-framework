@@ -51,6 +51,7 @@ return [
 	'events' => [
 		'view.scripts' => function ($event, $scripts) use ($app) {
             $version = $app->module('bixie/pk-framework')->getVersionKey();
+            $scripts->register('vuex', 'bixie/pk-framework:app/bundle/vuex.js', 'vue');
 			$scripts->register('framework-settings', 'bixie/pk-framework:app/bundle/settings.js',
                 '~extensions', ['version' => $version]);
             $scripts->register('typeahead-bundle', 'bixie/pk-framework:app/assets/typeahead/dist/typeahead.bundle.min.js', ['jquery']);

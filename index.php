@@ -65,7 +65,7 @@ return [
             $dependancies = ['bixie-pkframework', 'uikit-tooltip'];
             foreach ($app->module('bixie/pk-framework')->getFieldTypes() as $fieldType) {
                 //pick up dependancies from types
-                if ($depends = $fieldType->registerScripts($scripts)) {
+                if ($depends = $fieldType->registerScripts($scripts, $version)) {
                     $dependancies = array_merge($dependancies, $depends);
                 }
             }

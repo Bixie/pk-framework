@@ -37,10 +37,12 @@ interface FieldTypeInterface  {
 	 */
 	public function formatValue (FieldBase $field, FieldValueBase $fieldValue);
 
-	/**
-	 * @param \Pagekit\View\Asset\AssetManager $scripts
-	 */
-	public function registerScripts ($scripts);
+    /**
+     * @param \Pagekit\View\Asset\AssetManager $scripts
+     * @param                                  $version
+     * @return
+     */
+	public function registerScripts ($scripts, $version);
 
 	/**
 	 * @param \Pagekit\View\Asset\AssetManager $styles

@@ -179,6 +179,9 @@ export default {
         if (_.size(this.receivers)) {
             this.receiver = Object.keys(this.receivers)[0];
         }
+        if (this.$events) {
+            this.$events.$on('email:sent', () => this.$refs.maillog.load());
+        }
     },
 
     compiled() {

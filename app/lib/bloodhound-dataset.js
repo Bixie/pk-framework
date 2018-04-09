@@ -31,7 +31,7 @@ function BloodhoundDataset($vm, name, dataset_options) {
             id: 'id',
             label: 'name',
             subtitle: 'description',
-            extra_search: '',
+            extra_search: [],
         },
         onSelect: suggestion => suggestion,
         display: false,
@@ -56,11 +56,13 @@ function BloodhoundDataset($vm, name, dataset_options) {
     };
 
     const datumTokenizer = function (obj) {
-        let str = '';
-        if (obj[dataset_options.keys.extra_search]) {
-            str = `${obj[dataset_options.keys.label]} ${obj[dataset_options.keys.extra_search]}`;
-        } else {
-            str = obj[dataset_options.keys.label];
+        let str = obj[dataset_options.keys.label];
+        if (dataset_options.keys.extra_search.length) {
+            dataset_options.keys.extra_search.forEach(key => {
+                if (obj[key]) {
+                    str += ` ${obj[key]}`;
+                }
+            });
         }
         return window.Bloodhound.tokenizers.whitespace(normalize(str));
     };

@@ -49,7 +49,7 @@
                                 <option value="">{{ 'Select template' | trans }}</option>
                                 <optgroup v-for="templates in groupedTemplates" :label="$key">
                                     <option v-for="template in templates" :value="template.id">
-                                        {{ template.subject }}
+                                        {{ template.description ? template.description + ' - ' : '' }}{{ template.subject }}
                                     </option>
                                 </optgroup>
                             </select>
@@ -161,7 +161,7 @@ export default {
                 keys: {
                     label: 'type_label',
                     subtitle: 'subject',
-                    extra_search: 'subject',
+                    extra_search: ['subject', 'description',],
                 },
                 display(obj) {
                     return `${obj.type_label} - ${obj.subject}`;
@@ -186,7 +186,16 @@ export default {
 
     compiled() {
         if (this.useTypeahead) {
-            this.$refs.typeahead.initDatasets({emailtemplates: this.templates,});
+            this.$refs.typeahead.initDatasets({emailtemplates: this.templates.map(template => {
+                    const tmpl  = {...{}, ...template,};
+                    if (tmpl.description) {
+                        tmpl.type_label += ' - ' + tmpl.description;
+                    } else {
+                        tmpl.description = tmpl.type_label;
+                    }
+                    return tmpl;
+                }),
+            });
         }
     },
 

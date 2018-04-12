@@ -68,7 +68,7 @@ export default {
 
     props: {
         'type': [Number, String,],
-        'ext_key': String,
+        'ext_key': {type: String, default: '',},
         'to': [String, Array,],
         'cc': [String, Array,],
         'bcc': [String, Array,],

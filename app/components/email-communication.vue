@@ -186,7 +186,7 @@ export default {
 
     compiled() {
         if (this.useTypeahead) {
-            this.$refs.typeahead.initDatasets({emailtemplates: this.templates.map(template => {
+            this.$refs.typeahead.initDatasets({emailtemplates: {local: this.templates.map(template => {
                     const tmpl  = {...{}, ...template,};
                     if (tmpl.description) {
                         tmpl.type_label += ' - ' + tmpl.description;
@@ -195,7 +195,7 @@ export default {
                     }
                     return tmpl;
                 }),
-            });
+            },});
         }
     },
 

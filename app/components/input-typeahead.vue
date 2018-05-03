@@ -1,5 +1,5 @@
 <template>
-    <input type="text" v-model="search_text" @keyup.enter.stop="search"/>
+    <input type="text" v-model="search_text" :placeholder="placeholder" @keyup.enter.stop="search"/>
 </template>
 <script>
 /*global _, UIkit, Vue */
@@ -10,6 +10,7 @@ export default {
 
     props: {
         search_text: String,
+        placeholder: {type: String, default: '',},
         datasets: Object,
         onSelect: {type: Function, default: _.noop,},
         onActive: {type: Function, default: _.noop,},
@@ -24,7 +25,8 @@ export default {
         initDatasets(datasets_data) {
             const pr = [];
             _.forEach(this.datasets, dataset => {
-                pr.push(dataset.init(datasets_data[dataset.name]));
+                const {local, remote, prefetch, } = datasets_data[dataset.name];
+                pr.push(dataset.init(local, remote, prefetch));
             });
             Vue.Promise.all(pr).then(datasets => {
                 this.$input = UIkit.$(this.$el).typeahead({

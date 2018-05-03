@@ -89,7 +89,7 @@ function BloodhoundDataset($vm, name, dataset_options) {
             return ``;
         },
         pending(result) {
-            const message = $vm.$trans('Searching for %query%.', {query: result.query,});
+            const message = $vm.$trans('Searching for %query%...', {query: result.query,});
             return `<div>${message}</div>`;
         },
         header(result) {
@@ -113,10 +113,11 @@ function BloodhoundDataset($vm, name, dataset_options) {
     /**
      *
      * @param local
+     * @param remote
      * @param prefetch
      * @return Promise resolved wth engine when initialized
      */
-    function init(local, prefetch) {
+    function init(local, remote, prefetch) {
 
         const opts = {
             initialize: false,
@@ -126,6 +127,9 @@ function BloodhoundDataset($vm, name, dataset_options) {
             queryTokenizer,
             datumTokenizer,
         };
+        if (remote) {
+            opts.remote = remote;
+        }
         if (prefetch) {
             opts.prefetch = prefetch;
         }

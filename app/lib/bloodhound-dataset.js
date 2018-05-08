@@ -50,7 +50,7 @@ function BloodhoundDataset($vm, name, dataset_options) {
 
     const normalize = function (str) {
         _.forIn(charMap, function (regex, normalized) {
-            str = str.replace(regex, normalized);
+            str = String(str).replace(regex, normalized);
         });
         return str;
     };

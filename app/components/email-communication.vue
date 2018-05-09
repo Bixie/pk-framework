@@ -115,6 +115,7 @@ export default {
         'emailData': {type: Object, default: () => ({}),},
         'user_id': {type: Number, default: null,},
         'id': {type: [String, Number,], default: null,},
+        'language': {type: String, default: '',},
         'showLog': {type: Boolean, default: true,},
         'stacked': {type: Boolean, default: false,},
     },
@@ -212,6 +213,7 @@ export default {
                     receiver: this.receivers[this.receiver] || {name: '', email: '',},
                 }, this.emailData),
                 user_id: this.user_id,
+                _locale: this.language,
             }).then(res => {
                 this.mail_data = _.merge({
                     to: '',
@@ -237,8 +239,9 @@ export default {
                     sender: this.senders[this.sender],
                     receiver: this.receivers[this.receiver],
                 }, this.emailData),
-                user_id: this.user_id,})
-                .then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
+                user_id: this.user_id,
+                _locale: this.language,
+            }).then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
         },
     },
 

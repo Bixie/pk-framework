@@ -214,6 +214,7 @@ export default {
                 }, this.emailData),
                 user_id: this.user_id,
                 _locale: this.language,
+                _locale_persist: false,
             }).then(res => {
                 this.mail_data = _.merge({
                     to: '',
@@ -241,6 +242,7 @@ export default {
                 }, this.emailData),
                 user_id: this.user_id,
                 _locale: this.language,
+                _locale_persist: false,
             }).then(res => this.$notify(res.data.message, 'success'), res => this.$notify(res.data, 'danger'));
         },
     },

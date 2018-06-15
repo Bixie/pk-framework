@@ -32,7 +32,7 @@
                 <div class="uk-form-controls">
 
                     <div class="uk-grid uk-grid-small" data-uk-grid-margin>
-                        <div :class="{'uk-width-8-10': !stacked,'uk-width-1-1': stacked}">
+                        <div :class="{'uk-width-7-10': !stacked,'uk-width-1-1': stacked}">
 
                             <input-typeahead v-if="useTypeahead" v-ref:typeahead class="uk-width-1-1"
                                              :search_text.sync="template_search"
@@ -54,7 +54,11 @@
                                 </optgroup>
                             </select>
                         </div>
-                        <div :class="{'uk-width-2-10': !stacked,'uk-width-1-1': stacked}">
+                        <div :class="{'uk-width-3-10': !stacked,'uk-width-1-1': stacked}">
+                            <select v-if="languages.length" class="uk-form-width-mini uk-margin-small-right"
+                                    v-model="language">
+                                <option v-for="lang in languages" :value="lang.language">{{ lang.language }}</option>
+                            </select>
                             <button @click="mailTemplate(template)" type="button"
                                     class="uk-button uk-text-nowrap" :disabled="!template">
                                 <i v-spinner="searching" icon="magic"></i>
@@ -116,6 +120,7 @@ export default {
         'user_id': {type: Number, default: null,},
         'id': {type: [String, Number,], default: null,},
         'language': {type: String, default: '',},
+        'languages': {type: Array, default: () => ([]),},
         'showLog': {type: Boolean, default: true,},
         'stacked': {type: Boolean, default: false,},
     },

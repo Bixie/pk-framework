@@ -13,6 +13,7 @@ import InputRelatedItem from './components/input-related-item.vue';
 import InputRelatedItems from './components/input-related-items.vue';
 import TableList from './components/table-list.vue';
 import EmailCommunication from './components/email-communication.vue';
+import EmailLogs from './components/email-logs.vue';
 import InputFile from './components/input-file.vue';
 //directives
 import Spinner from './directives/spinner';
@@ -66,6 +67,7 @@ if (window.Vue) {
     window.Vue.component('input-related-items', InputRelatedItems);
     window.Vue.component('table-list', TableList);
     window.Vue.component('email-communication', EmailCommunication);
+    window.Vue.component('email-logs', EmailLogs);
     //directives
     window.Vue.directive('spinner', Spinner);
     window.Vue.directive('phone', Phone);

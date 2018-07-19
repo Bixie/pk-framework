@@ -92,7 +92,7 @@
   'Quarter' => 'Kwartaal',
   'Custom period' => 'Aangepaste periode',
   'Date from' => 'Datum vanaf',
-  'Date to' => 'Datum vanaf',
+  'Date to' => 'Datum tot',
   'Google maps API key' => 'Google maps API key',
   'Image caching folder' => 'Image caching folder',
   'Extra' => 'Extra',

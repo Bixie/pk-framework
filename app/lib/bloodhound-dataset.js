@@ -8,17 +8,17 @@
 /*globals _, Promise*/
 
 //add nearby search suggestions
-const parentSearch = window.SearchIndex.prototype.search;
-window.SearchIndex.prototype.search = function (query) {
-    const suggestions = parentSearch.call(this, query);
-    const ids = suggestions.map(obj => obj.id);
-    parentSearch.call(this, 'dist_match').forEach(obj => {
-        if (ids.indexOf(obj.id) === -1) {
-            suggestions.push(obj);
-        }
-    });
-    return suggestions;
-};
+// const parentSearch = window.SearchIndex.prototype.search;
+// window.SearchIndex.prototype.search = function (query) {
+//     const suggestions = parentSearch.call(this, query);
+//     const ids = suggestions.map(obj => obj.id);
+//     parentSearch.call(this, 'dist_match').forEach(obj => {
+//         if (ids.indexOf(obj.id) === -1) {
+//             suggestions.push(obj);
+//         }
+//     });
+//     return suggestions;
+// };
 
 
 function BloodhoundDataset($vm, name, dataset_options) {

@@ -55,7 +55,7 @@ export default {
         'selected': {type: Array, default: () => ({}),},
         'excluded': {type: Array, default: () => ([]),},
         'resource': {type: String, default: '',},
-        'config': {type: Object, default: () => ({filter: {search: '', order: 'title asc',},}),},
+        'config': {type: Object, default: () => ({filter: {search: '', order: 'title asc',}, page: 0,}),},
         'name': {type: String, default: 'items',},
         'identifier': {type: String, default: 'id',},
         'label': {type: String, default: 'title',},

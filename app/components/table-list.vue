@@ -32,7 +32,7 @@
 
         <h3 v-show="items && !items.length" class="uk-text-muted uk-text-center">{{ 'No items found.' | trans }}</h3>
 
-        <v-pagination :page.sync="config.page" :pages="pages" v-show="pages > 1" :replace-history="false"></v-pagination>
+        <v-pagination :page.sync="config.page" :pages="pages" v-show="pages > 1" :replace-state="false"></v-pagination>
 
     </div>
 

@@ -46,7 +46,7 @@
         <h3 class="uk-text-muted uk-text-center"
             v-show="!loading && !logs.length">{{ 'No logs found.' | trans }}</h3>
 
-        <v-pagination :page.sync="config.page" :pages="pages" v-show="pages > 1" :replace-history="false"></v-pagination>
+        <v-pagination :page.sync="config.page" :pages="pages" v-show="pages > 1" :replace-state="false"></v-pagination>
 
         <v-modal v-ref:editmodal large>
             <div class="uk-modal-header uk-flex uk-flex-space-between">

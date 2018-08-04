@@ -34,7 +34,7 @@
             <div class="uk-form-row">
                 <div class="uk-form-controls">
                     <v-editor :value.sync="content" class="uk-width-1-1" :placeholder="'Email text' | trans"
-                              :options="{markdown: true, height: 250}"></v-editor>
+                              :options="{markdown: true, mdparser: $marked, height: 250}"></v-editor>
                 </div>
             </div>
             <div v-if="attachments.length" class="uk-form-row">

@@ -8,7 +8,8 @@
   "license": "MIT",
   "homepage": "https://github.com/Bixie/pk-framework",
   "dependencies": {
-    "typeahead": "https://github.com/sirianni/typeahead.js.git#master"
+    "typeahead": "https://github.com/sirianni/typeahead.js.git#master",
+    "markdown-it": "^8.4.2"
   },
   "private": true
 }

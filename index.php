@@ -59,6 +59,10 @@ return [
                 ['vue', 'typeahead-bundle'], ['version' => $version]);
 			$scripts->register('bixie-chartjs', 'bixie/pk-framework:app/bundle/bixie-chartjs.js',
                 ['vue'], ['version' => $version]);
+			$scripts->register('bixie-markdown-it', 'bixie/pk-framework:app/assets/markdown-it/dist/markdown-it.js',
+                [], ['version' => $version]);
+			$scripts->register('bixie-marked', 'bixie/pk-framework:app/bundle/bixie-marked.js',
+                ['~editor', 'vue', 'bixie-markdown-it'], ['version' => $version]);
 			$scripts->register('bixie-pkframework', 'bixie/pk-framework:app/bundle/bixie-framework.js',
                 ['vue', 'uikit-lightbox'], ['version' => $version]);
 			//register fields

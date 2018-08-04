@@ -22,6 +22,7 @@ module.exports = [
             'bixie-typeahead': './app/typeahead.js',
             'bixie-chartjs': './app/chartjs.js',
             'bixie-framework': './app/framework.js',
+            'bixie-marked': './app/marked.js',
             'vuex': './app/vuex.js',
         },
         output: {

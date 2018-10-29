@@ -37,19 +37,22 @@ class DateHelper {
 	];
 
 	/**
-	 * @param string $date
+	 * @param string|\DateTime $date
 	 * @param string $format
 	 * @param string $tz
 	 * @return string
 	 */
-	public static function format ($date, $format = 'mediumDate', $tz = 'UTC') {
+	public static function format ($date, $format = 'mediumDate', $tz = '') {
 		try {
 
 			if (is_string($date)) {
-				$date = new \DateTime($date, new \DateTimeZone($tz));
+				$date = new \DateTime($date);
 			}
+            if ($tz) {
+                $date->setTimezone(new \DateTimeZone($tz));
+            }
 
-			$format = static::getFormat($format);
+            $format = static::getFormat($format);
 
 			return static::translate($date->format($format), $format);
 

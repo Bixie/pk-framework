@@ -43,7 +43,7 @@
                     <div :class="{'uk-scrollable-box': attachments.length > 8}">
                         <p v-for="attachment in attachments" class="uk-form-controls-condensed">
                             <label><input type="checkbox" v-model="files" class="uk-margin-small-right" :value="attachment.path"/>
-                                {{ attachment.name }} <small>({{ attachment.type | trans }})</small></label>
+                                {{ attachment.name }} <small v-if="attachment.type">({{ attachment.type | trans }})</small></label>
                         </p>
                     </div>
                 </div>

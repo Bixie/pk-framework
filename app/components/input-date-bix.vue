@@ -65,7 +65,6 @@ export default {
                 date = UIkit.Utils.moment(date, this.dateFormat);
                 date.hours(prev.getHours());
                 date.minutes(prev.getMinutes());
-                console.log(date.utc().format());
                 this.$set('datetime', date.utc().format());
             },
 
@@ -81,7 +80,6 @@ export default {
                 const date = new Date(this.datetime);
                 time = UIkit.Utils.moment(time, this.timeFormat);
                 date.setHours(time.hours(), time.minutes());
-                console.log(date.toISOString());
                 this.$set('datetime', date.toISOString());
             },
 

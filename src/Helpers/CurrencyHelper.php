@@ -3,8 +3,6 @@
 
 namespace Bixie\PkFramework\Helpers;
 
-use Pagekit\Application as App;
-
 
 class CurrencyHelper {
 
@@ -13,13 +11,14 @@ class CurrencyHelper {
         'USD' => '$'
     ];
 
-	/**
-	 * @param        $number
-	 * @param string $currency
-	 * @return string
-	 */
-	public static function format ($number, $currency = 'EUR') {
-		return self::$_symbols[$currency] . number_format(floatval($number), 2, ',', '.');
+    /**
+     * @param        $number
+     * @param string $currency
+     * @param null $symbol
+     * @return string
+     */
+	public static function format ($number, $currency = 'EUR', $symbol = null) {
+		return ($symbol ? $symbol : self::$_symbols[$currency]) . number_format(floatval($number), 2, ',', '.');
 	}
 
 }

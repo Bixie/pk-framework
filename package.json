@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "chart.js": "^2.4.0",
+    "chart.js": "^2.9.4",
     "js-md5": "^0.7.2",
     "moment": "^2.19.2",
     "vuex": "^3.0.1"
